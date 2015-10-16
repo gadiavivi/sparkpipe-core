@@ -21,13 +21,14 @@ class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], val 
   val children = new ArrayBuffer[PipeStage[O,_]]
 
   def to[X](opFunc: O => X): PipeStage[O,X] = {
-    //TODO this must be called only once
+    //TODO this must be called only once, instead of split
     val result = new PipeStage[O,X](opFunc, Some(this), pipe)
     children.append(result)
     result
   }
 
   def split[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
+    //TODO this must be called only once, instead of to
     pipes.foreach(p => {
       p.head.parent = Some(this)
       children.append(p.head)
@@ -35,13 +36,6 @@ class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], val 
     new PipeBranchStage(this, children)
   }
   class PipeBranchStage[O](parent: PipeStage[_,O], children: ArrayBuffer[PipeStage[O,_]]) {
-    // def and[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
-    //   pipes.foreach(p => {
-    //     p.head.parent = Some(parent)
-    //     children.append(p.head)
-    //   })
-    //   this
-    // }
     def run[Y](in: Y): Unit = {
       parent.pipe.run(in)
     }
