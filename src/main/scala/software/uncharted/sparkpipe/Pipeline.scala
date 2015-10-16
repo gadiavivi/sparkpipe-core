@@ -17,7 +17,7 @@ class Pipe[I,O](opFunc: I => O) {
   }
 }
 
-class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], pipe: Pipe[_,_]) {
+class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], val pipe: Pipe[_,_]) {
   val children = new ArrayBuffer[PipeStage[O,_]]
 
   def to[X](opFunc: O => X): PipeStage[O,X] = {
@@ -27,7 +27,7 @@ class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], pipe
     result
   }
 
-  def to[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
+  def split[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
     pipes.foreach(p => {
       p.head.parent = Some(this)
       children.append(p.head)
@@ -35,12 +35,15 @@ class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], pipe
     new PipeBranchStage(this, children)
   }
   class PipeBranchStage[O](parent: PipeStage[_,O], children: ArrayBuffer[PipeStage[O,_]]) {
-    def and[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
-      pipes.foreach(p => {
-        p.head.parent = Some(parent)
-        children.append(p.head)
-      })
-      this
+    // def and[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
+    //   pipes.foreach(p => {
+    //     p.head.parent = Some(parent)
+    //     children.append(p.head)
+    //   })
+    //   this
+    // }
+    def run[Y](in: Y): Unit = {
+      parent.pipe.run(in)
     }
   }
 
