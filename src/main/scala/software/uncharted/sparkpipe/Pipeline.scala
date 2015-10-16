@@ -5,37 +5,52 @@ import scala.collection.mutable.ArrayBuffer
  *
  *
  */
-class Pipeline {
-  var root: PipelineStage[_,_] = _
+class Pipe[I,O](opFunc: I => O) {
+  var head = new PipeStage[I, O](opFunc, None, this)
 
-  def start[I, O](opFunc: I => O): PipelineStage[I, O] = {
-    //TODO prevent double creation of root with exception
-    val result = new PipelineStage[I, O](opFunc, None, this)
-    root = result
-    result
+  def to[X](opFunc: O => X): PipeStage[O,X] = {
+    head.to(opFunc)
   }
 
   def run[I](in : I): Unit = {
-    root.asInstanceOf[PipelineStage[I,_]].runStage(in)
+    head.asInstanceOf[PipeStage[I,_]].runStage(in)
   }
 }
 
-class PipelineStage[I, O] (opFunc: I => O, parent: Option[PipelineStage[_, I]], pipe: Pipeline) {
-  val children = new ArrayBuffer[PipelineStage[O,_]]
+class PipeStage[I, O] (opFunc: I => O, var parent: Option[PipeStage[_, I]], pipe: Pipe[_,_]) {
+  val children = new ArrayBuffer[PipeStage[O,_]]
 
-  def next[X](opFunc: O => X): PipelineStage[O,X] = {
-    val result = new PipelineStage[O,X](opFunc, Some(this), pipe)
+  def to[X](opFunc: O => X): PipeStage[O,X] = {
+    //TODO this must be called only once
+    val result = new PipeStage[O,X](opFunc, Some(this), pipe)
     children.append(result)
     result
   }
 
-  def apply[Y](in: Y): O = {
-    if (parent.isDefined) {
-      opFunc(parent.get.apply(in))
-    } else {
-      opFunc.asInstanceOf[(Y) => O](in)
+  def to[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
+    pipes.foreach(p => {
+      p.head.parent = Some(this)
+      children.append(p.head)
+    })
+    new PipeBranchStage(this, children)
+  }
+  class PipeBranchStage[O](parent: PipeStage[_,O], children: ArrayBuffer[PipeStage[O,_]]) {
+    def and[X](pipes: Pipe[O,_]*): PipeBranchStage[O] = {
+      pipes.foreach(p => {
+        p.head.parent = Some(parent)
+        children.append(p.head)
+      })
+      this
     }
   }
+
+  // def apply[Y](in: Y): O = {
+  //   if (parent.isDefined) {
+  //     opFunc(parent.get.apply(in))
+  //   } else {
+  //     opFunc.asInstanceOf[(Y) => O](in)
+  //   }
+  // }
 
   def run[Y](in: Y): Unit = {
     pipe.run(in)
