@@ -5,16 +5,9 @@ import scala.collection.mutable.ArrayBuffer
  *
  */
 class Pipe[I,O] private[sparkpipe] (
-  val head: PipeStage[I, _],
-  val tail: PipeStage[_, O]
+  val head: I,
+  val tail: PipeStage[_,O]
 ) {
-  private[sparkpipe] def this(first: PipeStage[I,O]) = {
-    this(first, first)
-  }
-
-  def this(first: I => O) = {
-    this(new PipeStage[I,O](first, None))
-  }
 
   def to[A](opFunc: O => A): Pipe[I,A] = {
     val next = new PipeStage(opFunc, Some(tail))
@@ -22,13 +15,29 @@ class Pipe[I,O] private[sparkpipe] (
     new Pipe(head, next)
   }
 
-  def run(in : I): Unit = {
-    head.runStage(in)
+  def run(): O = {
+    tail.run(head)
   }
 }
 
-// object Pipe {
-//   def from(pipe1: Pipe[], pipe2: Pipe[]): Pipe[] = {
-//
-//   }
-// }
+object Pipe {
+  def apply[I](first: I) = {
+    new Pipe[I,I](first, new PipeStage[I,I]((a: I) => a, None))
+  }
+  def apply[O](first: () => O) = {
+    val wrap: Unit => O = (a: Unit) => {
+      first()
+    }
+    new Pipe((), new PipeStage[Unit,O](wrap, None))
+  }
+
+  def from[A,B](first: Pipe[_,A], second: Pipe[_,B]) = {
+    val firstResult: A = first.run
+    val secondResult: B = second.run
+    Pipe((firstResult, secondResult))
+  }
+
+  // def from(pipe1: Pipe[], pipe2: Pipe[]): Pipe[] = {
+  //
+  // }
+}

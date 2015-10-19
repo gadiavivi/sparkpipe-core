@@ -1,5 +1,6 @@
 package software.uncharted.sparkpipe
 import scala.collection.mutable.ArrayBuffer
+
 /**
  *
  *
@@ -10,18 +11,11 @@ class PipeStage[X, Y] (
 ) {
   private[sparkpipe] val children = new ArrayBuffer[PipeStage[Y,_]]
 
-  private[sparkpipe] def runStage(in: X): Unit = {
-    val out: Y = opFunc(in)
-    children.toArray.foreach(f => {
-      f.runStage(out)
-    })
+  private[sparkpipe] def run[I](in: I): Y = {
+    if (parent.isDefined) {
+      opFunc(parent.get.run(in))
+    } else {
+      opFunc.asInstanceOf[(I) => Y](in)
+    }
   }
-
-  // def apply[Y](in: Y): O = {
-  //   if (parent.isDefined) {
-  //     opFunc(parent.get.apply(in))
-  //   } else {
-  //     opFunc.asInstanceOf[(Y) => O](in)
-  //   }
-  // }
 }
