@@ -22,9 +22,3 @@ class PipeStage[X, Y] (opFunc: X => Y, var parent: Option[PipeStage[_, X]]) {
     })
   }
 }
-
-// object Merge {
-//   def apply(pipes: Pipe[_,_]*): Pipe[(...),_] {
-//     //TODO
-//   }
-// }

@@ -4,8 +4,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  *
  */
-class Pipe[I,O](val head: PipeStage[I, _], val tail: PipeStage[_, O]) {
-
+class Pipe[I,O] private[sparkpipe] (val head: PipeStage[I, _], val tail: PipeStage[_, O]) {
   def this(first: PipeStage[I,O]) = {
     this(first, first)
   }
