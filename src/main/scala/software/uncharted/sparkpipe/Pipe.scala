@@ -4,8 +4,11 @@ import scala.collection.mutable.ArrayBuffer
  *
  *
  */
-class Pipe[I,O] private[sparkpipe] (val head: PipeStage[I, _], val tail: PipeStage[_, O]) {
-  def this(first: PipeStage[I,O]) = {
+class Pipe[I,O] private[sparkpipe] (
+  val head: PipeStage[I, _],
+  val tail: PipeStage[_, O]
+) {
+  private[sparkpipe] def this(first: PipeStage[I,O]) = {
     this(first, first)
   }
 
@@ -19,20 +22,13 @@ class Pipe[I,O] private[sparkpipe] (val head: PipeStage[I, _], val tail: PipeSta
     new Pipe(head, next)
   }
 
-  def split[A](pipes: Pipe[O,A]*): PipeBranchStage[I] = {
-    pipes.foreach(p => {
-      p.head.parent = Some(tail)
-      tail.children.append(p.head)
-    })
-    new PipeBranchStage(this)
-  }
-  class PipeBranchStage[X](pipe: Pipe[X,_]) {
-    def run(in: X): Unit = {
-      pipe.run(in)
-    }
-  }
-
   def run(in : I): Unit = {
     head.runStage(in)
   }
 }
+
+// object Pipe {
+//   def from(pipe1: Pipe[], pipe2: Pipe[]): Pipe[] = {
+//
+//   }
+// }

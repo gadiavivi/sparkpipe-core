@@ -4,8 +4,18 @@ import scala.collection.mutable.ArrayBuffer
  *
  *
  */
-class PipeStage[X, Y] (opFunc: X => Y, var parent: Option[PipeStage[_, X]]) {
+class PipeStage[X, Y] (
+  opFunc: X => Y,
+  var parent: Option[PipeStage[_, X]]
+) {
   private[sparkpipe] val children = new ArrayBuffer[PipeStage[Y,_]]
+
+  private[sparkpipe] def runStage(in: X): Unit = {
+    val out: Y = opFunc(in)
+    children.toArray.foreach(f => {
+      f.runStage(out)
+    })
+  }
 
   // def apply[Y](in: Y): O = {
   //   if (parent.isDefined) {
@@ -14,11 +24,4 @@ class PipeStage[X, Y] (opFunc: X => Y, var parent: Option[PipeStage[_, X]]) {
   //     opFunc.asInstanceOf[(Y) => O](in)
   //   }
   // }
-
-  private[sparkpipe] def runStage(in: X): Unit = {
-    val out: Y = opFunc(in)
-    children.toArray.foreach(f => {
-      f.runStage(out)
-    })
-  }
 }
