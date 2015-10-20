@@ -16,8 +16,9 @@
 
 package software.uncharted.sparkpipe
 import scala.collection.mutable.ArrayBuffer
+
 /**
- *
+ * An immutable chain of
  *
  */
 class Pipe[I,O] private[sparkpipe] (
@@ -40,6 +41,10 @@ class Pipe[I,O] private[sparkpipe] (
   }
 }
 
+/**
+ * Facilitates the creation of a new Pipe from various inputs,
+ * such as raw values or other Pipes
+ */
 object Pipe {
   def apply[I](first: I): Pipe[I,I] = {
     new Pipe[I,I](first, new PipeStage[I,I]((a: I) => a, None))
@@ -51,24 +56,39 @@ object Pipe {
     new Pipe((), new PipeStage[Unit,O](wrap, None))
   }
 
+  def apply[O](
+    in: Pipe[_,O]
+  ): Pipe[Unit,O] = {
+    val wrap: Unit => O = (a: Unit) => {
+      in.run()
+    }
+    new Pipe((), new PipeStage[Unit,O](wrap, None))
+  }
+
   def apply[A,B](
     first: Pipe[_,A],
     second: Pipe[_,B]
-  ): Pipe[(A,B),(A,B)] = {
-    val firstResult: A = first.run
-    val secondResult: B = second.run
-    Pipe((firstResult, secondResult))
+  ): Pipe[Unit,(A,B)] = {
+    val wrap: Unit => (A,B) = (a: Unit) => {
+      val firstResult: A = first.run
+      val secondResult: B = second.run
+      (firstResult, secondResult)
+    }
+    new Pipe((), new PipeStage[Unit,(A,B)](wrap, None))
   }
 
   def apply[A,B,C](
     first: Pipe[_,A],
     second: Pipe[_,B],
     third: Pipe[_,C]
-  ): Pipe[(A,B,C),(A,B,C)] = {
-    val firstResult: A = first.run
-    val secondResult: B = second.run
-    val thirdResult: C = third.run
-    Pipe((firstResult, secondResult, thirdResult))
+  ): Pipe[Unit,(A,B,C)] = {
+    val wrap: Unit => (A,B,C) = (a: Unit) => {
+      val firstResult: A = first.run
+      val secondResult: B = second.run
+      val thirdResult: C = third.run
+      (firstResult, secondResult, thirdResult)
+    }
+    new Pipe((), new PipeStage[Unit,(A,B,C)](wrap, None))
   }
 
   def apply[A,B,C,D](
@@ -76,12 +96,15 @@ object Pipe {
     second: Pipe[_,B],
     third: Pipe[_,C],
     fourth: Pipe[_,D]
-  ): Pipe[(A,B,C,D),(A,B,C,D)] = {
-    val firstResult: A = first.run
-    val secondResult: B = second.run
-    val thirdResult: C = third.run
-    val fourthResult: D = fourth.run
-    Pipe((firstResult, secondResult, thirdResult, fourthResult))
+  ): Pipe[Unit,(A,B,C,D)] = {
+    val wrap: Unit => (A,B,C,D) = (a: Unit) => {
+      val firstResult: A = first.run
+      val secondResult: B = second.run
+      val thirdResult: C = third.run
+      val fourthResult: D = fourth.run
+      (firstResult, secondResult, thirdResult, fourthResult)
+    }
+    new Pipe((), new PipeStage[Unit,(A,B,C,D)](wrap, None))
   }
 
   def apply[A,B,C,D,E](
@@ -90,12 +113,15 @@ object Pipe {
     third: Pipe[_,C],
     fourth: Pipe[_,D],
     fifth: Pipe[_,E]
-  ): Pipe[(A,B,C,D,E),(A,B,C,D,E)] = {
-    val firstResult: A = first.run
-    val secondResult: B = second.run
-    val thirdResult: C = third.run
-    val fourthResult: D = fourth.run
-    val fifthResult: E = fifth.run
-    Pipe((firstResult, secondResult, thirdResult, fourthResult, fifthResult))
+  ): Pipe[Unit,(A,B,C,D,E)] = {
+    val wrap: Unit => (A,B,C,D,E) = (a: Unit) => {
+      val firstResult: A = first.run
+      val secondResult: B = second.run
+      val thirdResult: C = third.run
+      val fourthResult: D = fourth.run
+      val fifthResult: E = fifth.run
+      (firstResult, secondResult, thirdResult, fourthResult, fifthResult)
+    }
+    new Pipe((), new PipeStage[Unit,(A,B,C,D,E)](wrap, None))
   }
 }
