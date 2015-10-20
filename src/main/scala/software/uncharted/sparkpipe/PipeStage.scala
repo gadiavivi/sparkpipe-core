@@ -38,7 +38,6 @@ class PipeStage[X, Y] private[sparkpipe] (
 
   private[sparkpipe] def run[I](in: I): Y = {
     if (cache.isDefined) {
-      println("Getting cached result")
       cache.get
     } else if (parent.isDefined) {
       val result = opFunc(parent.get.run(in))
