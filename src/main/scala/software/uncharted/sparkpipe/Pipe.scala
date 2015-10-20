@@ -34,6 +34,10 @@ class Pipe[I,O] private[sparkpipe] (
   def run(): O = {
     tail.run(head)
   }
+
+  def reset(): Unit = {
+    tail.reset()
+  }
 }
 
 object Pipe {

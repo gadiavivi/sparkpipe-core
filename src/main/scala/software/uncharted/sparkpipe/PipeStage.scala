@@ -25,13 +25,29 @@ class PipeStage[X, Y] private[sparkpipe] (
   opFunc: X => Y,
   var parent: Option[PipeStage[_, X]]
 ) {
+  private var cache: Option[Y] = None
+
   private[sparkpipe] val children = new ArrayBuffer[PipeStage[Y,_]]
 
-  private[sparkpipe] def run[I](in: I): Y = {
+  private[sparkpipe] def reset(): Unit = {
+    cache = None
     if (parent.isDefined) {
-      opFunc(parent.get.run(in))
+      parent.get.reset()
+    }
+  }
+
+  private[sparkpipe] def run[I](in: I): Y = {
+    if (cache.isDefined) {
+      println("Getting cached result")
+      cache.get
+    } else if (parent.isDefined) {
+      val result = opFunc(parent.get.run(in))
+      cache = Some(result)
+      result
     } else {
-      opFunc.asInstanceOf[(I) => Y](in)
+      val result = opFunc.asInstanceOf[(I) => Y](in)
+      cache = Some(result)
+      result
     }
   }
 }
