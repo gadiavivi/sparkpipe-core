@@ -18,6 +18,7 @@ package software.uncharted.salt.core.analytic.numeric
 
 import org.scalatest._
 import software.uncharted.sparkpipe.{Pipe, PipeStage}
+import software.uncharted.sparkpipe.Spark
 
 class PipeSpec extends FunSpec {
   describe("Pipe (static)") {
@@ -77,23 +78,50 @@ class PipeSpec extends FunSpec {
   describe("Pipe (instance)") {
     describe("#to()") {
       it("should form a new pipe by connecting the given anonymous function to the tail of the existing pipe") {
-        
+        val pipe = Pipe("hello")
+        val toPipe = pipe.to((a: String) => a + " world")
+        assert(pipe != toPipe)
+        assert(toPipe.run() == "hello world")
       }
     }
 
     describe("#run()") {
       it("should run the given pipe, producing a value") {
-
+        val pipe = Pipe("hello")
+        val toPipe = pipe.to((a: String) => a + " world")
+        assert(pipe.run() == "hello")
+        assert(toPipe.run() == "hello world")
       }
 
       it("should cache results") {
-
+        val pipe = Pipe(() => {
+          Seq(1,2,3,4)
+        }).to(a => {
+          a.map(b => b+1)
+        })
+        val firstRun: Seq[Int] = pipe.run()
+        assert(firstRun eq pipe.run())
       }
     }
 
     describe("#reset()") {
       it("should facilitate clearing the cache of previously computed stages") {
+        val pipe = Pipe(() => {
+          Seq(1,2,3,4)
+        }).to(a => {
+          a.map(b => b+1)
+        })
+        val firstRun: Seq[Int] = pipe.run()
+        pipe.reset()
+        assert(firstRun ne pipe.run())
 
+        //try something trickier - reset a parent pipe of a pipe
+        val pipe2 = pipe.to(a => {
+          a.map(b => b+1)
+        })
+        val secondRun: Seq[Int] = pipe2.run()
+        pipe.reset()
+        assert(secondRun eq pipe2.run())
       }
     }
   }
