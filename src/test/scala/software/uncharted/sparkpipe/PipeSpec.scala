@@ -23,27 +23,53 @@ class PipeSpec extends FunSpec {
   describe("Pipe (static)") {
     describe("#apply()") {
       it("should allow the creation of a fixed pipe with an input value") {
-
+        val pipe = Pipe("hello")
+        assert(pipe.run() == "hello")
       }
 
       it("should allow the creation of a fixed pipe with an input function") {
-
+        val pipe = Pipe(() => {
+          "hello"
+        })
+        assert(pipe.run() == "hello")
       }
 
       it("should allow the creation of a fixed pipe by merging two input pipes") {
-
+        val pipe = Pipe(
+          Pipe(() => "hello"),
+          Pipe(() => "world")
+        )
+        assert(pipe.run == ("hello", "world"))
       }
 
       it("should allow the creation of a fixed pipe by merging three input pipes") {
-
+        val pipe = Pipe(
+          Pipe(() => "hello"),
+          Pipe(() => "world"),
+          Pipe(() => "how")
+        )
+        assert(pipe.run == ("hello", "world", "how"))
       }
 
       it("should allow the creation of a fixed pipe by merging four input pipes") {
-
+        val pipe = Pipe(
+          Pipe(() => "hello"),
+          Pipe(() => "world"),
+          Pipe(() => "how"),
+          Pipe(() => "are")
+        )
+        assert(pipe.run == ("hello", "world", "how", "are"))
       }
 
       it("should allow the creation of a fixed pipe by merging five input pipes") {
-
+        val pipe = Pipe(
+          Pipe(() => "hello"),
+          Pipe(() => "world"),
+          Pipe(() => "how"),
+          Pipe(() => "are"),
+          Pipe(() => "you")
+        )
+        assert(pipe.run == ("hello", "world", "how", "are", "you"))
       }
     }
   }
@@ -51,7 +77,7 @@ class PipeSpec extends FunSpec {
   describe("Pipe (instance)") {
     describe("#to()") {
       it("should form a new pipe by connecting the given anonymous function to the tail of the existing pipe") {
-
+        
       }
     }
 
