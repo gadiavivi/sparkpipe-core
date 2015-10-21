@@ -18,7 +18,7 @@ package software.uncharted.sparkpipe.ops.core
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, DataFrame}
-import scala.reflect.runtime.universe._
+import scala.reflect.runtime.universe.TypeTag
 
 /**
  * Core pipeline operations for working with RDDs
@@ -33,7 +33,17 @@ object RDDOps {
    * @return a DataFrame constructed from rdd
    */
   def toDF[A <: Product : TypeTag](sqlContext: SQLContext, colNames: String*)(rdd: RDD[A]): DataFrame = {
-    import sqlContext.implicits._
+    import sqlContext.implicits._ // scalastyle:ignore
     rdd.toDF(colNames:_*)
+  }
+
+  /**
+   * cache() the specified RDD
+   * @param frame the RDD to cache()
+   * @return the input RDD, after calling cache()
+   */
+  def cache[A](rdd: RDD[A]): RDD[A] = {
+    rdd.cache()
+    rdd
   }
 }
