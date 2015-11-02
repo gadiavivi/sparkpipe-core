@@ -35,12 +35,24 @@ class PipeSpec extends FunSpec {
         assert(pipe.run() == "hello")
       }
 
-      it("should allow the creation of a fixed pipe by merging two input pipes") {
+      it("should allow the creation of a fixed pipe by merging two input pipes, only running the input pipes when the new pipe is run") {
+        var pipe1Run = false
+        var pipe2Run = false
         val pipe = Pipe(
-          Pipe(() => "hello"),
-          Pipe(() => "world")
+          Pipe(() => {
+            pipe1Run = true
+            "hello"
+          }),
+          Pipe(() => {
+            pipe2Run = true
+            "world"
+          })
         )
+        assert(pipe1Run == false)
+        assert(pipe2Run == false)
         assert(pipe.run == ("hello", "world"))
+        assert(pipe1Run == true)
+        assert(pipe2Run == true)
       }
 
       it("should allow the creation of a fixed pipe by merging three input pipes") {
