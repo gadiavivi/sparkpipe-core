@@ -5,7 +5,7 @@ language: bash
 services:
   - docker
 
-before_install:
+before_script:
   # generate environment file so we can give the travis environment to our test container
   - env | grep TRAVIS_ > travis.env
   - echo "GRADLE_OPTS=-Dorg.gradle.daemon=false" >> travis.env
@@ -17,6 +17,5 @@ before_install:
   - echo "HAS_JOSH_K_SEAL_OF_APPROVAL" >> travis.env
   # build and run test container
   - docker build -t uncharted/spark-pipeline-test .
-  - docker run --env-file travis.env --rm uncharted/spark-pipeline-test coverage coveralls
 
-script: echo "All Done!"
+script: docker run --env-file travis.env --rm uncharted/spark-pipeline-test ./gradlew coverage coveralls
