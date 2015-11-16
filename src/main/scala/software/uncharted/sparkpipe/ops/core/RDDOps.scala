@@ -33,7 +33,7 @@ object RDDOps {
    * @return a DataFrame constructed from rdd
    */
   def toDF[A <: Product : TypeTag](sqlContext: SQLContext)(rdd: RDD[A]): DataFrame = {
-    sqlContext.createDataFrame(rdd);
+    sqlContext.createDataFrame(rdd)
   }
 
   /**
