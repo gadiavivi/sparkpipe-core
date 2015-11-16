@@ -68,7 +68,7 @@ object DataFrameOps {
    * @return A new DataFrame with the named added value.
    */
   def addColumn (columnName: String, columnType: DataType,
-                 columnFcn: Array[Any] => Any, inputColumns: String*)(base: DataFrame): DataFrame = {
+                 columnFcn: Array[Any] => Any, inputColumns: String*)(input: DataFrame): DataFrame = {
     val columns = inputColumns.map(new Column(_))
     val newColumn = inputColumns.length match {
       case  0 =>
@@ -95,7 +95,18 @@ object DataFrameOps {
                 columnType,
                 columns(0), columns(1), columns(2), columns(3), columns(4))
     }
-    base.withColumn(columnName, newColumn)
+    input.withColumn(columnName, newColumn)
+  }
+
+  /**
+   * Rename a column from a DataFrame
+   * @param columnName a column in the DataFrame
+   * @param newName the new name for that column
+   * @param input the input DataFrame
+   * @return a new DataFrame with the renamed column
+   */
+  def renameColumn(columnName: String, newName: String)(input: DataFrame): DataFrame = {
+    input.withColumnRenamed(columnName, newName)
   }
 
   /**

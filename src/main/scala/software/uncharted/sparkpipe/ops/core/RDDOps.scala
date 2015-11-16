@@ -32,9 +32,8 @@ object RDDOps {
    * @tparam A The record type of the RDD. Must be <: Product
    * @return a DataFrame constructed from rdd
    */
-  def toDF[A <: Product : TypeTag](sqlContext: SQLContext, colNames: String*)(rdd: RDD[A]): DataFrame = {
-    import sqlContext.implicits._ // scalastyle:ignore
-    rdd.toDF(colNames:_*)
+  def toDF[A <: Product : TypeTag](sqlContext: SQLContext)(rdd: RDD[A]): DataFrame = {
+    sqlContext.createDataFrame(rdd);
   }
 
   /**
