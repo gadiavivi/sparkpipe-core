@@ -64,7 +64,7 @@ object DataFrameOps {
    *                  which had darn well better be of the right type.
    * @param inputColumns The input columns needed to calculate the output column; their extracted values become the
    *                     inputs to columnFcn
-   * @param base The existing DataFrame
+   * @param input The existing DataFrame
    * @return A new DataFrame with the named added value.
    */
   def addColumn (columnName: String, columnType: DataType,
