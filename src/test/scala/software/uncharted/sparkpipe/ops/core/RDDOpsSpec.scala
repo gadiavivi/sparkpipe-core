@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package software.uncharted.salt.core.analytic.numeric
+package software.uncharted.sparkpipe.ops.core
 
 import org.scalatest._
-import software.uncharted.sparkpipe.ops.core.RDDOps
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 

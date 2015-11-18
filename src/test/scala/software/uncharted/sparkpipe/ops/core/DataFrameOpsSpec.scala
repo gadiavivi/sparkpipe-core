@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package software.uncharted.salt.core.analytic.numeric
+package software.uncharted.sparkpipe.ops.core
 
 import org.scalatest._
-import software.uncharted.sparkpipe.ops.core.{RDDOps, DataFrameOps}
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 import org.apache.spark.rdd.RDD
@@ -155,6 +154,12 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         assert(df.schema(2).name.equals("_3"))
         assert(df.schema(3).name.equals("_4"))
         assert(df.schema(4).name.equals("_5"))
+      }
+    }
+
+    describe(".temporal") {
+      it("should make temporal operations available via .temporal") {
+        assert(DataFrameOps.temporal == dataframe.TemporalOps)
       }
     }
   }

@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package software.uncharted.salt.core.analytic.numeric
+package software.uncharted.sparkpipe
 
 import org.scalatest._
-import software.uncharted.sparkpipe.{Pipe, PipeStage}
-import software.uncharted.sparkpipe.Spark
 
 class PipeSpec extends FunSpec {
   describe("Pipe (static)") {
