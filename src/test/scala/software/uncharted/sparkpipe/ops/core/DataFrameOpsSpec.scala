@@ -163,6 +163,4 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
     }
   }
-
-
 }

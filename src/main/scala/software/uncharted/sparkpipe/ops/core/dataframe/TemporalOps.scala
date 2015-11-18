@@ -70,8 +70,8 @@ object TemporalOps {
   /**
    * Pipeline op to filter records to a specific date range.
    *
-   * @param minDate Start date for the range, expressed in a format parsable by java.text.SimpleDateFormat.
-   * @param maxDate End date for the range, expressed in a format parsable by java.text.SimpleDateFormat.
+   * @param minDate Start date for the range.
+   * @param maxDate End date for the range.
    * @param timeCol Column spec denoting name of time column in input DataFrame.  In this case time column
    *                is expected to store a Date.
    * @param input Input pipeline data to filter.
@@ -94,7 +94,7 @@ object TemporalOps {
    * @param input Input pipeline data to transform
    * @return Transformed pipeline data with the new time field column.
    */
-  def parseDateOp (stringDateCol: String, dateCol: String, format: String)(input: DataFrame): DataFrame = {
+  def parseDate(stringDateCol: String, dateCol: String, format: String)(input: DataFrame): DataFrame = {
     val formatter = new SimpleDateFormat(format);
     val fieldExtractor: Array[Any] => Any = row => {
       val date = formatter.parse(row(0).toString)
@@ -116,7 +116,7 @@ object TemporalOps {
    * @param input Input pipeline data to transform
    * @return Transformed pipeline data with the new time field column.
    */
-  def dateFieldOp (timeCol: String, fieldCol: String, timeField: Int)(input: DataFrame): DataFrame = {
+  def dateField(timeCol: String, fieldCol: String, timeField: Int)(input: DataFrame): DataFrame = {
     val fieldExtractor: Array[Any] => Any = row => {
       val date = row(0).asInstanceOf[Date]
       val calendar = new GregorianCalendar()

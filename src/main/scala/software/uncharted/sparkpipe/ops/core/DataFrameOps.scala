@@ -109,6 +109,8 @@ object DataFrameOps {
     input.withColumnRenamed(columnName, newName)
   }
 
+  // TODO cast column
+
   /**
    * Bring in temporal ops so they can be referred to with dot notation
    */
