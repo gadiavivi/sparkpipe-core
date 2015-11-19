@@ -98,7 +98,7 @@ class PipeSpec extends FunSpec {
     describe("#run()") {
       it("should run the given pipe, producing a value") {
         val pipe = Pipe("hello")
-        val toPipe = pipe.to((a: String) => a + " world")
+        val toPipe = pipe.to(_+" world")
         assert(pipe.run() == "hello")
         assert(toPipe.run() == "hello world")
       }
