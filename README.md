@@ -21,7 +21,7 @@ scala> import software.uncharted.sparkpipe.Pipe
 scala> Pipe("hello").to(_+" world").run
 ```
 
-Assuming you have a file named [people.json](https://raw.githubusercontent.com/apache/spark/master/examples/src/main/resources/people.json), read an DataFrame from a file and manipulate it:
+Assuming you have a file named [people.json](https://raw.githubusercontent.com/apache/spark/master/examples/src/main/resources/people.json), read a DataFrame from a file and manipulate it:
 ```scala
 scala> :paste
 import software.uncharted.sparkpipe.ops.core._
