@@ -71,6 +71,31 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
     }
 
+    describe("#renameColumn()") {
+      it("should support renaming columns in an input DataFrame") {
+        val df2 = DataFrameOps.renameColumn(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
+        assert(df2.schema.size == df.schema.size)
+        assert(df2.schema(0).dataType.equals(org.apache.spark.sql.types.IntegerType))
+        assert(df2.schema(0).name.equals("new_1"))
+        assert(df2.first.getInt(0) == df.first.getInt(0))
+        assert(df2.schema(2).dataType.equals(org.apache.spark.sql.types.IntegerType))
+        assert(df2.schema(2).name.equals("new_3"))
+        assert(df2.first.getInt(2) == df.first.getInt(2))
+        assert(df2.schema(1).name.equals("_2"))
+        assert(df2.schema(3).name.equals("_4"))
+      }
+
+      it("should be a no-op when the specified column does not exist in the input DataFrame") {
+        val df2 = DataFrameOps.renameColumn(Map("col" -> "new", "_3" -> "new_3"))(df)
+        assert(df.schema.size == df2.schema.size)
+        assert(df2.schema(0).name.equals("_1"))
+        assert(df2.schema(1).name.equals("_2"))
+        assert(df2.schema(2).name.equals("new_3"))
+        assert(df2.schema(3).name.equals("_4"))
+        assert(df2.schema(4).name.equals("_5"))
+      }
+    }
+
     describe("#addColumn()") {
       it("should support adding a column to a DataFrame") {
         val df2 = DataFrameOps.addColumn(
@@ -141,31 +166,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         assert(df2.schema.size == df.schema.size + 1)
         assert(df2.schema("new").dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df2.filter("new = _1+_2+_3+_4+_5").count == df.count)
-      }
-    }
-
-    describe("#renameColumn") {
-      it("should support renaming columns in an input DataFrame") {
-        val df2 = DataFrameOps.renameColumn(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
-        assert(df2.schema.size == df.schema.size)
-        assert(df2.schema(0).dataType.equals(org.apache.spark.sql.types.IntegerType))
-        assert(df2.schema(0).name.equals("new_1"))
-        assert(df2.first.getInt(0) == df.first.getInt(0))
-        assert(df2.schema(2).dataType.equals(org.apache.spark.sql.types.IntegerType))
-        assert(df2.schema(2).name.equals("new_3"))
-        assert(df2.first.getInt(2) == df.first.getInt(2))
-        assert(df2.schema(1).name.equals("_2"))
-        assert(df2.schema(3).name.equals("_4"))
-      }
-
-      it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.renameColumn(Map("col" -> "new", "_3" -> "new_3"))(df)
-        assert(df.schema.size == df2.schema.size)
-        assert(df2.schema(0).name.equals("_1"))
-        assert(df2.schema(1).name.equals("_2"))
-        assert(df2.schema(2).name.equals("new_3"))
-        assert(df2.schema(3).name.equals("_4"))
-        assert(df2.schema(4).name.equals("_5"))
       }
     }
 

@@ -47,7 +47,7 @@ object DataFrameOps {
   }
 
   /**
-   * Remove a column from a DataFrame
+   * Remove columns from a DataFrame
    * @param colNames the named columns to remove
    * @param input the input DataFrame
    * @return the resultant DataFrame, without the specified column
@@ -56,6 +56,20 @@ object DataFrameOps {
     var cur = input
     colNames.foreach(c => {
       cur = cur.drop(c)
+    })
+    cur
+  }
+
+  /**
+   * Rename columns in a DataFrame
+   * @param nameMap a Map[String, String] from columns in the DataFrame to new names
+   * @param input the input DataFrame
+   * @return a new DataFrame with the renamed column
+   */
+  def renameColumn(nameMap: Map[String, String])(input: DataFrame): DataFrame = {
+    var cur = input;
+    nameMap.foreach(m => {
+      cur = cur.withColumnRenamed(m._1, m._2)
     })
     cur
   }
@@ -101,22 +115,6 @@ object DataFrameOps {
     }
     input.withColumn(columnName, newColumn)
   }
-
-  /**
-   * Rename a column from a DataFrame
-   * @param nameMap a Map[String, String] from columns in the DataFrame to new names
-   * @param input the input DataFrame
-   * @return a new DataFrame with the renamed column
-   */
-  def renameColumn(nameMap: Map[String, String])(input: DataFrame): DataFrame = {
-    var cur = input;
-    nameMap.foreach(m => {
-      cur = cur.withColumnRenamed(m._1, m._2)
-    })
-    cur
-  }
-
-  // TODO cast column
 
   /**
    * Bring in temporal ops so they can be referred to with dot notation
