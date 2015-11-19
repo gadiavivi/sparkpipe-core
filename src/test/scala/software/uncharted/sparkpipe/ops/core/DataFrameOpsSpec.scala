@@ -62,6 +62,13 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         val df2 = DataFrameOps.dropColumn("col")(df)
         assert(df.schema.size == df2.schema.size)
       }
+
+      it("should allow the removal of multiple columns from an input DataFrame") {
+        val df2 = DataFrameOps.dropColumn("_1", "_3")(df)
+        assert(df2.schema.size == df.schema.size-2)
+        assert(df2.first.getInt(0).equals(1))
+        assert(df2.first.getInt(1).equals(3))
+      }
     }
 
     describe("#addColumn()") {
@@ -153,7 +160,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
         val df2 = DataFrameOps.renameColumn(Map("col" -> "new", "_3" -> "new_3"))(df)
-        println(df2.schema)
         assert(df.schema.size == df2.schema.size)
         assert(df2.schema(0).name.equals("_1"))
         assert(df2.schema(1).name.equals("_2"))

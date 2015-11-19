@@ -48,12 +48,16 @@ object DataFrameOps {
 
   /**
    * Remove a column from a DataFrame
-   * @param colName the column to remove
+   * @param colNames the named columns to remove
    * @param input the input DataFrame
    * @return the resultant DataFrame, without the specified column
    */
-  def dropColumn(colName: String)(input: DataFrame): DataFrame = {
-    input.drop(colName)
+  def dropColumn(colNames: String*)(input: DataFrame): DataFrame = {
+    var cur = input
+    colNames.foreach(c => {
+      cur = cur.drop(c)
+    })
+    cur
   }
 
   /**
