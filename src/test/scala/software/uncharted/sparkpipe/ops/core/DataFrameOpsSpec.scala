@@ -138,22 +138,28 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
     }
 
     describe("#renameColumn") {
-      it("should support renaming a column in an input DataFrame") {
-        val df2 = DataFrameOps.renameColumn("_1", "new")(df)
+      it("should support renaming columns in an input DataFrame") {
+        val df2 = DataFrameOps.renameColumn(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
         assert(df2.schema.size == df.schema.size)
         assert(df2.schema(0).dataType.equals(org.apache.spark.sql.types.IntegerType))
-        assert(df2.schema(0).name.equals("new"))
+        assert(df2.schema(0).name.equals("new_1"))
         assert(df2.first.getInt(0) == df.first.getInt(0))
+        assert(df2.schema(2).dataType.equals(org.apache.spark.sql.types.IntegerType))
+        assert(df2.schema(2).name.equals("new_3"))
+        assert(df2.first.getInt(2) == df.first.getInt(2))
+        assert(df2.schema(1).name.equals("_2"))
+        assert(df2.schema(3).name.equals("_4"))
       }
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.renameColumn("col", "new")(df)
+        val df2 = DataFrameOps.renameColumn(Map("col" -> "new", "_3" -> "new_3"))(df)
+        println(df2.schema)
         assert(df.schema.size == df2.schema.size)
-        assert(df.schema(0).name.equals("_1"))
-        assert(df.schema(1).name.equals("_2"))
-        assert(df.schema(2).name.equals("_3"))
-        assert(df.schema(3).name.equals("_4"))
-        assert(df.schema(4).name.equals("_5"))
+        assert(df2.schema(0).name.equals("_1"))
+        assert(df2.schema(1).name.equals("_2"))
+        assert(df2.schema(2).name.equals("new_3"))
+        assert(df2.schema(3).name.equals("_4"))
+        assert(df2.schema(4).name.equals("_5"))
       }
     }
 

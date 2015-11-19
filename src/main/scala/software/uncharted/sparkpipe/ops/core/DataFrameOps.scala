@@ -100,13 +100,16 @@ object DataFrameOps {
 
   /**
    * Rename a column from a DataFrame
-   * @param columnName a column in the DataFrame
-   * @param newName the new name for that column
+   * @param nameMap a Map[String, String] from columns in the DataFrame to new names
    * @param input the input DataFrame
    * @return a new DataFrame with the renamed column
    */
-  def renameColumn(columnName: String, newName: String)(input: DataFrame): DataFrame = {
-    input.withColumnRenamed(columnName, newName)
+  def renameColumn(nameMap: Map[String, String])(input: DataFrame): DataFrame = {
+    var cur = input;
+    nameMap.foreach(m => {
+      cur = cur.withColumnRenamed(m._1, m._2)
+    })
+    cur
   }
 
   // TODO cast column
