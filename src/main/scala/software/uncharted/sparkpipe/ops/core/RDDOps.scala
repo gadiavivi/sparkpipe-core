@@ -43,6 +43,5 @@ object RDDOps {
    */
   def cache[A](rdd: RDD[A]): RDD[A] = {
     rdd.cache()
-    rdd
   }
 }

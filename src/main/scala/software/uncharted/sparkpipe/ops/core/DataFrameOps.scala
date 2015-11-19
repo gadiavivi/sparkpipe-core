@@ -43,7 +43,6 @@ object DataFrameOps {
    */
   def cache(frame: DataFrame): DataFrame = {
     frame.cache()
-    frame
   }
 
   /**
