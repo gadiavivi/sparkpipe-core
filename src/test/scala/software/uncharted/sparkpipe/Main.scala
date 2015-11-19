@@ -25,6 +25,7 @@ import org.apache.spark.SparkConf
 object Spark {
   val conf = new SparkConf().setAppName("spark-pipeline")
   val sc = new SparkContext(conf)
+  val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 }
 
 object Main {

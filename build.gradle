@@ -95,7 +95,7 @@ task testJar(type: Jar) {
 
 task test(overwrite: true, type: Exec, dependsOn: [jar, jarScoverage, testJar, docsJar, scalaStyle]) {
   executable = 'spark-submit'
-  args = ["--jars","/opt/libs/scalatest_2.10-2.2.5.jar,/opt/libs/scalac-scoverage-runtime_2.10-1.1.1.jar,/opt/pipeline/build/libs/${artifactName}-${version}-scoverage.jar","--class","software.uncharted.sparkpipe.Main","build/libs/${artifactName}-${version}-tests.jar"]
+  args = ["--packages","org.mockito:mockito-all:1.10.19,org.scalatest:scalatest_${scalaBinaryVersion}:2.2.5,org.scoverage:scalac-scoverage-runtime_${scalaBinaryVersion}:${scoverageVersion}","--jars","/opt/pipeline/build/libs/${artifactName}-${version}-scoverage.jar","--class","software.uncharted.sparkpipe.Main","build/libs/${artifactName}-${version}-tests.jar"]
 }
 
 task coverage(overwrite: true, dependsOn: test) << {
@@ -191,8 +191,11 @@ dependencies {
     provided "org.scala-lang:scala-library:$scalaBinaryVersion"
 
     //scalatest
-    testCompile "org.scalatest:scalatest_${scalaBinaryVersion}:2+"
-    testRuntime 'org.pegdown:pegdown:1.1.0'
+    testCompile "org.scalatest:scalatest_${scalaBinaryVersion}:2.2.5"
+    testRuntime "org.pegdown:pegdown:1.1.0"
+
+    //mockito
+    testCompile "org.mockito:mockito-all:1.10.19"
 
     //scoverage
     scoverage "org.scoverage:scalac-scoverage-plugin_${scalaBinaryVersion}:${scoverageVersion}",
