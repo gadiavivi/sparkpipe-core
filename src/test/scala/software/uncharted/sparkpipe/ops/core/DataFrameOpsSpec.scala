@@ -174,5 +174,11 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         assert(DataFrameOps.temporal == dataframe.TemporalOps)
       }
     }
+
+    describe(".numeric") {
+      it("should make numeric operations available via .numeric") {
+        assert(DataFrameOps.numeric == dataframe.NumericOps)
+      }
+    }
   }
 }

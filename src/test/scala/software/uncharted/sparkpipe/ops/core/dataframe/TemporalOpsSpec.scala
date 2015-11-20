@@ -29,7 +29,7 @@ import org.mockito.Mockito._
 import java.text.SimpleDateFormat
 import java.sql.Timestamp
 
-class DataFrameOpsSpec extends FunSpec with MockitoSugar {
+class TemporalOpsSpec extends FunSpec with MockitoSugar {
   describe("TemporalOps") {
     val rdd = Spark.sc.parallelize(Seq(
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-18").getTime), "2015-11-18", 1),

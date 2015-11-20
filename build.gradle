@@ -56,7 +56,7 @@ project.ext {
   scalaVersion = '2.10.4'
   sparkVersion = '1.4.0'
   scoverageVersion = '1.1.1'
-  artifactName = 'spark-pipeline'
+  artifactName = 'sparkpipe-core'
   inceptionYear = '2015'
 }
 

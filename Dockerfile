@@ -5,11 +5,11 @@
 # Runs the Spark Pipeline test suite in a container
 #
 # One-time usage (such as on travis):
-# $ docker build -t uncharted/spark-pipeline-test .
-# $ docker run --rm uncharted/spark-pipeline-test
+# $ docker build -t uncharted/sparkpipe-core-test .
+# $ docker run --rm uncharted/sparkpipe-core-test
 #
 # Dev environment usage:
-# $ docker run -v $(pwd):/opt/pipeline -it --entrypoint=/bin/bash uncharted/spark-pipeline-test
+# $ docker run -v $(pwd):/opt/pipeline -it --entrypoint=/bin/bash uncharted/sparkpipe-core-test
 # container$ ./gradlew
 #
 # If you need to install the jars to your local m2 repository, be sure to clean
