@@ -21,7 +21,7 @@ import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.RDDOps
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType}
+import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType, StringType, StructType, StructField}
 import java.sql.{Date, Timestamp}
 
 class NumericOpsSpec extends FunSpec {
@@ -34,7 +34,7 @@ class NumericOpsSpec extends FunSpec {
     ))
     val df = RDDOps.toDF(Spark.sqlContext)(rdd)
 
-    describe("#enumerate") {
+    describe("#enumerate()") {
       it("should convert all supported columns into doubles, and drop any unsupported ones") {
         val df2 = NumericOps.enumerate(df)
         assert(df2.schema.filter(_.dataType == DoubleType).length == df.schema.length-1)
@@ -44,6 +44,46 @@ class NumericOpsSpec extends FunSpec {
         intercept[IllegalArgumentException] {
           val df2 = NumericOps.enumerate(df.select("_7"))
         }
+      }
+    }
+
+    describe("#summaryStats()") {
+      it("should produce summary statistics for numeric-compatible columns in a source DataFrame, dropping incompatible columns") {
+        val rddNull = Spark.sc.parallelize(Seq(Row(null, null, 5, 5D, 5F, null, null)))
+        val struct = StructType(
+          StructField("_1", TimestampType, true) ::
+          StructField("_2", DateType, true) ::
+          StructField("_3", IntegerType, true) ::
+          StructField("_4", DoubleType, true) ::
+          StructField("_5", FloatType, true) ::
+          StructField("_6", LongType, true) ::
+          StructField("_7", StringType, true) :: Nil
+        )
+        val dfNull = Spark.sqlContext.createDataFrame(rddNull, struct)
+        val dfWithNulls = df.unionAll(dfNull)
+        val result = NumericOps.summaryStats(Spark.sc)(dfWithNulls)
+        // counts (verify ignoring nulls )
+        assert(result(0).count == 4)
+        assert(result(1).count == 4)
+        assert(result(2).count == 5)
+        assert(result(3).count == 5)
+        assert(result(4).count == 5)
+        assert(result(5).count == 4)
+        // mins
+        assert(result(2).min == 1)
+        assert(result(3).min == 1)
+        assert(result(4).min == 1)
+        assert(result(5).min == 1)
+        // maxes
+        assert(result(2).max == 5)
+        assert(result(3).max == 5)
+        assert(result(4).max == 5)
+        assert(result(5).max == 4)
+        // means
+        assert(result(2).mean == 3)
+        assert(result(3).mean == 3)
+        assert(result(4).mean == 3)
+        assert(result(5).mean == 2.5)
       }
     }
   }

@@ -16,13 +16,26 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe
 
+import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
-import software.uncharted.sparkpipe.ops.core.DataFrameOps
+import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 
+import software.uncharted.sparkpipe.ops.core.DataFrameOps
+import software.uncharted.sparkpipe.ops.core.dataframe.util.{MultivariateOnlineSummarizerAccumulableParam, SummaryStats}
+
+/**
+ * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
+ * - FloatType
+ * - DoubleType
+ * - IntegerType
+ * - LongType
+ * - DateType
+ * - TimestampType
+ */
 object NumericOps {
-  private val supportedColumnTypes = List("FloatType", "DoubleType", "IntegerType", "LongType", "TimestampType", "DateType")
+  private val supportedColumnTypes = List("FloatType", "DoubleType", "IntegerType", "LongType", "DateType", "TimestampType")
 
   /**
    * Convert all compatible columns within a DataFrame into Doubles
@@ -45,12 +58,59 @@ object NumericOps {
       val query = columns.map(t => {
         val name = t("name")
         if (t(typeKey) == "DateType") {
-          s"cast(cast(`${name}` as timestamp) as double)"
+          s"cast(cast(`${name}` as timestamp) as double) as ${name}"
         } else {
-          s"cast(`${name}` as double)"
+          s"cast(`${name}` as double) as ${name}"
         }
       })
       input.selectExpr(query:_*)
     }
+  }
+
+  /**
+   * Computes summary statistics using online algorithms for each compatible
+   * column in an input DataFrame. Ignores null fields within a row without
+   * causing the summarizer for that column to return NaN. Statistics returned include:
+   * - min
+   * - max
+   * - mean
+   * - variance
+   * - normL1
+   * - normL2
+   * - numNonzeros
+   *
+   * @param input Input DataFrame to analyze
+   * @return a Seq[(String, MultivariateOnlineSummarizer)], with one MultivariateOnlineSummarizer per column (paired with the column name)
+   */
+  def summaryStats(sc: SparkContext)(input: DataFrame): Seq[SummaryStats] = {
+    // extract compatible columns
+    val df = enumerate(input)
+    val cols = df.schema
+
+    // build a Seq of MultivariateOnlineSummarizers to collect stats on each column
+    val summarizers = cols.map(col => {
+      new MultivariateOnlineSummarizer
+    }).toSeq
+    // and an accumulator for the summarizers, so that the process can be parallelized
+    val accumulator = sc.accumulable(summarizers)(new MultivariateOnlineSummarizerAccumulableParam())
+    // accumulate each row
+    df.foreach(row => {
+      accumulator.add(row)
+    })
+
+    //produce summary stats structure and return
+    for ((col, i) <- cols.view.zipWithIndex) yield (
+      new SummaryStats(
+        col.name,
+        accumulator.value(i).count,
+        accumulator.value(i).min(0),
+        accumulator.value(i).mean(0),
+        accumulator.value(i).max(0),
+        accumulator.value(i).normL1(0),
+        accumulator.value(i).normL2(0),
+        accumulator.value(i).variance(0),
+        accumulator.value(i).numNonzeros(0)
+      )
+    )
   }
 }
