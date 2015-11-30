@@ -96,12 +96,12 @@ object TemporalOps {
    */
   def parseDate(stringDateCol: String, dateCol: String, format: String)(input: DataFrame): DataFrame = {
     val formatter = new SimpleDateFormat(format);
-    val fieldExtractor: Array[Any] => Any = row => {
+    val fieldExtractor: Array[Any] => Timestamp = row => {
       val date = formatter.parse(row(0).toString)
       new Timestamp(date.getTime)
     }
 
-    DataFrameOps.addColumn(dateCol, TimestampType, fieldExtractor, stringDateCol)(input)
+    DataFrameOps.addColumn(dateCol, fieldExtractor, stringDateCol)(input)
   }
 
   /**
@@ -117,12 +117,12 @@ object TemporalOps {
    * @return Transformed pipeline data with the new time field column.
    */
   def dateField(timeCol: String, fieldCol: String, timeField: Int)(input: DataFrame): DataFrame = {
-    val fieldExtractor: Array[Any] => Any = row => {
+    val fieldExtractor: Array[Any] => Int = row => {
       val date = row(0).asInstanceOf[Date]
       val calendar = new GregorianCalendar()
       calendar.setTime(date)
       calendar.get(timeField)
     }
-    DataFrameOps.addColumn(fieldCol, IntegerType, fieldExtractor, timeCol)(input)
+    DataFrameOps.addColumn(fieldCol, fieldExtractor, timeCol)(input)
   }
 }

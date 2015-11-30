@@ -21,6 +21,7 @@ import org.apache.spark.sql.{SQLContext, DataFrame, Row}
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.{udf, callUDF}
 import org.apache.spark.sql.types.DataType
+import scala.reflect.runtime.universe.{TypeTag, typeTag}
 
 /**
  * Core pipeline operations for working with DataFrames
@@ -76,41 +77,37 @@ object DataFrameOps {
   /**
    * Take an existing DataFrame, and add a new column to it.
    * @param columnName The name of the column to add
-   * @param columnType the type of the column to add
-   * @param columnFcn A function mapping the values of the base data specified by inputColumns onto an output value,
-   *                  which had darn well better be of the right type.
+   * @param columnFcn A function mapping the values of the base data specified by inputColumns onto an output value
    * @param inputColumns The input columns needed to calculate the output column; their extracted values become the
    *                     inputs to columnFcn
    * @param input The existing DataFrame
    * @return A new DataFrame with the named added value.
    */
-  def addColumn (columnName: String, columnType: DataType,
-                 columnFcn: Array[Any] => Any, inputColumns: String*)(input: DataFrame): DataFrame = {
+  def addColumn[T] (
+    columnName: String,
+    columnFcn: Array[Any] => T,
+    inputColumns: String*
+  )(input: DataFrame)(implicit tag: TypeTag[T]): DataFrame = {
     val columns = inputColumns.map(new Column(_))
     val newColumn = inputColumns.length match {
-      case  0 =>
-        callUDF(() => columnFcn(Array[Any]()),
-                columnType)
-      case  1 =>
-        callUDF((a: Any) => columnFcn(Array[Any](a)),
-                columnType,
-                columns(0))
-      case  2 =>
-        callUDF((a: Any, b: Any) => columnFcn(Array[Any](a, b)),
-                columnType,
-                columns(0), columns(1))
-      case  3 =>
-        callUDF((a: Any, b: Any, c: Any) => columnFcn(Array[Any](a, b, c)),
-                columnType,
-                columns(0), columns(1), columns(2))
-      case  4 =>
-        callUDF((a: Any, b: Any, c: Any, d: Any) => columnFcn(Array[Any](a, b, c, d)),
-                columnType,
-                columns(0), columns(1), columns(2), columns(3))
-      case  5 =>
-        callUDF((a: Any, b: Any, c: Any, d: Any, e: Any) => columnFcn(Array[Any](a, b, c, d, e)),
-                columnType,
-                columns(0), columns(1), columns(2), columns(3), columns(4))
+      case  0 => udf {
+        () => columnFcn(Array[Any]())
+      }(tag)()
+      case  1 => udf {
+        (a: Any) => columnFcn(Array[Any](a))
+      }(tag, typeTag[Any])(columns(0))
+      case  2 => udf {
+        (a: Any, b: Any) => columnFcn(Array[Any](a,b))
+      }(tag, typeTag[Any], typeTag[Any])(columns(0), columns(1))
+      case  3 => udf {
+        (a: Any, b: Any, c: Any) => columnFcn(Array[Any](a,b,c))
+      }(tag, typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2))
+      case  4 => udf {
+        (a: Any, b: Any, c: Any, d: Any) => columnFcn(Array[Any](a,b,c,d))
+      }(tag, typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2), columns(3))
+      case  5 => udf {
+        (a: Any, b: Any, c: Any, d: Any, e: Any) => columnFcn(Array[Any](a, b, c, d, e))
+      }(tag, typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2), columns(3), columns(4))
     }
     input.withColumn(columnName, newColumn)
   }

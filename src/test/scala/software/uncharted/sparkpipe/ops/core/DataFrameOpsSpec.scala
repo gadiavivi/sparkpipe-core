@@ -100,7 +100,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => 8
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
@@ -111,7 +110,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on an input column") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => i(0).asInstanceOf[Int] + 1,
           "_1"
         )(df)
@@ -123,7 +121,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on two input columns") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int],
           "_1", "_2"
         )(df)
@@ -135,7 +132,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on three input columns") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int],
           "_1", "_2", "_3"
         )(df)
@@ -147,7 +143,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on four input columns") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int],
           "_1", "_2", "_3", "_4"
         )(df)
@@ -159,7 +154,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on five input columns") {
         val df2 = DataFrameOps.addColumn(
           "new",
-          org.apache.spark.sql.types.IntegerType,
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int] + i(4).asInstanceOf[Int],
           "_1", "_2", "_3", "_4", "_5"
         )(df)
