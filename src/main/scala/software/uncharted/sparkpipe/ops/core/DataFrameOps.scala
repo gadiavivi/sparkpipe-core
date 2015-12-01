@@ -16,6 +16,8 @@
 
 package software.uncharted.sparkpipe.ops.core
 
+import software.uncharted.sparkpipe.Pipe
+
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, DataFrame, Row}
 import org.apache.spark.sql.Column
@@ -111,6 +113,24 @@ object DataFrameOps {
     }
     input.withColumn(columnName, newColumn)
   }
+
+  def replaceColumn[I,O] (
+    columnName: String,
+    columnFcn: I => O
+  )(input: DataFrame)(implicit tagI: TypeTag[I], tagO: TypeTag[O]): DataFrame = {
+    val tempName = columnName + (new scala.util.Random().nextString(5))
+    val newColumn = udf {
+      (a: I) => columnFcn(a)
+    }(tagO, tagI)(new Column(columnName))
+
+    Pipe(input)
+    .to(_.withColumn(tempName, newColumn))
+    .to(dropColumn(columnName))
+    .to(renameColumn(Map(tempName -> columnName)))
+    .run
+  }
+
+  // TODO shortcut cast operation takes a Map[colName -> destinationType], replace columns with original names
 
   /**
    * Bring in temporal ops so they can be referred to with dot notation

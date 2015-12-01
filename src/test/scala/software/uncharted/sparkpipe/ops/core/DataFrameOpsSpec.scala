@@ -21,6 +21,7 @@ import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.functions.{sum}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -160,6 +161,18 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         assert(df2.schema.size == df.schema.size + 1)
         assert(df2.schema("new").dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df2.filter("new = _1+_2+_3+_4+_5").count == df.count)
+      }
+    }
+
+    describe("replaceColumn()") {
+      it("should support replacing a column in a DataFrame based on a transformation function") {
+        val df2 = DataFrameOps.replaceColumn(
+          "_1",
+          (i: Int) => i.asInstanceOf[Double] + 1D
+        )(df)
+        assert(df2.schema.size == df.schema.size)
+        assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
+        print(df2.agg(sum(df2("_1"))).first()(0))
       }
     }
 
