@@ -54,7 +54,7 @@ object DataFrameOps {
    * @param input the input DataFrame
    * @return the resultant DataFrame, without the specified column
    */
-  def dropColumn(colNames: String*)(input: DataFrame): DataFrame = {
+  def dropColumns(colNames: String*)(input: DataFrame): DataFrame = {
     var cur = input
     colNames.foreach(c => {
       cur = cur.drop(c)
@@ -68,7 +68,7 @@ object DataFrameOps {
    * @param input the input DataFrame
    * @return a new DataFrame with the renamed column
    */
-  def renameColumn(nameMap: Map[String, String])(input: DataFrame): DataFrame = {
+  def renameColumns(nameMap: Map[String, String])(input: DataFrame): DataFrame = {
     var cur = input;
     nameMap.foreach(m => {
       cur = cur.withColumnRenamed(m._1, m._2)
@@ -133,8 +133,8 @@ object DataFrameOps {
 
     Pipe(input)
     .to(_.withColumn(tempName, newColumn))
-    .to(dropColumn(columnName))
-    .to(renameColumn(Map(tempName -> columnName)))
+    .to(dropColumns(columnName))
+    .to(renameColumns(Map(tempName -> columnName)))
     .run
   }
 
@@ -144,7 +144,7 @@ object DataFrameOps {
    * @param input The existing DataFrame
    * @return A new DataFrame with the casted columns
    */
-  def castColumn(castMap: Map[String, String])(input: DataFrame): DataFrame = {
+  def castColumns(castMap: Map[String, String])(input: DataFrame): DataFrame = {
     var df = input;
     val exprs = castMap.map(c => {
       s"cast(${c._1} as ${c._2}) as ${c._1}"

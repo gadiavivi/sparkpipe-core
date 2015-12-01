@@ -28,7 +28,7 @@ import software.uncharted.sparkpipe.ops.core._
 val people = sqlContext.read.json("people.json")
 
 Pipe(people)
-.to(DataFrameOps.renameColumn(Map("age" -> "personAge")))
+.to(DataFrameOps.renameColumns(Map("age" -> "personAge")))
 .to(_.filter("personAge > 21").count)
 .run
 ```

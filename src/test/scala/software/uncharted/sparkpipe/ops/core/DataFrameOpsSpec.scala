@@ -52,29 +52,29 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
     }
 
-    describe("#dropColumn()") {
+    describe("#dropColumns()") {
       it("should remove the specified column from an input DataFrame") {
-        val df2 = DataFrameOps.dropColumn("_1")(df)
+        val df2 = DataFrameOps.dropColumns("_1")(df)
         assert(df2.schema.size == df.schema.size-1)
         assert(df2.first.getInt(0).equals(1))
       }
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.dropColumn("col")(df)
+        val df2 = DataFrameOps.dropColumns("col")(df)
         assert(df.schema.size == df2.schema.size)
       }
 
       it("should allow the removal of multiple columns from an input DataFrame") {
-        val df2 = DataFrameOps.dropColumn("_1", "_3")(df)
+        val df2 = DataFrameOps.dropColumns("_1", "_3")(df)
         assert(df2.schema.size == df.schema.size-2)
         assert(df2.first.getInt(0).equals(1))
         assert(df2.first.getInt(1).equals(3))
       }
     }
 
-    describe("#renameColumn()") {
+    describe("#renameColumns()") {
       it("should support renaming columns in an input DataFrame") {
-        val df2 = DataFrameOps.renameColumn(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
+        val df2 = DataFrameOps.renameColumns(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
         assert(df2.schema.size == df.schema.size)
         assert(df2.schema(0).dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df2.schema(0).name.equals("new_1"))
@@ -87,7 +87,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.renameColumn(Map("col" -> "new", "_3" -> "new_3"))(df)
+        val df2 = DataFrameOps.renameColumns(Map("col" -> "new", "_3" -> "new_3"))(df)
         assert(df.schema.size == df2.schema.size)
         assert(df2.schema(0).name.equals("_1"))
         assert(df2.schema(1).name.equals("_2"))
@@ -176,9 +176,9 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
     }
 
-    describe("castColumn()") {
+    describe("castColumns()") {
       it ("should support casting of columns in a DataFrame using a Map from columnName to desired type") {
-        val df2 = DataFrameOps.castColumn(
+        val df2 = DataFrameOps.castColumns(
           Map("_1" -> "double", "_2" -> "float", "_3" -> "string")
         )(df)
         assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
