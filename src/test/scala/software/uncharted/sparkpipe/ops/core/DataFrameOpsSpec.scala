@@ -181,6 +181,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         val df2 = DataFrameOps.castColumns(
           Map("_1" -> "double", "_2" -> "float", "_3" -> "string")
         )(df)
+        assert(df.schema.size == df.schema.size)
         assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
         assert(df2.schema("_2").dataType.equals(org.apache.spark.sql.types.FloatType))
         assert(df2.schema("_3").dataType.equals(org.apache.spark.sql.types.StringType))

@@ -145,11 +145,13 @@ object DataFrameOps {
    * @return A new DataFrame with the casted columns
    */
   def castColumns(castMap: Map[String, String])(input: DataFrame): DataFrame = {
-    var df = input;
-    val exprs = castMap.map(c => {
+    // build a map of columns to their original types, then override with castMap
+    val originalMap = input.schema.map(f => (f.name, f.dataType.simpleString)).toMap
+
+    val exprs = (originalMap ++ castMap).map(c => {
       s"cast(${c._1} as ${c._2}) as ${c._1}"
     }).toSeq
-    df.selectExpr(exprs:_*)
+    input.selectExpr(exprs:_*)
   }
 
   /**
