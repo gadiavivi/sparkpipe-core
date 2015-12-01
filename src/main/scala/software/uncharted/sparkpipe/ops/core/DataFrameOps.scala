@@ -138,7 +138,19 @@ object DataFrameOps {
     .run
   }
 
-  // TODO shortcut cast operation takes a Map[colName -> destinationType], replace columns with original names
+  /**
+   * Cast a set of columns to new types, replacing the original columns
+   * @param castMap a Map[String, String] of columnName => datatype
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the casted columns
+   */
+  def castColumn(castMap: Map[String, String])(input: DataFrame): DataFrame = {
+    var df = input;
+    val exprs = castMap.map(c => {
+      s"cast(${c._1} as ${c._2}) as ${c._1}"
+    }).toSeq
+    df.selectExpr(exprs:_*)
+  }
 
   /**
    * Bring in temporal ops so they can be referred to with dot notation

@@ -172,7 +172,18 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         )(df)
         assert(df2.schema.size == df.schema.size)
         assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
-        print(df2.agg(sum(df2("_1"))).first()(0))
+        assert(df2.agg(sum(df2("_1"))).first()(0).equals(10D))
+      }
+    }
+
+    describe("castColumn()") {
+      it ("should support casting of columns in a DataFrame using a Map from columnName to desired type") {
+        val df2 = DataFrameOps.castColumn(
+          Map("_1" -> "double", "_2" -> "float", "_3" -> "string")
+        )(df)
+        assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
+        assert(df2.schema("_2").dataType.equals(org.apache.spark.sql.types.FloatType))
+        assert(df2.schema("_3").dataType.equals(org.apache.spark.sql.types.StringType))
       }
     }
 
