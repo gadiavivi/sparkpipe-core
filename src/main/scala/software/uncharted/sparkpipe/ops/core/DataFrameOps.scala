@@ -114,6 +114,14 @@ object DataFrameOps {
     input.withColumn(columnName, newColumn)
   }
 
+  /**
+   * Takes a DataFrame and replaces a column in it using a transformation function
+   *
+   * @param columnName the column to replace
+   * @param transformation the transformation function
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the replaced column
+   */
   def replaceColumn[I,O] (
     columnName: String,
     columnFcn: I => O
