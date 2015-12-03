@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core
+package software.uncharted.sparkpipe.ops.core.rdd
 
 import org.scalatest._
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 
 class RDDOpsSpec extends FunSpec {
-  describe("RDDOps") {
+  describe("ops.core.rdd") {
     describe("#toDF()") {
       it("should convert an input RDD with a compatible record type into a DataFrame") {
         val rdd = Spark.sc.parallelize(Seq(
@@ -30,7 +30,7 @@ class RDDOpsSpec extends FunSpec {
           ("three", 3),
           ("four", 4)
         ))
-        val df = RDDOps.toDF(Spark.sqlContext)(rdd)
+        val df = toDF(Spark.sqlContext)(rdd)
         assert(df.schema(0).dataType.equals(org.apache.spark.sql.types.StringType))
         assert(df.schema(1).dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df.first.getString(0).equals("one"))
@@ -40,7 +40,7 @@ class RDDOpsSpec extends FunSpec {
     describe("#cache()") {
       it("should call .cache() on an input RDD") {
         val rdd = Spark.sc.parallelize(Seq(1,2,3,4))
-        assert(RDDOps.cache(rdd).getStorageLevel == StorageLevel.MEMORY_ONLY)
+        assert(cache(rdd).getStorageLevel == StorageLevel.MEMORY_ONLY)
       }
     }
   }

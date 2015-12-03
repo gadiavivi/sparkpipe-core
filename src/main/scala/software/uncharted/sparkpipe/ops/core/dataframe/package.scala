@@ -21,15 +21,14 @@ import software.uncharted.sparkpipe.Pipe
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, DataFrame, Row}
 import org.apache.spark.sql.Column
-import org.apache.spark.sql.functions.{udf, callUDF}
+import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types.DataType
 import scala.reflect.runtime.universe.{TypeTag, typeTag}
 
 /**
- * Core pipeline operations for working with DataFrames
+ * Common operations for manipulating dataframes
  */
-object DataFrameOps {
-
+package object dataframe {
   /**
    * Convert a DataFrame to an RDD[Row]
    * @param frame the DataFrame

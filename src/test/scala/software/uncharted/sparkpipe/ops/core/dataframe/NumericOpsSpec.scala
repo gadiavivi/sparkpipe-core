@@ -18,7 +18,7 @@ package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.scalatest._
 import software.uncharted.sparkpipe.Spark
-import software.uncharted.sparkpipe.ops.core.RDDOps
+import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType, StringType, StructType, StructField}
@@ -32,7 +32,7 @@ class NumericOpsSpec extends FunSpec {
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 3, 3D, 3F, 3L, "3"),
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 4, 4D, 4F, 4L, "4")
     ))
-    val df = RDDOps.toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sqlContext)(rdd)
 
     describe("#enumerate()") {
       it("should convert all supported columns into doubles, and drop any unsupported ones") {

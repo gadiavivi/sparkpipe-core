@@ -22,7 +22,6 @@ import org.apache.spark.sql.{SQLContext, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
 import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 
-import software.uncharted.sparkpipe.ops.core.DataFrameOps
 import software.uncharted.sparkpipe.ops.core.dataframe.util.{MultivariateOnlineSummarizerAccumulableParam, SummaryStats}
 
 /**

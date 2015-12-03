@@ -24,8 +24,6 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Date, GregorianCalendar}
 
-import software.uncharted.sparkpipe.ops.core.DataFrameOps
-
 object TemporalOps {
   /**
    * Pipeline op to filter records to a specific date range.
@@ -101,7 +99,7 @@ object TemporalOps {
       new Timestamp(date.getTime)
     }
 
-    DataFrameOps.addColumn(dateCol, fieldExtractor, stringDateCol)(input)
+    addColumn(dateCol, fieldExtractor, stringDateCol)(input)
   }
 
   /**
@@ -123,6 +121,6 @@ object TemporalOps {
       calendar.setTime(date)
       calendar.get(timeField)
     }
-    DataFrameOps.addColumn(fieldCol, fieldExtractor, timeCol)(input)
+    addColumn(fieldCol, fieldExtractor, timeCol)(input)
   }
 }

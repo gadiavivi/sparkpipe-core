@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core
+package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.scalatest._
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
+import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions.{sum}
@@ -27,18 +28,18 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 class DataFrameOpsSpec extends FunSpec with MockitoSugar {
-  describe("DataFrameOps") {
+  describe("ops.core.dataframe") {
     val rdd = Spark.sc.parallelize(Seq(
       (0, 1, 2, 3, 4),
       (1, 2, 3, 4, 5),
       (2, 3, 4, 5, 6),
       (3, 4, 5, 6, 7)
     ))
-    val df = RDDOps.toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sqlContext)(rdd)
 
     describe("#toRDD()") {
       it("should convert an input DataFrame to an RDD[Row]") {
-        val rdd2 = DataFrameOps.toRDD(df)
+        val rdd2 = toRDD(df)
         assert(rdd2.isInstanceOf[RDD[Row]])
       }
     }
@@ -47,25 +48,25 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should call .cache() on an input DataFrame") {
         val mockDf = mock[DataFrame]
         val s = spy(df)
-        DataFrameOps.cache(s)
+        cache(s)
         verify(s).cache()
       }
     }
 
     describe("#dropColumns()") {
       it("should remove the specified column from an input DataFrame") {
-        val df2 = DataFrameOps.dropColumns("_1")(df)
+        val df2 = dropColumns("_1")(df)
         assert(df2.schema.size == df.schema.size-1)
         assert(df2.first.getInt(0).equals(1))
       }
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.dropColumns("col")(df)
+        val df2 = dropColumns("col")(df)
         assert(df.schema.size == df2.schema.size)
       }
 
       it("should allow the removal of multiple columns from an input DataFrame") {
-        val df2 = DataFrameOps.dropColumns("_1", "_3")(df)
+        val df2 = dropColumns("_1", "_3")(df)
         assert(df2.schema.size == df.schema.size-2)
         assert(df2.first.getInt(0).equals(1))
         assert(df2.first.getInt(1).equals(3))
@@ -74,7 +75,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
     describe("#renameColumns()") {
       it("should support renaming columns in an input DataFrame") {
-        val df2 = DataFrameOps.renameColumns(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
+        val df2 = renameColumns(Map("_1" -> "new_1", "_3" -> "new_3"))(df)
         assert(df2.schema.size == df.schema.size)
         assert(df2.schema(0).dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df2.schema(0).name.equals("new_1"))
@@ -87,7 +88,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should be a no-op when the specified column does not exist in the input DataFrame") {
-        val df2 = DataFrameOps.renameColumns(Map("col" -> "new", "_3" -> "new_3"))(df)
+        val df2 = renameColumns(Map("col" -> "new", "_3" -> "new_3"))(df)
         assert(df.schema.size == df2.schema.size)
         assert(df2.schema(0).name.equals("_1"))
         assert(df2.schema(1).name.equals("_2"))
@@ -99,7 +100,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
     describe("#addColumn()") {
       it("should support adding a column to a DataFrame") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => 8
         )(df)
@@ -109,7 +110,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support adding a column to a DataFrame based on an input column") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => i(0).asInstanceOf[Int] + 1,
           "_1"
@@ -120,7 +121,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support adding a column to a DataFrame based on two input columns") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int],
           "_1", "_2"
@@ -131,7 +132,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support adding a column to a DataFrame based on three input columns") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int],
           "_1", "_2", "_3"
@@ -142,7 +143,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support adding a column to a DataFrame based on four input columns") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int],
           "_1", "_2", "_3", "_4"
@@ -153,7 +154,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support adding a column to a DataFrame based on five input columns") {
-        val df2 = DataFrameOps.addColumn(
+        val df2 = addColumn(
           "new",
           (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int] + i(4).asInstanceOf[Int],
           "_1", "_2", "_3", "_4", "_5"
@@ -166,7 +167,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
     describe("replaceColumn()") {
       it("should support replacing a column in a DataFrame based on a transformation function") {
-        val df2 = DataFrameOps.replaceColumn(
+        val df2 = replaceColumn(
           "_1",
           (i: Int) => i.asInstanceOf[Double] + 1D
         )(df)
@@ -178,7 +179,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
     describe("castColumns()") {
       it ("should support casting of columns in a DataFrame using a Map from columnName to desired type") {
-        val df2 = DataFrameOps.castColumns(
+        val df2 = castColumns(
           Map("_1" -> "double", "_2" -> "float", "_3" -> "string")
         )(df)
         assert(df.schema.size == df.schema.size)
@@ -190,13 +191,13 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
 
     describe(".temporal") {
       it("should make temporal operations available via .temporal") {
-        assert(DataFrameOps.temporal == dataframe.TemporalOps)
+        assert(temporal == TemporalOps)
       }
     }
 
     describe(".numeric") {
       it("should make numeric operations available via .numeric") {
-        assert(DataFrameOps.numeric == dataframe.NumericOps)
+        assert(numeric == NumericOps)
       }
     }
   }

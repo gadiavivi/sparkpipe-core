@@ -21,26 +21,26 @@ import org.apache.spark.sql.{SQLContext, DataFrame, Row}
 import scala.reflect.runtime.universe.TypeTag
 
 /**
- * Core pipeline operations for working with RDDs
+ * Common operations for manipulating RDDs
  */
-object RDDOps {
-  /**
-   * Convert a suitable RDD to a DataFrame
-   * @param sqlContext a SQLContext
-   * @param rdd the input RDD
-   * @tparam A The record type of the RDD. Must be <: Product
-   * @return a DataFrame constructed from rdd
-   */
-  def toDF[A <: Product : TypeTag](sqlContext: SQLContext)(rdd: RDD[A]): DataFrame = {
-    sqlContext.createDataFrame(rdd)
-  }
+ package object rdd {
+   /**
+    * Convert a suitable RDD to a DataFrame
+    * @param sqlContext a SQLContext
+    * @param rdd the input RDD
+    * @tparam A The record type of the RDD. Must be <: Product
+    * @return a DataFrame constructed from rdd
+    */
+   def toDF[A <: Product : TypeTag](sqlContext: SQLContext)(rdd: RDD[A]): DataFrame = {
+     sqlContext.createDataFrame(rdd)
+   }
 
-  /**
-   * cache() the specified RDD
-   * @param frame the RDD to cache()
-   * @return the input RDD, after calling cache()
-   */
-  def cache[A](rdd: RDD[A]): RDD[A] = {
-    rdd.cache()
-  }
-}
+   /**
+    * cache() the specified RDD
+    * @param frame the RDD to cache()
+    * @return the input RDD, after calling cache()
+    */
+   def cache[A](rdd: RDD[A]): RDD[A] = {
+     rdd.cache()
+   }
+ }

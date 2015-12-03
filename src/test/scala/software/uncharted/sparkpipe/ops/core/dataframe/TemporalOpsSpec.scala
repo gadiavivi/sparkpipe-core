@@ -19,7 +19,7 @@ package software.uncharted.sparkpipe.ops.core.dataframe
 import org.scalatest._
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
-import software.uncharted.sparkpipe.ops.core.RDDOps
+import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
 import org.scalatest.mock.MockitoSugar
@@ -37,7 +37,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-20").getTime), "2015-11-20", 3),
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-21").getTime), "2015-11-21", 4)
     ))
-    val df = RDDOps.toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sqlContext)(rdd)
 
     describe("#dateFilter()") {
       it("should support filtering rows in an input DataFrame with a String timetamp column, based on a date range") {
