@@ -78,40 +78,131 @@ package object dataframe {
   /**
    * Take an existing DataFrame, and add a new column to it.
    * @param columnName The name of the column to add
-   * @param columnFcn A function mapping the values of the base data specified by inputColumns onto an output value
-   * @param inputColumns The input columns needed to calculate the output column; their extracted values become the
-   *                     inputs to columnFcn
+   * @param columnFcn A function which generates the new column's values based on input columns
    * @param input The existing DataFrame
    * @return A new DataFrame with the named added value.
    */
-  def addColumn[T] (
-    columnName: String,
-    columnFcn: Array[Any] => T,
-    inputColumns: String*
-  )(input: DataFrame)(implicit tag: TypeTag[T]): DataFrame = {
-    val columns = inputColumns.map(new Column(_))
-    val newColumn = inputColumns.length match {
-      case  0 => udf {
-        () => columnFcn(Array[Any]())
-      }(tag)()
-      case  1 => udf {
-        (a: Any) => columnFcn(Array[Any](a))
-      }(tag, typeTag[Any])(columns(0))
-      case  2 => udf {
-        (a: Any, b: Any) => columnFcn(Array[Any](a,b))
-      }(tag, typeTag[Any], typeTag[Any])(columns(0), columns(1))
-      case  3 => udf {
-        (a: Any, b: Any, c: Any) => columnFcn(Array[Any](a,b,c))
-      }(tag, typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2))
-      case  4 => udf {
-        (a: Any, b: Any, c: Any, d: Any) => columnFcn(Array[Any](a,b,c,d))
-      }(tag, typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2), columns(3))
-      case  5 => udf {
-        (a: Any, b: Any, c: Any, d: Any, e: Any) => columnFcn(Array[Any](a, b, c, d, e))
-      }(tag, typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any], typeTag[Any])(columns(0), columns(1), columns(2), columns(3), columns(4))
-    }
-    input.withColumn(columnName, newColumn)
+  def addColumn[O]
+    (columnName: String, columnFcn: () => O)
+    (input: DataFrame)
+    (implicit tag: TypeTag[O]):DataFrame = {
+      val newColumn = udf {columnFcn}(tag)()
+      input.withColumn(columnName, newColumn)
   }
+
+  /**
+   * Take an existing DataFrame, and add a new column to it.
+   * @param columnName The name of the column to add
+   * @param columnFcn A function which generates the new column's values based on input columns
+   * @param in the input column
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the named added value.
+   */
+  def addColumn[I, O]
+    (columnName: String, columnFcn: (I) => O, in: String)
+    (input: DataFrame)
+    (implicit tagO: TypeTag[O], tagI: TypeTag[I]):DataFrame = {
+      val newColumn = udf {columnFcn}(tagO, tagI)(new Column(in))
+      input.withColumn(columnName, newColumn)
+  }
+
+  /**
+   * Take an existing DataFrame, and add a new column to it.
+   * @param columnName The name of the column to add
+   * @param columnFcn A function which generates the new column's values based on input columns
+   * @param in1 the first input column
+   * @param in2 the second input column
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the named added value.
+   */
+  def addColumn[I1, I2, O]
+    (columnName: String, columnFcn: (I1, I2) => O, in1: String, in2: String)
+    (input: DataFrame)
+    (implicit tagO: TypeTag[O], tagI1: TypeTag[I1], tagI2: TypeTag[I2]):DataFrame = {
+      val newColumn = udf {columnFcn}(tagO, tagI1, tagI2)(
+        new Column(in1),
+        new Column(in2)
+      )
+      input.withColumn(columnName, newColumn)
+  }
+
+  /**
+   * Take an existing DataFrame, and add a new column to it.
+   * @param columnName The name of the column to add
+   * @param columnFcn A function which generates the new column's values based on input columns
+   * @param in1 the first input column
+   * @param in2 the second input column
+   * @param in3 the third input column
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the named added value.
+   */
+  // scalastyle:off parameter.number
+  def addColumn[I1, I2, I3, O]
+    (columnName: String, columnFcn: (I1, I2, I3) => O, in1: String, in2: String, in3: String)
+    (input: DataFrame)
+    (implicit tagO: TypeTag[O], tagI1: TypeTag[I1], tagI2: TypeTag[I2], tagI3: TypeTag[I3]):DataFrame = {
+      val newColumn = udf {columnFcn}(tagO, tagI1, tagI2, tagI3)(
+        new Column(in1),
+        new Column(in2),
+        new Column(in3)
+      )
+      input.withColumn(columnName, newColumn)
+  }
+  // scalastyle:on parameter.number
+
+  /**
+   * Take an existing DataFrame, and add a new column to it.
+   * @param columnName The name of the column to add
+   * @param columnFcn A function which generates the new column's values based on input columns
+   * @param in1 the first input column
+   * @param in2 the second input column
+   * @param in3 the third input column
+   * @param in4 the fourth input column
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the named added value.
+   */
+  // scalastyle:off parameter.number
+  def addColumn[I1, I2, I3, I4, O]
+    (columnName: String, columnFcn: (I1, I2, I3, I4) => O, in1: String, in2: String, in3: String, in4: String)
+    (input: DataFrame)
+    (implicit tagO: TypeTag[O], tagI1: TypeTag[I1], tagI2: TypeTag[I2], tagI3: TypeTag[I3], tagI4: TypeTag[I4]):DataFrame = {
+      val newColumn = udf {columnFcn}(tagO, tagI1, tagI2, tagI3, tagI4)(
+        new Column(in1),
+        new Column(in2),
+        new Column(in3),
+        new Column(in4)
+      )
+      input.withColumn(columnName, newColumn)
+  }
+  // scalastyle:on parameter.number
+
+  /**
+   * Take an existing DataFrame, and add a new column to it.
+   * @param columnName The name of the column to add
+   * @param columnFcn A function which generates the new column's values based on input columns
+   * @param in1 the first input column
+   * @param in2 the second input column
+   * @param in3 the third input column
+   * @param in4 the fourth input column
+   * @param in5 the fifth input column
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the named added value.
+   */
+  // scalastyle:off parameter.number
+  def addColumn[I1, I2, I3, I4, I5, O]
+    (columnName: String, columnFcn: (I1, I2, I3, I4, I5) => O, in1: String, in2: String, in3: String, in4: String, in5: String)
+    (input: DataFrame)
+    (implicit tagO: TypeTag[O], tagI1: TypeTag[I1], tagI2: TypeTag[I2], tagI3: TypeTag[I3], tagI4: TypeTag[I4], tagI5: TypeTag[I5]):DataFrame = {
+      val newColumn = udf {columnFcn}(tagO, tagI1, tagI2, tagI3, tagI4, tagI5)(
+        new Column(in1),
+        new Column(in2),
+        new Column(in3),
+        new Column(in4),
+        new Column(in5)
+      )
+      input.withColumn(columnName, newColumn)
+  }
+  // scalastyle:on parameter.number
 
   /**
    * Takes a DataFrame and replaces a column in it using a transformation function

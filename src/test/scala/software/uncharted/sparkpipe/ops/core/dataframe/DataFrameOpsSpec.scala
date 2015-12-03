@@ -102,7 +102,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => 8
+          () => 8
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
         assert(df2.schema("new").dataType.equals(org.apache.spark.sql.types.IntegerType))
@@ -112,7 +112,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on an input column") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => i(0).asInstanceOf[Int] + 1,
+          (i: Int) => i + 1,
           "_1"
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
@@ -123,7 +123,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on two input columns") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int],
+          (i0: Int, i1: Int) => i0 + i1,
           "_1", "_2"
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
@@ -134,7 +134,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on three input columns") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int],
+          (i0: Int, i1: Int, i2: Int) => i0 + i1 + i2,
           "_1", "_2", "_3"
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
@@ -145,7 +145,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on four input columns") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int],
+          (i0: Int, i1: Int, i2: Int, i3: Int) => i0 + i1 + i2 + i3,
           "_1", "_2", "_3", "_4"
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
@@ -156,7 +156,7 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
       it("should support adding a column to a DataFrame based on five input columns") {
         val df2 = addColumn(
           "new",
-          (i: Array[Any]) => i(0).asInstanceOf[Int] + i(1).asInstanceOf[Int] + i(2).asInstanceOf[Int] + i(3).asInstanceOf[Int] + i(4).asInstanceOf[Int],
+          (i0: Int, i1: Int, i2: Int, i3: Int, i4: Int) => i0 + i1 + i2 + i3 + i4,
           "_1", "_2", "_3", "_4", "_5"
         )(df)
         assert(df2.schema.size == df.schema.size + 1)
