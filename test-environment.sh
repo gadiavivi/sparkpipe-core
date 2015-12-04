@@ -7,4 +7,4 @@ docker run \
 -v $(pwd):/opt/pipeline \
 -it \
 --workdir="/opt/pipeline" \
-uncharted/sparklet:1.5.2 bash
+uncharted/sparklet:1.5.1 bash
