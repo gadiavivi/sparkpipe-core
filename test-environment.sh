@@ -7,5 +7,5 @@ docker run \
 -v /$(pwd)/src/test/resources/log4j.properties:/usr/local/spark/conf/log4j.properties \
 -v /$(pwd):/opt/pipeline \
 -it \
---workdir="/opt/pipeline" \
+--workdir="//opt/pipeline" \
 uncharted/sparklet:1.5.2 bash
