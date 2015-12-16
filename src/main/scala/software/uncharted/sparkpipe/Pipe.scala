@@ -22,10 +22,16 @@ import scala.collection.mutable.ArrayBuffer
  * can be extended, forming a new Pipe. It can also be
  * run, producing an output value which is cached after
  * the first run.
+ *
+ * @param head the input type for the Pipe (usually Unit)
+ * @param tail the tail stage
+ * @param parents any parent pipes which this Pipe was constructed from
+ *
  */
 class Pipe[I,O] private[sparkpipe] (
   private[sparkpipe] val head: I,
-  private[sparkpipe] val tail: PipeStage[_,O]
+  private[sparkpipe] val tail: PipeStage[_,O],
+  private[sparkpipe] val parents: Seq[Pipe[_,_]]
 ) {
 
   /**
@@ -36,7 +42,7 @@ class Pipe[I,O] private[sparkpipe] (
   def to[A](opFunc: O => A): Pipe[I,A] = {
     val next = new PipeStage(opFunc, Some(tail))
     tail.children.append(next)
-    new Pipe(head, next)
+    new Pipe(head, next, parents)
   }
 
   /**
@@ -48,10 +54,12 @@ class Pipe[I,O] private[sparkpipe] (
   }
 
   /**
-   * Clears this {@link software.uncharted.sparkpipe.Pipe}'s cache, forcing the next call to run() to execute from the head of its chain of operations
+   * Clears this {@link software.uncharted.sparkpipe.Pipe}'s cache, as well as any parent pipe's cache,
+   * forcing the next call to run() to execute from the head of its chain of operations
    */
   def reset(): Unit = {
     tail.reset()
+    parents.foreach(_.reset())
   }
 }
 
@@ -70,7 +78,7 @@ object Pipe {
     val wrap: Unit => O = (a: Unit) => {
       first
     }
-    new Pipe[Unit,O]((), new PipeStage[Unit,O](wrap, None))
+    new Pipe[Unit,O]((), new PipeStage[Unit,O](wrap, None), Seq())
   }
 
   /**
@@ -83,7 +91,7 @@ object Pipe {
     val wrap: Unit => O = (a: Unit) => {
       first()
     }
-    new Pipe((), new PipeStage[Unit,O](wrap, None))
+    new Pipe((), new PipeStage[Unit,O](wrap, None), Seq())
   }
 
   /**
@@ -103,7 +111,7 @@ object Pipe {
       val secondResult: B = second.run
       (firstResult, secondResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B)](wrap, None))
+    new Pipe((), new PipeStage[Unit,(A,B)](wrap, None), Seq(first, second))
   }
 
   /**
@@ -127,7 +135,7 @@ object Pipe {
       val thirdResult: C = third.run
       (firstResult, secondResult, thirdResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C)](wrap, None))
+    new Pipe((), new PipeStage[Unit,(A,B,C)](wrap, None), Seq(first, second, third))
   }
 
   /**
@@ -155,7 +163,7 @@ object Pipe {
       val fourthResult: D = fourth.run
       (firstResult, secondResult, thirdResult, fourthResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C,D)](wrap, None))
+    new Pipe((), new PipeStage[Unit,(A,B,C,D)](wrap, None), Seq(first, second, third, fourth))
   }
 
   /**
@@ -187,6 +195,6 @@ object Pipe {
       val fifthResult: E = fifth.run
       (firstResult, secondResult, thirdResult, fourthResult, fifthResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C,D,E)](wrap, None))
+    new Pipe((), new PipeStage[Unit,(A,B,C,D,E)](wrap, None), Seq(first, second, third, fourth, fifth))
   }
 }
