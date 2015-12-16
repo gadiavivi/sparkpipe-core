@@ -133,6 +133,29 @@ class PipeSpec extends FunSpec {
         pipe.reset()
         assert(secondRun eq pipe2.run())
       }
+
+      it("should reset parent pipes as well as the current pipe") {
+        val pipe1 = Pipe(() => {
+          Seq(1,2,3,4)
+        })
+        val pipe2 = Pipe(() => {
+          Seq(2,3,4,5)
+        })
+
+        val pipe3 = Pipe(pipe1, pipe2).to(a => {
+          a._1 ++ a._2
+        })
+
+        val firstPipe1Run: Seq[Int] = pipe1.run()
+        val firstPipe2Run: Seq[Int] = pipe2.run()
+        val firstPipe3Run: Seq[Int] = pipe3.run()
+
+        pipe3.reset()
+
+        assert(firstPipe1Run ne pipe1.run())
+        assert(firstPipe2Run ne pipe2.run())
+        assert(firstPipe3Run ne pipe3.run())
+      }
     }
   }
 }
