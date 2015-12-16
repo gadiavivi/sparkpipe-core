@@ -23,15 +23,13 @@ import scala.collection.mutable.ArrayBuffer
  * run, producing an output value which is cached after
  * the first run.
  *
- * @param head the input type for the Pipe (usually Unit)
  * @param tail the tail stage
  * @param parents any parent pipes which this Pipe was constructed from
  *
  */
-class Pipe[I,O] private[sparkpipe] (
-  private[sparkpipe] val head: I,
+class Pipe[O] private[sparkpipe] (
   private[sparkpipe] val tail: PipeStage[_,O],
-  private[sparkpipe] val parents: Seq[Pipe[_,_]]
+  private[sparkpipe] val parents: Seq[Pipe[_]]
 ) {
 
   /**
@@ -39,10 +37,10 @@ class Pipe[I,O] private[sparkpipe] (
    * @tparam A the output type of the new operation
    * @return a new {@link software.uncharted.sparkpipe.Pipe}[I,A], which is the composition of this {@link software.uncharted.sparkpipe.Pipe}[I,O] and the new operation O=>A.
    */
-  def to[A](opFunc: O => A): Pipe[I,A] = {
+  def to[A](opFunc: O => A): Pipe[A] = {
     val next = new PipeStage(opFunc, Some(tail))
     tail.children.append(next)
-    new Pipe(head, next, parents)
+    new Pipe(next, parents)
   }
 
   /**
@@ -50,7 +48,7 @@ class Pipe[I,O] private[sparkpipe] (
    * @return the output of the tail of this {@link software.uncharted.sparkpipe.Pipe}, cached until reset() is called.
    */
   def run(): O = {
-    tail.run(head)
+    tail.run()
   }
 
   /**
@@ -72,26 +70,26 @@ object Pipe {
    * Create a {@link software.uncharted.sparkpipe.Pipe} from an input value
    * @param first The input value to the {@link software.uncharted.sparkpipe.Pipe}
    * @tparam O The type of the input value for the {@link software.uncharted.sparkpipe.Pipe}
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,O] which represents a closure returning first
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[O] which represents a closure returning first
    */
-  def apply[O](first: O): Pipe[Unit,O] = {
+  def apply[O](first: O): Pipe[O] = {
     val wrap: Unit => O = (a: Unit) => {
       first
     }
-    new Pipe[Unit,O]((), new PipeStage[Unit,O](wrap, None), Seq())
+    new Pipe[O](new PipeStage[Unit,O](wrap, None), Seq())
   }
 
   /**
    * Create a {@link software.uncharted.sparkpipe.Pipe} from an input value factory
    * @param first A closure which produces the input value to the {@link software.uncharted.sparkpipe.Pipe}. Must take no arguments.
    * @tparam O The type of the input value for the {@link software.uncharted.sparkpipe.Pipe}, produced by first
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,O] which represents the closure first
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[O] which represents the closure first
    */
-  def apply[O](first: () => O): Pipe[Unit, O] = {
+  def apply[O](first: () => O): Pipe[O] = {
     val wrap: Unit => O = (a: Unit) => {
       first()
     }
-    new Pipe((), new PipeStage[Unit,O](wrap, None), Seq())
+    new Pipe(new PipeStage[Unit,O](wrap, None), Seq())
   }
 
   /**
@@ -100,18 +98,18 @@ object Pipe {
    * @param second A {@link software.uncharted.sparkpipe.Pipe} which produes a value of type B
    * @tparam A The output type of first
    * @tparam B The output type of second
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,(A,B)] which can connect the output of first and second to a new set of operations
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[(A,B)] which can connect the output of first and second to a new set of operations
    */
   def apply[A,B](
-    first: Pipe[_,A],
-    second: Pipe[_,B]
-  ): Pipe[Unit,(A,B)] = {
+    first: Pipe[A],
+    second: Pipe[B]
+  ): Pipe[(A,B)] = {
     val wrap: Unit => (A,B) = (a: Unit) => {
       val firstResult: A = first.run
       val secondResult: B = second.run
       (firstResult, secondResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B)](wrap, None), Seq(first, second))
+    new Pipe(new PipeStage[Unit,(A,B)](wrap, None), Seq(first, second))
   }
 
   /**
@@ -122,20 +120,20 @@ object Pipe {
    * @tparam A The output type of first
    * @tparam B The output type of second
    * @tparam C The output type of third
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,(A,B,C)] which can connect the output of first, second and third to a new set of operations
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[(A,B,C)] which can connect the output of first, second and third to a new set of operations
    */
   def apply[A,B,C](
-    first: Pipe[_,A],
-    second: Pipe[_,B],
-    third: Pipe[_,C]
-  ): Pipe[Unit,(A,B,C)] = {
+    first: Pipe[A],
+    second: Pipe[B],
+    third: Pipe[C]
+  ): Pipe[(A,B,C)] = {
     val wrap: Unit => (A,B,C) = (a: Unit) => {
       val firstResult: A = first.run
       val secondResult: B = second.run
       val thirdResult: C = third.run
       (firstResult, secondResult, thirdResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C)](wrap, None), Seq(first, second, third))
+    new Pipe(new PipeStage[Unit,(A,B,C)](wrap, None), Seq(first, second, third))
   }
 
   /**
@@ -148,14 +146,14 @@ object Pipe {
    * @tparam B The output type of second
    * @tparam C The output type of third
    * @tparam D The output type of fourth
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,(A,B,C,D)] which can connect the output of first, second, third and fourth to a new set of operations
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[(A,B,C,D)] which can connect the output of first, second, third and fourth to a new set of operations
    */
   def apply[A,B,C,D](
-    first: Pipe[_,A],
-    second: Pipe[_,B],
-    third: Pipe[_,C],
-    fourth: Pipe[_,D]
-  ): Pipe[Unit,(A,B,C,D)] = {
+    first: Pipe[A],
+    second: Pipe[B],
+    third: Pipe[C],
+    fourth: Pipe[D]
+  ): Pipe[(A,B,C,D)] = {
     val wrap: Unit => (A,B,C,D) = (a: Unit) => {
       val firstResult: A = first.run
       val secondResult: B = second.run
@@ -163,7 +161,7 @@ object Pipe {
       val fourthResult: D = fourth.run
       (firstResult, secondResult, thirdResult, fourthResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C,D)](wrap, None), Seq(first, second, third, fourth))
+    new Pipe(new PipeStage[Unit,(A,B,C,D)](wrap, None), Seq(first, second, third, fourth))
   }
 
   /**
@@ -178,15 +176,15 @@ object Pipe {
    * @tparam C The output type of third
    * @tparam D The output type of fourth
    * @tparam E The output type of fifth
-   * @return a {@link software.uncharted.sparkpipe.Pipe}[Unit,(A,B,C,D,E)] which can connect the output of first, second, third, fourth and fifth to a new set of operations
+   * @return a {@link software.uncharted.sparkpipe.Pipe}[(A,B,C,D,E)] which can connect the output of first, second, third, fourth and fifth to a new set of operations
    */
   def apply[A,B,C,D,E](
-    first: Pipe[_,A],
-    second: Pipe[_,B],
-    third: Pipe[_,C],
-    fourth: Pipe[_,D],
-    fifth: Pipe[_,E]
-  ): Pipe[Unit,(A,B,C,D,E)] = {
+    first: Pipe[A],
+    second: Pipe[B],
+    third: Pipe[C],
+    fourth: Pipe[D],
+    fifth: Pipe[E]
+  ): Pipe[(A,B,C,D,E)] = {
     val wrap: Unit => (A,B,C,D,E) = (a: Unit) => {
       val firstResult: A = first.run
       val secondResult: B = second.run
@@ -195,6 +193,6 @@ object Pipe {
       val fifthResult: E = fifth.run
       (firstResult, secondResult, thirdResult, fourthResult, fifthResult)
     }
-    new Pipe((), new PipeStage[Unit,(A,B,C,D,E)](wrap, None), Seq(first, second, third, fourth, fifth))
+    new Pipe(new PipeStage[Unit,(A,B,C,D,E)](wrap, None), Seq(first, second, third, fourth, fifth))
   }
 }
