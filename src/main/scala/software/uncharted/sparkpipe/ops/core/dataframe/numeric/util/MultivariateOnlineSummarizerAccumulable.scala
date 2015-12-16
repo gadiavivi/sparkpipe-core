@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core.dataframe.util
+package software.uncharted.sparkpipe.ops.core.dataframe.numeric.util
 
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.sql.Row
@@ -24,13 +24,13 @@ import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 /**
  * An accumulable for MultivariateOnlineSummarizers (one per column in a DataFrame)
  */
-private[dataframe] class MultivariateOnlineSummarizerAccumulable(val initialValue: Seq[MultivariateOnlineSummarizer])
+private[numeric] class MultivariateOnlineSummarizerAccumulable(val initialValue: Seq[MultivariateOnlineSummarizer])
 extends Accumulable[Seq[MultivariateOnlineSummarizer], Row](initialValue, new MultivariateOnlineSummarizerAccumulableParam)
 
 /**
  * An AccumulableParam for MultivariateOnlineSummarizers (one per column in a DataFrame)
  */
-private[dataframe] class MultivariateOnlineSummarizerAccumulableParam extends AccumulableParam[Seq[MultivariateOnlineSummarizer], Row]() {
+private[numeric] class MultivariateOnlineSummarizerAccumulableParam extends AccumulableParam[Seq[MultivariateOnlineSummarizer], Row]() {
 
   override def addAccumulator(r: Seq[MultivariateOnlineSummarizer], t: Row): Seq[MultivariateOnlineSummarizer] = {
     for (i <- 0 to t.length-1) {

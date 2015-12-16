@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core.dataframe.util
+package software.uncharted.sparkpipe.ops.core.dataframe.numeric.util
 
 /**
  * A simple struct to represent summary statistics for a DataFrame column

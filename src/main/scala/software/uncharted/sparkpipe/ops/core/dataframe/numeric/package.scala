@@ -22,7 +22,7 @@ import org.apache.spark.sql.{SQLContext, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
 import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 
-import software.uncharted.sparkpipe.ops.core.dataframe.util.{MultivariateOnlineSummarizerAccumulableParam, SummaryStats}
+import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{MultivariateOnlineSummarizerAccumulableParam, SummaryStats}
 
 /**
  * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
@@ -33,7 +33,7 @@ import software.uncharted.sparkpipe.ops.core.dataframe.util.{MultivariateOnlineS
  * - DateType
  * - TimestampType
  */
-object NumericOps {
+package object numeric {
   private val supportedColumnTypes = List("FloatType", "DoubleType", "IntegerType", "LongType", "DateType", "TimestampType")
 
   /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core.dataframe
+package software.uncharted.sparkpipe.ops.core.dataframe.numeric
 
 import org.scalatest._
 import software.uncharted.sparkpipe.Spark
@@ -24,8 +24,8 @@ import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType, StringType, StructType, StructField}
 import java.sql.{Date, Timestamp}
 
-class NumericOpsSpec extends FunSpec {
-  describe("NumericOps") {
+class PackageSpec extends FunSpec {
+  describe("ops.core.dataframe.numeric") {
     val rdd = Spark.sc.parallelize(Seq(
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 1, 1D, 1F, 1L, "1"),
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 2, 2D, 2F, 2L, "2"),
@@ -36,13 +36,13 @@ class NumericOpsSpec extends FunSpec {
 
     describe("#enumerate()") {
       it("should convert all supported columns into doubles, and drop any unsupported ones") {
-        val df2 = NumericOps.enumerate(df)
+        val df2 = enumerate(df)
         assert(df2.schema.filter(_.dataType == DoubleType).length == df.schema.length-1)
       }
 
       it("should throw an exception if the input DataFrame contains no compatible columns") {
         intercept[IllegalArgumentException] {
-          val df2 = NumericOps.enumerate(df.select("_7"))
+          val df2 = enumerate(df.select("_7"))
         }
       }
     }
@@ -61,7 +61,7 @@ class NumericOpsSpec extends FunSpec {
         )
         val dfNull = Spark.sqlContext.createDataFrame(rddNull, struct)
         val dfWithNulls = df.unionAll(dfNull)
-        val result = NumericOps.summaryStats(Spark.sc)(dfWithNulls)
+        val result = summaryStats(Spark.sc)(dfWithNulls)
         // counts (verify ignoring nulls )
         assert(result(0).count == 4)
         assert(result(1).count == 4)

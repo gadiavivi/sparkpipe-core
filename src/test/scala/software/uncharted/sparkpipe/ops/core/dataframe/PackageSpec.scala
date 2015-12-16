@@ -27,7 +27,7 @@ import org.scalatest.mock.MockitoSugar
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
-class DataFrameOpsSpec extends FunSpec with MockitoSugar {
+class PackageSpec extends FunSpec with MockitoSugar {
   describe("ops.core.dataframe") {
     val rdd = Spark.sc.parallelize(Seq(
       (0, 1, 2, 3, 4),
@@ -186,18 +186,6 @@ class DataFrameOpsSpec extends FunSpec with MockitoSugar {
         assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
         assert(df2.schema("_2").dataType.equals(org.apache.spark.sql.types.FloatType))
         assert(df2.schema("_3").dataType.equals(org.apache.spark.sql.types.StringType))
-      }
-    }
-
-    describe(".temporal") {
-      it("should make temporal operations available via .temporal") {
-        assert(temporal == TemporalOps)
-      }
-    }
-
-    describe(".numeric") {
-      it("should make numeric operations available via .numeric") {
-        assert(numeric == NumericOps)
       }
     }
   }

@@ -20,7 +20,7 @@ import org.scalatest._
 import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 
-class RDDOpsSpec extends FunSpec {
+class PackageSpec extends FunSpec {
   describe("ops.core.rdd") {
     describe("#toDF()") {
       it("should convert an input RDD with a compatible record type into a DataFrame") {

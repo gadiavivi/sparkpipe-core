@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core.dataframe
+package software.uncharted.sparkpipe.ops.core.dataframe.temporal
 
 import org.scalatest._
 import org.apache.spark.storage.StorageLevel
@@ -29,8 +29,8 @@ import org.mockito.Mockito._
 import java.text.SimpleDateFormat
 import java.sql.Timestamp
 
-class TemporalOpsSpec extends FunSpec with MockitoSugar {
-  describe("TemporalOps") {
+class PackageSpec extends FunSpec with MockitoSugar {
+  describe("ops.core.dataframe.temporal") {
     val rdd = Spark.sc.parallelize(Seq(
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-18").getTime), "2015-11-18", 1),
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-19").getTime), "2015-11-19", 2),
@@ -41,7 +41,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
 
     describe("#dateFilter()") {
       it("should support filtering rows in an input DataFrame with a String timetamp column, based on a date range") {
-        val df2 = TemporalOps.dateFilter(
+        val df2 = dateFilter(
           new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-19"),
           new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-21"),
           "yyyy-MM-dd",
@@ -51,7 +51,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support filtering rows in an input DataFrame with a String timetamp column, based on a date range, specified using strings") {
-        val df2 = TemporalOps.dateFilter(
+        val df2 = dateFilter(
           "2015-11-19",
           "2015-11-20",
           "yyyy-MM-dd",
@@ -61,7 +61,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
       }
 
       it("should support filtering rows in an input DataFrame with a Timestamp timestamp column, based on a date range") {
-        val df2 = TemporalOps.dateFilter(
+        val df2 = dateFilter(
           new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-17"),
           new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-18"),
           "_1"
@@ -72,7 +72,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
 
     describe("#parseDate()") {
       it("should facilitate converting a string timestamp column into a TimestampType and adding it as a new column") {
-        val df2 = TemporalOps.parseDate("_2", "new", "yyyy-MM-dd")(df)
+        val df2 = parseDate("_2", "new", "yyyy-MM-dd")(df)
         assert(df2.filter("new = _1").count == df.count)
         assert(df2.schema.size == df.schema.size+1)
       }
@@ -80,7 +80,7 @@ class TemporalOpsSpec extends FunSpec with MockitoSugar {
 
     describe("#dateField()") {
       it("should facilitate extracting a single field from a Timestamp column, and placing it a new column") {
-        val df2 = TemporalOps.dateField("_1", "new", java.util.Calendar.YEAR)(df)
+        val df2 = dateField("_1", "new", java.util.Calendar.YEAR)(df)
         assert(df2.filter("new = 2015").count == df.count)
         assert(df2.schema.size == df.schema.size+1)
       }

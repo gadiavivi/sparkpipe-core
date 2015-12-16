@@ -243,14 +243,4 @@ package object dataframe {
     }).toSeq
     input.selectExpr(exprs:_*)
   }
-
-  /**
-   * Bring in temporal ops so they can be referred to with dot notation
-   */
-  val temporal = dataframe.TemporalOps
-
-  /**
-   * Bring in numeric ops so they can be referred to with dot notation
-   */
-  val numeric = dataframe.NumericOps
 }
