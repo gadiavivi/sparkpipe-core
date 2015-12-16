@@ -13,7 +13,7 @@ The Uncharted Spark Pipeline facilitates expressing individual components of Spa
 Try the pipeline yourself using spark-shell:
 
 ```bash
-$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.0
+$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.1
 ```
 
 ```scala
