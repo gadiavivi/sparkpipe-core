@@ -17,25 +17,40 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.sql.DataFrame
+import scala.collection.mutable.IndexedSeq
 import software.uncharted.sparkpipe.{ops => ops}
 
 package object text {
 
   /**
+   * Splits a String column into an Array[String] column using a delimiter
+   * (whitespace, by default)
+   *
+   * @param stringcol the name of a String column in the input DataFrame
+   * @param delimiter a delimiter to split the sString column on
+   * @return Transformed pipeline data, with the given string column split on the delimiter
+   */
+  def split(stringCol: String, delimiter: String = "\\s+")(input: DataFrame): DataFrame = {
+    ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
+      s.split(delimiter)
+    }: Array[String])(input)
+  }
+
+  /**
    * Pipeline op to remove stop words from a string column
    *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
    * @param stopWords A Set[String] of words to remove
-   * @param stringCol Column spec denoting name of string column in input DataFrame
    * @param input Input pipeline data to filter.
    * @return Transformed pipeline data, with stop words removed from the specified column
    */
-  def stopWordFilter(stopWords: Set[String], stringCol: String)(input: DataFrame): DataFrame = {
+  def stopWordFilter(arrayCol: String, stopWords: Set[String])(input: DataFrame): DataFrame = {
     val bStopWordsLookup = input.sqlContext.sparkContext.broadcast(
       collection.mutable.LinkedHashSet[String]() ++ stopWords
     )
-    val result = ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
-      var words = collection.mutable.LinkedHashSet[String]() ++ s.split("\\s+")
-      (words -- bStopWordsLookup.value).mkString(" ")
+    val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
+      var words = collection.mutable.LinkedHashSet[String]() ++ s
+      (words -- bStopWordsLookup.value).toArray
     })(input)
 
     bStopWordsLookup.unpersist()
