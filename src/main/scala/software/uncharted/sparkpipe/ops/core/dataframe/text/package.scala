@@ -21,27 +21,9 @@ import scala.collection.mutable.{HashMap, IndexedSeq}
 import software.uncharted.sparkpipe.{ops => ops}
 import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulableParam
 import scala.util.matching.Regex
+import scala.reflect.runtime.universe.TypeTag
 
 package object text {
-
-  /**
-   * Splits a String column into an Array[String] column using a delimiter
-   * (whitespace, by default)
-   *
-   * @param stringcol the name of a String column in the input DataFrame
-   * @param delimiter a delimiter to split the sString column on
-   * @param input Input pipeline data to transform
-   * @return Transformed pipeline data, with the given string column split on the delimiter
-   */
-  def split(stringCol: String, delimiter: String = "\\s+")(input: DataFrame): DataFrame = {
-    ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
-      try {
-        s.split(delimiter)
-      } catch {
-        case _: Throwable => Array[String]()
-      }
-    }: Array[String])(input)
-  }
 
   /**
    * Replaces all occurrences of pattern in a String column with sub
@@ -72,6 +54,39 @@ package object text {
    */
   def removeAll(stringCol: String, pattern: Regex)(input: DataFrame): DataFrame = {
     replaceAll(stringCol, pattern, "")(input)
+  }
+
+  /**
+   * Splits a String column into an Array[String] column using a delimiter
+   * (whitespace, by default)
+   *
+   * @param stringcol the name of a String column in the input DataFrame
+   * @param delimiter a delimiter to split the sString column on
+   * @param input Input pipeline data to transform
+   * @return Transformed pipeline data, with the given string column split on the delimiter
+   */
+  def split(stringCol: String, delimiter: String = "\\s+")(input: DataFrame): DataFrame = {
+    ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
+      try {
+        s.split(delimiter)
+      } catch {
+        case _: Throwable => Array[String]()
+      }
+    }: Array[String])(input)
+  }
+
+  /**
+   * Apply a transformation to every String in an Array[String] column.
+   *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @param mapFcn A transformation function String => O
+   * @param input Input pipeline data to transform
+   * @return Transformed pipeline data, with the mapFcn applied to every term in every row of the Array[String] column
+   */
+  def mapTerms[O](arrayCol: String, mapFcn: String => O)(input: DataFrame)(implicit tag: TypeTag[O]): DataFrame = {
+    ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
+      s.map(mapFcn)
+    }: IndexedSeq[O])(input)
   }
 
   /**

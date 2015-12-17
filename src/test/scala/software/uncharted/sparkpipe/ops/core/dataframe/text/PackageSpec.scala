@@ -37,6 +37,30 @@ class PackageSpec extends FunSpec {
     ))
     val df = toDF(Spark.sqlContext)(rdd)
 
+    describe("#replaceAll()") {
+      it("should replace all instances of the given pattern within a string column with a substitution string") {
+        val df2 = replaceAll("_2", "lorem".r, "merol")(df)
+        assert(df2.schema(1).dataType.equals(StringType))
+        val result = df2.select("_2").collect
+        assert(result(0)(0).equals("merol ipsum"))
+        assert(result(1)(0).equals("merol ipsum dolor"))
+        assert(result(2)(0).equals("merol ipsum dolor sit"))
+        assert(result(3)(0).equals("merol ipsum dolor sit amet merol"))
+      }
+    }
+
+    describe("#removeAll()") {
+      it("should remove all instances of the given pattern within a string column") {
+        val df2 = removeAll("_2", "lorem".r)(df)
+        assert(df2.schema(1).dataType.equals(StringType))
+        val result = df2.select("_2").collect
+        assert(result(0)(0).equals(" ipsum"))
+        assert(result(1)(0).equals(" ipsum dolor"))
+        assert(result(2)(0).equals(" ipsum dolor sit"))
+        assert(result(3)(0).equals(" ipsum dolor sit amet "))
+      }
+    }
+
     describe("#split()") {
       it("should split the specified column on whitespace") {
         val df2 = split("_2")(df)
@@ -64,27 +88,19 @@ class PackageSpec extends FunSpec {
       }
     }
 
-    describe("#replaceAll()") {
-      it("should replace all instances of the given pattern within a string column with a substitution string") {
-        val df2 = replaceAll("_2", "lorem".r, "merol")(df)
-        assert(df2.schema(1).dataType.equals(StringType))
-        val result = df2.select("_2").collect
-        assert(result(0)(0).equals("merol ipsum"))
-        assert(result(1)(0).equals("merol ipsum dolor"))
-        assert(result(2)(0).equals("merol ipsum dolor sit"))
-        assert(result(3)(0).equals("merol ipsum dolor sit amet merol"))
-      }
-    }
-
-    describe("#removeAll()") {
-      it("should remove all instances of the given pattern within a string column") {
-        val df2 = removeAll("_2", "lorem".r)(df)
-        assert(df2.schema(1).dataType.equals(StringType))
-        val result = df2.select("_2").collect
-        assert(result(0)(0).equals(" ipsum"))
-        assert(result(1)(0).equals(" ipsum dolor"))
-        assert(result(2)(0).equals(" ipsum dolor sit"))
-        assert(result(3)(0).equals(" ipsum dolor sit amet "))
+    describe("#mapTerms()") {
+      it("should apply a map function to every term in an Array[String] column") {
+        val result = Pipe(df)
+                     .to(split("_2"))
+                     .to(mapTerms("_2", (s: String) => s.length))
+                     .to(_.select("_2").collect)
+                     .to(_.map(_.apply(0).asInstanceOf[WrappedArray[Int]]))
+                     .to(_.map(_.mkString(" ")))
+                     .run
+        assert(result(0).equals("5 5"))
+        assert(result(1).equals("5 5 5"))
+        assert(result(2).equals("5 5 5 3"))
+        assert(result(3).equals("5 5 5 3 4 5"))
       }
     }
 
