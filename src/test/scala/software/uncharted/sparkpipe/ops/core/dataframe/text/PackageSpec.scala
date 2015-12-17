@@ -32,7 +32,7 @@ class PackageSpec extends FunSpec {
       (1, "lorem ipsum"),
       (2, "lorem ipsum dolor"),
       (3, "lorem ipsum dolor sit"),
-      (4, "lorem ipsum dolor sit amet")
+      (4, "lorem ipsum dolor sit amet lorem")
     ))
     val df = toDF(Spark.sqlContext)(rdd)
 
@@ -46,7 +46,7 @@ class PackageSpec extends FunSpec {
         assert(result(1).length == 3)
         assert(result(2).length == 4)
         assert(result(2)(3).equals("sit"))
-        assert(result(3).length == 5)
+        assert(result(3).length == 6)
       }
 
       it("should split the specified column on a custom delimiter") {
@@ -75,6 +75,22 @@ class PackageSpec extends FunSpec {
         assert(result(1).equals("dolor"))
         assert(result(2).equals("dolor sit"))
         assert(result(3).equals("dolor sit amet"))
+      }
+    }
+
+    describe("#includeWordFilter()") {
+      it("should filter the specified column in the input DataFrame down to only the specified words") {
+        val result = Pipe(df)
+                    .to(split("_2"))
+                    .to(includeWordFilter("_2", Set("lorem", "ipsum")))
+                    .to(_.select("_2").collect)
+                    .to(_.map(_.apply(0).asInstanceOf[WrappedArray[String]]))
+                    .to(_.map(_.mkString(" ")))
+                    .run
+        assert(result(0).equals("lorem ipsum"))
+        assert(result(1).equals("lorem ipsum"))
+        assert(result(2).equals("lorem ipsum"))
+        assert(result(3).equals("lorem ipsum lorem"))
       }
     }
   }

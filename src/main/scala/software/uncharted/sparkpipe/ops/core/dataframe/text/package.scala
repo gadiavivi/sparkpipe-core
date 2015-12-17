@@ -48,12 +48,34 @@ package object text {
     val bStopWordsLookup = input.sqlContext.sparkContext.broadcast(
       collection.mutable.LinkedHashSet[String]() ++ stopWords
     )
+
     val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
-      var words = collection.mutable.LinkedHashSet[String]() ++ s
-      (words -- bStopWordsLookup.value).toArray
+      s.filterNot(w => bStopWordsLookup.value.contains(w))
     })(input)
 
     bStopWordsLookup.unpersist()
+
+    result
+  }
+
+  /**
+   * Pipeline op to filter a string column down to terms of interest
+   *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @param includeWords A Set[String] of words to filter to
+   * @param input Input pipeline data to filter.
+   * @return Transformed pipeline data, with the specified column filterd down to terms of interest
+   */
+  def includeWordFilter(arrayCol: String, includeWords: Set[String])(input: DataFrame): DataFrame = {
+    val bIncludeWordsLookup = input.sqlContext.sparkContext.broadcast(
+      collection.mutable.LinkedHashSet[String]() ++ includeWords
+    )
+
+    val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
+      s.filter(w => bIncludeWordsLookup.value.contains(w))
+    })(input)
+
+    bIncludeWordsLookup.unpersist()
 
     result
   }
