@@ -64,6 +64,30 @@ class PackageSpec extends FunSpec {
       }
     }
 
+    describe("#replaceAll()") {
+      it("should replace all instances of the given pattern within a string column with a substitution string") {
+        val df2 = replaceAll("_2", "lorem".r, "merol")(df)
+        assert(df2.schema(1).dataType.equals(StringType))
+        val result = df2.select("_2").collect
+        assert(result(0)(0).equals("merol ipsum"))
+        assert(result(1)(0).equals("merol ipsum dolor"))
+        assert(result(2)(0).equals("merol ipsum dolor sit"))
+        assert(result(3)(0).equals("merol ipsum dolor sit amet merol"))
+      }
+    }
+
+    describe("#removeAll()") {
+      it("should remove all instances of the given pattern within a string column") {
+        val df2 = removeAll("_2", "lorem".r)(df)
+        assert(df2.schema(1).dataType.equals(StringType))
+        val result = df2.select("_2").collect
+        assert(result(0)(0).equals(" ipsum"))
+        assert(result(1)(0).equals(" ipsum dolor"))
+        assert(result(2)(0).equals(" ipsum dolor sit"))
+        assert(result(3)(0).equals(" ipsum dolor sit amet "))
+      }
+    }
+
     describe("#stopTermFilter()") {
       it("should remove stop words from the specified column in the input DataFrame") {
         val result = Pipe(df)
@@ -104,7 +128,6 @@ class PackageSpec extends FunSpec {
                      .to(uniqueTerms("_2"))
                      .run
         assert(result.size == 5)
-        println(result)
         assert(result.getOrElse("lorem", 0) == 5)
         assert(result.getOrElse("ipsum", 0) == 4)
         assert(result.getOrElse("dolor", 0) == 3)

@@ -20,6 +20,7 @@ import org.apache.spark.sql.DataFrame
 import scala.collection.mutable.{HashMap, IndexedSeq}
 import software.uncharted.sparkpipe.{ops => ops}
 import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulableParam
+import scala.util.matching.Regex
 
 package object text {
 
@@ -29,6 +30,7 @@ package object text {
    *
    * @param stringcol the name of a String column in the input DataFrame
    * @param delimiter a delimiter to split the sString column on
+   * @param input Input pipeline data to transform
    * @return Transformed pipeline data, with the given string column split on the delimiter
    */
   def split(stringCol: String, delimiter: String = "\\s+")(input: DataFrame): DataFrame = {
@@ -39,6 +41,37 @@ package object text {
         case _: Throwable => Array[String]()
       }
     }: Array[String])(input)
+  }
+
+  /**
+   * Replaces all occurrences of pattern in a String column with sub
+   *
+   * @param stringcol the name of a String column in the input DataFrame
+   * @param pattern a regular expression
+   * @param sub the string to substitute for the pattern
+   * @param input Input pipeline data to transform
+   * @return Transformed pipeline data, with instances of the given pattern in input replaced with sub
+   */
+  def replaceAll(stringCol: String, pattern: Regex, sub: String)(input: DataFrame): DataFrame = {
+    ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
+      try {
+        pattern.replaceAllIn(s, sub)
+      } catch {
+        case _: Throwable => s
+      }
+    }: String)(input)
+  }
+
+  /**
+   * Removes all occurrences of pattern in a String column
+   *
+   * @param stringcol the name of a String column in the input DataFrame
+   * @param pattern a regular expression
+   * @param input Input pipeline data to transform
+   * @return Transformed pipeline data, with instances of the given pattern in input removed
+   */
+  def removeAll(stringCol: String, pattern: Regex)(input: DataFrame): DataFrame = {
+    replaceAll(stringCol, pattern, "")(input)
   }
 
   /**
@@ -90,6 +123,7 @@ package object text {
    * along with associated counts
    *
    * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @param input Input pipeline data to analyze
    * @return the Map[String, Int] of unique terms and their counts
    */
   def uniqueTerms(arrayCol: String)(input: DataFrame): collection.mutable.Map[String, Int] = {
