@@ -22,7 +22,7 @@ import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.types.{StringType, ArrayType}
+import org.apache.spark.sql.types.{IntegerType, StringType, ArrayType}
 
 import scala.collection.mutable.WrappedArray
 
@@ -32,7 +32,8 @@ class PackageSpec extends FunSpec {
       (1, "lorem ipsum"),
       (2, "lorem ipsum dolor"),
       (3, "lorem ipsum dolor sit"),
-      (4, "lorem ipsum dolor sit amet lorem")
+      (4, "lorem ipsum dolor sit amet lorem"),
+      (5, null)
     ))
     val df = toDF(Spark.sqlContext)(rdd)
 
@@ -47,6 +48,7 @@ class PackageSpec extends FunSpec {
         assert(result(2).length == 4)
         assert(result(2)(3).equals("sit"))
         assert(result(3).length == 6)
+        assert(result(4).length == 0)
       }
 
       it("should split the specified column on a custom delimiter") {
@@ -62,11 +64,11 @@ class PackageSpec extends FunSpec {
       }
     }
 
-    describe("#stopWordFilter()") {
+    describe("#stopTermFilter()") {
       it("should remove stop words from the specified column in the input DataFrame") {
         val result = Pipe(df)
                     .to(split("_2"))
-                    .to(stopWordFilter("_2", Set("lorem", "ipsum")))
+                    .to(stopTermFilter("_2", Set("lorem", "ipsum")))
                     .to(_.select("_2").collect)
                     .to(_.map(_.apply(0).asInstanceOf[WrappedArray[String]]))
                     .to(_.map(_.mkString(" ")))
@@ -78,11 +80,11 @@ class PackageSpec extends FunSpec {
       }
     }
 
-    describe("#includeWordFilter()") {
+    describe("#includeTermFilter()") {
       it("should filter the specified column in the input DataFrame down to only the specified words") {
         val result = Pipe(df)
                     .to(split("_2"))
-                    .to(includeWordFilter("_2", Set("lorem", "ipsum")))
+                    .to(includeTermFilter("_2", Set("lorem", "ipsum")))
                     .to(_.select("_2").collect)
                     .to(_.map(_.apply(0).asInstanceOf[WrappedArray[String]]))
                     .to(_.map(_.mkString(" ")))
@@ -91,6 +93,23 @@ class PackageSpec extends FunSpec {
         assert(result(1).equals("lorem ipsum"))
         assert(result(2).equals("lorem ipsum"))
         assert(result(3).equals("lorem ipsum lorem"))
+      }
+    }
+
+    describe("#uniqueTerms()") {
+      it("should produce a list of unique terms from an Array[String] column in an input DataFrame") {
+        val result = Pipe(df)
+                    //  .to(_.unionAll(dfNull)) //add some nulls so we can test handling them
+                     .to(split("_2"))
+                     .to(uniqueTerms("_2"))
+                     .run
+        assert(result.size == 5)
+        println(result)
+        assert(result.getOrElse("lorem", 0) == 5)
+        assert(result.getOrElse("ipsum", 0) == 4)
+        assert(result.getOrElse("dolor", 0) == 3)
+        assert(result.getOrElse("sit", 0) == 2)
+        assert(result.getOrElse("amet", 0) == 1)
       }
     }
   }

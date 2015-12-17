@@ -17,8 +17,9 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.sql.DataFrame
-import scala.collection.mutable.IndexedSeq
+import scala.collection.mutable.{HashMap, IndexedSeq}
 import software.uncharted.sparkpipe.{ops => ops}
+import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulableParam
 
 package object text {
 
@@ -32,7 +33,11 @@ package object text {
    */
   def split(stringCol: String, delimiter: String = "\\s+")(input: DataFrame): DataFrame = {
     ops.core.dataframe.replaceColumn(stringCol, (s: String) => {
-      s.split(delimiter)
+      try {
+        s.split(delimiter)
+      } catch {
+        case _: Throwable => Array[String]()
+      }
     }: Array[String])(input)
   }
 
@@ -40,20 +45,20 @@ package object text {
    * Pipeline op to remove stop words from a string column
    *
    * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
-   * @param stopWords A Set[String] of words to remove
+   * @param stopTerms A Set[String] of words to remove
    * @param input Input pipeline data to filter.
    * @return Transformed pipeline data, with stop words removed from the specified column
    */
-  def stopWordFilter(arrayCol: String, stopWords: Set[String])(input: DataFrame): DataFrame = {
-    val bStopWordsLookup = input.sqlContext.sparkContext.broadcast(
-      collection.mutable.LinkedHashSet[String]() ++ stopWords
+  def stopTermFilter(arrayCol: String, stopTerms: Set[String])(input: DataFrame): DataFrame = {
+    val bStopTermsLookup = input.sqlContext.sparkContext.broadcast(
+      collection.mutable.LinkedHashSet[String]() ++ stopTerms
     )
 
     val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
-      s.filterNot(w => bStopWordsLookup.value.contains(w))
+      s.filterNot(w => bStopTermsLookup.value.contains(w))
     })(input)
 
-    bStopWordsLookup.unpersist()
+    bStopTermsLookup.unpersist()
 
     result
   }
@@ -62,21 +67,38 @@ package object text {
    * Pipeline op to filter a string column down to terms of interest
    *
    * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
-   * @param includeWords A Set[String] of words to filter to
+   * @param includeTerms A Set[String] of words to filter to
    * @param input Input pipeline data to filter.
    * @return Transformed pipeline data, with the specified column filterd down to terms of interest
    */
-  def includeWordFilter(arrayCol: String, includeWords: Set[String])(input: DataFrame): DataFrame = {
-    val bIncludeWordsLookup = input.sqlContext.sparkContext.broadcast(
-      collection.mutable.LinkedHashSet[String]() ++ includeWords
+  def includeTermFilter(arrayCol: String, includeTerms: Set[String])(input: DataFrame): DataFrame = {
+    val bIncludeTermsLookup = input.sqlContext.sparkContext.broadcast(
+      collection.mutable.LinkedHashSet[String]() ++ includeTerms
     )
 
     val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
-      s.filter(w => bIncludeWordsLookup.value.contains(w))
+      s.filter(w => bIncludeTermsLookup.value.contains(w))
     })(input)
 
-    bIncludeWordsLookup.unpersist()
+    bIncludeTermsLookup.unpersist()
 
     result
+  }
+
+  /**
+   * Produces a Map[String,Int] of unique terms from an Array[String] column
+   * along with associated counts
+   *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @return the Map[String, Int] of unique terms and their counts
+   */
+  def uniqueTerms(arrayCol: String)(input: DataFrame): collection.mutable.Map[String, Int] = {
+    val accumulator = input.sqlContext.sparkContext.accumulable(new HashMap[String, Int]())(new UniqueTermAccumulableParam())
+
+    input.select(arrayCol).foreach(row => {
+      accumulator.add(row(0).asInstanceOf[Seq[String]])
+    })
+
+    accumulator.value
   }
 }
