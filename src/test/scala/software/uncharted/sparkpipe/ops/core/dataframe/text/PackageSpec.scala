@@ -24,7 +24,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.types.{IntegerType, StringType, ArrayType}
 
-import scala.collection.mutable.WrappedArray
+import scala.collection.mutable.IndexedSeq
 
 class PackageSpec extends FunSpec {
   describe("ops.core.dataframe.text") {
@@ -65,7 +65,7 @@ class PackageSpec extends FunSpec {
       it("should split the specified column on whitespace") {
         val df2 = split("_2")(df)
         assert(df2.schema(1).dataType.equals(ArrayType(StringType, true)))
-        val result = df2.select("_2").collect.map(_.apply(0).asInstanceOf[WrappedArray[String]])
+        val result = df2.select("_2").collect.map(_.apply(0).asInstanceOf[IndexedSeq[String]])
         assert(result(0).length == 2)
         assert(result(0)(1).equals("ipsum"))
         assert(result(1).length == 3)
@@ -78,7 +78,7 @@ class PackageSpec extends FunSpec {
       it("should split the specified column on a custom delimiter") {
         val df2 = split("_2", "i")(df)
         assert(df2.schema(1).dataType.equals(ArrayType(StringType, true)))
-        val result = df2.select("_2").collect.map(_.apply(0).asInstanceOf[WrappedArray[String]])
+        val result = df2.select("_2").collect.map(_.apply(0).asInstanceOf[IndexedSeq[String]])
         assert(result(0).length == 2)
         assert(result(0)(0).equals("lorem "))
         assert(result(1).length == 2)
@@ -94,7 +94,7 @@ class PackageSpec extends FunSpec {
                      .to(split("_2"))
                      .to(mapTerms("_2", (s: String) => s.length))
                      .to(_.select("_2").collect)
-                     .to(_.map(_.apply(0).asInstanceOf[WrappedArray[Int]]))
+                     .to(_.map(_.apply(0).asInstanceOf[IndexedSeq[Int]]))
                      .to(_.map(_.mkString(" ")))
                      .run
         assert(result(0).equals("5 5"))
@@ -110,7 +110,7 @@ class PackageSpec extends FunSpec {
                     .to(split("_2"))
                     .to(stopTermFilter("_2", Set("lorem", "ipsum")))
                     .to(_.select("_2").collect)
-                    .to(_.map(_.apply(0).asInstanceOf[WrappedArray[String]]))
+                    .to(_.map(_.apply(0).asInstanceOf[IndexedSeq[String]]))
                     .to(_.map(_.mkString(" ")))
                     .run
         assert(result(0).equals(""))
@@ -126,7 +126,7 @@ class PackageSpec extends FunSpec {
                     .to(split("_2"))
                     .to(includeTermFilter("_2", Set("lorem", "ipsum")))
                     .to(_.select("_2").collect)
-                    .to(_.map(_.apply(0).asInstanceOf[WrappedArray[String]]))
+                    .to(_.map(_.apply(0).asInstanceOf[IndexedSeq[String]]))
                     .to(_.map(_.mkString(" ")))
                     .run
         assert(result(0).equals("lorem ipsum"))
