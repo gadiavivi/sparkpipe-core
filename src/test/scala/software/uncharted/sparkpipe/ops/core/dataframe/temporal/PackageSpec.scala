@@ -22,14 +22,11 @@ import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Matchers._
-import org.mockito.Mockito._
 
 import java.text.SimpleDateFormat
 import java.sql.Timestamp
 
-class PackageSpec extends FunSpec with MockitoSugar {
+class PackageSpec extends FunSpec {
   describe("ops.core.dataframe.temporal") {
     val rdd = Spark.sc.parallelize(Seq(
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-18").getTime), "2015-11-18", 1),

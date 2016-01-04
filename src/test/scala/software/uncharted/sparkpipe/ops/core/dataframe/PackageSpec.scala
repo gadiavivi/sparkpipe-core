@@ -46,7 +46,6 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
     describe("#cache()") {
       it("should call .cache() on an input DataFrame") {
-        val mockDf = mock[DataFrame]
         val s = spy(df)
         cache(s)
         verify(s).cache()
