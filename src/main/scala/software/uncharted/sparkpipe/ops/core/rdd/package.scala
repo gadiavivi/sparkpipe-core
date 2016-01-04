@@ -23,7 +23,8 @@ import scala.reflect.runtime.universe.TypeTag
 /**
  * Common operations for manipulating RDDs
  */
- package object rdd {
+package object rdd {
+
    /**
     * Convert a suitable RDD to a DataFrame
     * @param sqlContext a SQLContext
