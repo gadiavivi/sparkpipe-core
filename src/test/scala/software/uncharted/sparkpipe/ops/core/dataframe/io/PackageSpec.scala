@@ -88,7 +88,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
         val path = ""
         val format = Math.random().toString
         val options = Map(Math.random().toString -> Math.random().toString)
-        val schema = new StructType()
+        val schema = new StructType(Array[StructField]())
 
         // mock methods
         when(mockSQLContext.read).thenReturn(mockReader)

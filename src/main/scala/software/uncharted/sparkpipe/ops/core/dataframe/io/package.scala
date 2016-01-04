@@ -17,7 +17,7 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.sql.{SQLContext, DataFrame}
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.{StructType, StructField}
 
 /**
  * Input/output operations for DataFrames, based on the sqlContext.read and DataFrame.write APIs
@@ -37,7 +37,7 @@ package object io {
     path: String,
     format: String = "parquet",
     options: Map[String, String] = Map[String, String](),
-    schema: StructType = new StructType()
+    schema: StructType = new StructType(Array[StructField]())
   )(sqlContext: SQLContext): DataFrame = {
     var reader = sqlContext.read.format(format).options(options)
 
