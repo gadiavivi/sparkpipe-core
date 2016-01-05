@@ -26,6 +26,7 @@ import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{Multivariat
 
 /**
  * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
+ *
  * - FloatType
  * - DoubleType
  * - IntegerType

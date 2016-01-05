@@ -20,7 +20,7 @@ import org.apache.spark.sql.{SQLContext, DataFrame}
 import org.apache.spark.sql.types.{StructType, StructField}
 
 /**
- * Input/output operations for DataFrames, based on the sqlContext.read and DataFrame.write APIs
+ * Input/output operations for DataFrames, based on the `sqlContext.read` and `DataFrame.write` APIs
  */
 package object io {
 

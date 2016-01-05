@@ -24,6 +24,9 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Date, GregorianCalendar}
 
+/**
+ * Common pipeline operations for dealing with temporal data
+ */
 package object temporal {
   /**
    * Pipeline op to filter records to a specific date range.
