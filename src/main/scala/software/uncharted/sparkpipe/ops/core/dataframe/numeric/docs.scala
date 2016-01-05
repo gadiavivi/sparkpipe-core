@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package software.uncharted.sparkpipe.ops.core.dataframe.numeric.util
+package software.uncharted.sparkpipe.ops.core.dataframe.numeric
 
 /**
- * A simple struct to represent summary statistics for a DataFrame column as returned
- * by `ops.core.dataframe.numeric.summaryStats()`
+ * Stub object necessary due to [[https://issues.scala-lang.org/browse/SI-8124]]
+ *
+ * Documentation for `ops.core.dataframe.numeric` can be found at [[software.uncharted.sparkpipe.ops.core.dataframe.numeric]]
+ * @see [[software.uncharted.sparkpipe.ops.core.dataframe.numeric]]
  */
-case class SummaryStats(
-  name: String,
-  count: Long,
-  min: Double,
-  mean: Double,
-  max: Double,
-  normL1: Double,
-  normL2: Double,
-  variance: Double,
-  numNonzeros: Double
-)
+protected[this] final object docs

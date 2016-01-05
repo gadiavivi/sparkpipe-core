@@ -33,6 +33,7 @@ class Pipe[O] private[sparkpipe] (
 ) {
 
   /**
+   * Create a new {@link software.uncharted.sparkpipe.Pipe} by linking this {@link software.uncharted.sparkpipe.Pipe} to a new operation
    * @param opFunc a parameter to chain onto the end of this {@link software.uncharted.sparkpipe.Pipe}, forming a new {@link software.uncharted.sparkpipe.Pipe}
    * @tparam A the output type of the new operation
    * @return a new {@link software.uncharted.sparkpipe.Pipe}[I,A], which is the composition of this {@link software.uncharted.sparkpipe.Pipe}[I,O] and the new operation O=>A.

@@ -18,10 +18,9 @@ package software.uncharted.sparkpipe
 import scala.collection.mutable.ArrayBuffer
 
 /**
- *
- *
+ * Internal class representing one operation within a Pipe chain
  */
-class PipeStage[X, Y] private[sparkpipe] (
+private[sparkpipe] class PipeStage[X, Y] (
   opFunc: X => Y,
   var parent: Option[PipeStage[_, X]]
 ) {

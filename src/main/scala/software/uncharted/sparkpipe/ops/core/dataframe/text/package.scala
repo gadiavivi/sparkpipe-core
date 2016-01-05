@@ -23,6 +23,9 @@ import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccum
 import scala.util.matching.Regex
 import scala.reflect.runtime.universe.TypeTag
 
+/**
+ * Common pipeline operations for dealing with textual data
+ */
 package object text {
 
   /**
