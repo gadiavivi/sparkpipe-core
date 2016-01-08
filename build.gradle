@@ -54,7 +54,7 @@ version = '0.9.3'
 project.ext {
   scalaBinaryVersion = '2.10'
   scalaVersion = '2.10.4'
-  sparkVersion = System.getenv("SPARK_VERSION") ?: '1.5.2'
+  sparkVersion = System.getenv("SPARK_VERSION") ?: '1.6.0'
   scoverageVersion = '1.1.1'
   artifactName = 'sparkpipe-core'
   description = 'A Spark Scala library for creating modular, non-linear data pipelines.'
@@ -231,7 +231,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.8'
+    gradleVersion = '2.10'
 }
 
 idea {

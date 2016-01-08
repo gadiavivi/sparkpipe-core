@@ -24,10 +24,11 @@ scala> Pipe("hello").to(_+" world").run
 Assuming you have a file named [people.json](https://raw.githubusercontent.com/apache/spark/master/examples/src/main/resources/people.json), read a DataFrame from a file and manipulate it:
 ```scala
 scala> :paste
+import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.{ops => ops}
-val people = sqlContext.read.json("people.json")
 
-Pipe(people)
+Pipe(sqlContext)
+.to(ops.core.dataframe.io.read("people.json", "json"))
 .to(ops.core.dataframe.renameColumns(Map("age" -> "personAge")))
 .to(_.filter("personAge > 21").count)
 .run
