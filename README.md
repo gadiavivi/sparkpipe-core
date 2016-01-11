@@ -1,4 +1,6 @@
-# Uncharted Spark Pipeline &nbsp;[![Build Status](https://travis-ci.org/unchartedsoftware/sparkpipe.svg?branch=master)](https://travis-ci.org/unchartedsoftware/sparkpipe)&nbsp;[![Coverage Status](https://coveralls.io/repos/unchartedsoftware/sparkpipe/badge.svg?branch=master&service=github)](https://coveralls.io/github/unchartedsoftware/sparkpipe?branch=master)
+# Uncharted Spark Pipeline &nbsp;[![Build Status](https://travis-ci.org/unchartedsoftware/sparkpipe-core.svg?branch=master)](https://travis-ci.org/unchartedsoftware/sparkpipe-core)&nbsp;[![Coverage Status](https://coveralls.io/repos/unchartedsoftware/sparkpipe-core/badge.svg?branch=master&service=github)](https://coveralls.io/github/unchartedsoftware/sparkpipe-core?branch=master)
+
+>> [http://unchartedsoftware.github.io/sparkpipe-core](http://unchartedsoftware.github.io/sparkpipe-core)
 
 [Apache Spark](http://spark.apache.org/) is a powerful tool for distributed data processing. Enhancing and maintaining productivity on this platform involves implementing Spark scripts in a modular, testable and reusable fashion.
 
@@ -39,19 +41,4 @@ Pipe(sqlContext)
 
 The Uncharted Spark Pipeline comes bundled with core operations which perform a variety of useful tasks, and are intended to serve as aids in implementing more domain-specific operations.
 
-Core operations fall into the following categories:
-
-### RDD Operations
-
-- [General Operations](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/rdd/package)
-
-### DataFrame Operations
-- [General Operations](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/package)
-- [Input/Output](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/io/package)
-- [Numeric Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/numeric/package)
-- [Temporal Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/temporal/package)
-- [Textual Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/text/package)
-
-### DataSet Operations
-
-*Coming soon!*
+For more information, check out the [docs](http://unchartedsoftware.github.io/sparkpipe-core).
