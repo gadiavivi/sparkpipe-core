@@ -46,15 +46,15 @@ Core operations fall into the following categories:
 
 ### RDD Operations
 
-- [General Operations]({{ "/docs/0.9.3/#software.uncharted.sparkpipe.ops.core.rdd.package" | prepend: site.baseurl }})
+- [General Operations](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.rdd.package" | prepend: site.baseurl }})
 
 ### DataFrame Operations
 
-- [General Operations]({{ "docs/0.9.3/#software.uncharted.sparkpipe.ops.core.dataframe.package" | prepend: site.baseurl }})
-- [Input/Output]({{ "docs/0.9.3/#software.uncharted.sparkpipe.ops.core.dataframe.io.package" | prepend: site.baseurl }})
-- [Numeric Data]({{ "docs/0.9.3/#software.uncharted.sparkpipe.ops.core.dataframe.numeric.package" | prepend: site.baseurl }})
-- [Temporal Data]({{ "docs/0.9.3/#software.uncharted.sparkpipe.ops.core.dataframe.temporal.package" | prepend: site.baseurl }})
-- [Textual Data]({{ "docs/0.9.3/#software.uncharted.sparkpipe.ops.core.dataframe.text.package" | prepend: site.baseurl }})
+- [General Operations](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.dataframe.package" | prepend: site.baseurl }})
+- [Input/Output](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.dataframe.io.package" | prepend: site.baseurl }})
+- [Numeric Data](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.dataframe.numeric.package" | prepend: site.baseurl }})
+- [Temporal Data](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.dataframe.temporal.package" | prepend: site.baseurl }})
+- [Textual Data](/docs/{{site.latest}}{{ "/#software.uncharted.sparkpipe.ops.core.dataframe.text.package" | prepend: site.baseurl }})
 
 ### DataSet Operations
 
