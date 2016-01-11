@@ -1,6 +1,6 @@
 # Uncharted Spark Pipeline &nbsp;[![Build Status](https://travis-ci.org/unchartedsoftware/sparkpipe-core.svg?branch=master)](https://travis-ci.org/unchartedsoftware/sparkpipe-core)&nbsp;[![Coverage Status](https://coveralls.io/repos/unchartedsoftware/sparkpipe-core/badge.svg?branch=master&service=github)](https://coveralls.io/github/unchartedsoftware/sparkpipe-core?branch=master)
 
->> [http://unchartedsoftware.github.io/sparkpipe-core](http://unchartedsoftware.github.io/sparkpipe-core)
+> [http://unchartedsoftware.github.io/sparkpipe-core](http://unchartedsoftware.github.io/sparkpipe-core)
 
 [Apache Spark](http://spark.apache.org/) is a powerful tool for distributed data processing. Enhancing and maintaining productivity on this platform involves implementing Spark scripts in a modular, testable and reusable fashion.
 
