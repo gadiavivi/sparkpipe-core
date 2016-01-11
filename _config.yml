@@ -3,7 +3,7 @@ title: Sparkpipe
 email: info@uncharted.software
 description: > # this means to ignore newlines until "baseurl:"
   Modular, non-linear pipeline framework for Spark
-baseurl: "/sparkpipe/" # the subpath of your site, e.g. /blog/
+baseurl: "/sparkpipe-core/" # the subpath of your site, e.g. /blog/
 url: "//unchartedsoftware.github.io" # the base hostname & protocol for your site
 latest: "0.9.3"
 
