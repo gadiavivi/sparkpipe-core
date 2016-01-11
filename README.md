@@ -33,3 +33,25 @@ Pipe(sqlContext)
 .to(_.filter("personAge > 21").count)
 .run
 ```
+
+
+## Included Operations
+
+The Uncharted Spark Pipeline comes bundled with core operations which perform a variety of useful tasks, and are intended to serve as aids in implementing more domain-specific operations.
+
+Core operations fall into the following categories:
+
+### RDD Operations
+
+- [General Operations](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/rdd/package)
+
+### DataFrame Operations
+- [General Operations](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/package)
+- [Input/Output](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/io/package)
+- [Numeric Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/numeric/package)
+- [Temporal Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/temporal/package)
+- [Textual Data](http://unchartedsoftware.github.io/sparkpipe-core/docs/latest/dataframe/text/package)
+
+### DataSet Operations
+
+*Coming soon!*
