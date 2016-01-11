@@ -10,3 +10,7 @@ latest: "0.9.4"
 # Build settings
 markdown: kramdown
 highlighter: pygments
+
+syntax-highlighting:
+  enabled : true
+  css: syntax.css
