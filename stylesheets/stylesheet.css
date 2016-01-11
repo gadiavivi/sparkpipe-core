@@ -59,6 +59,15 @@ a {
   background-color: #159957;
   background-image: linear-gradient(120deg, #155799, #159957); }
 
+.page-header a {
+  color: #fff;
+  text-decoration: none;
+}
+.page-header a:hover {
+  color: #eee;
+  text-decoration: none;
+}
+
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 5rem 6rem; } }
