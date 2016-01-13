@@ -27,7 +27,7 @@ Assuming you have a file named [people.json](https://raw.githubusercontent.com/a
 ```scala
 scala> :paste
 import software.uncharted.sparkpipe.Pipe
-import software.uncharted.sparkpipe.{ops => ops}
+import software.uncharted.sparkpipe.ops
 
 Pipe(sqlContext)
 .to(ops.core.dataframe.io.read("people.json", "json"))
