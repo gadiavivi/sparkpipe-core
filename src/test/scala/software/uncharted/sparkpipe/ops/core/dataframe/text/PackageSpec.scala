@@ -118,6 +118,19 @@ class PackageSpec extends FunSpec {
         assert(result(2).equals("dolor sit"))
         assert(result(3).equals("dolor sit amet"))
       }
+      it("should remove stop words matching a pattern from the specified column in the input DataFrame") {
+        val result = Pipe(df)
+                    .to(split("_2"))
+                    .to(stopTermFilter("_2", """\w{5}""".r))
+                    .to(_.select("_2").collect)
+                    .to(_.map(_.apply(0).asInstanceOf[IndexedSeq[String]]))
+                    .to(_.map(_.mkString(" ")))
+                    .run
+        assert(result(0).equals(""))
+        assert(result(1).equals(""))
+        assert(result(2).equals("sit"))
+        assert(result(3).equals("sit amet"))
+      }
     }
 
     describe("#includeTermFilter()") {
@@ -133,6 +146,19 @@ class PackageSpec extends FunSpec {
         assert(result(1).equals("lorem ipsum"))
         assert(result(2).equals("lorem ipsum"))
         assert(result(3).equals("lorem ipsum lorem"))
+      }
+      it("should filter the specified column in the input DataFrame down to only words which match the specified pattern") {
+        val result = Pipe(df)
+                    .to(split("_2"))
+                    .to(includeTermFilter("_2", """\w{5}""".r))
+                    .to(_.select("_2").collect)
+                    .to(_.map(_.apply(0).asInstanceOf[IndexedSeq[String]]))
+                    .to(_.map(_.mkString(" ")))
+                    .run
+        assert(result(0).equals("lorem ipsum"))
+        assert(result(1).equals("lorem ipsum dolor"))
+        assert(result(2).equals("lorem ipsum dolor"))
+        assert(result(3).equals("lorem ipsum dolor lorem"))
       }
     }
 

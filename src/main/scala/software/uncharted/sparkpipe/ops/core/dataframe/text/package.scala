@@ -64,7 +64,7 @@ package object text {
    * (whitespace, by default)
    *
    * @param stringcol the name of a String column in the input DataFrame
-   * @param delimiter a delimiter to split the sString column on
+   * @param delimiter a delimiter to split the String column on
    * @param input Input pipeline data to transform
    * @return Transformed pipeline data, with the given string column split on the delimiter
    */
@@ -115,6 +115,24 @@ package object text {
   }
 
   /**
+   * Pipeline op to remove stop patterns from a string column
+   *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @param stopPattern A Regex pattern describing words to remove
+   * @param input Input pipeline data to filter.
+   * @return Transformed pipeline data, with matching words removed from the specified column
+   */
+  def stopTermFilter(arrayCol: String, stopPattern: Regex)(input: DataFrame): DataFrame = {
+    val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
+      s.filterNot(w => w match {
+        case stopPattern(_*) => true
+        case _ =>  false
+      })
+    })(input)
+    result
+  }
+
+  /**
    * Pipeline op to filter a string column down to terms of interest
    *
    * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
@@ -133,6 +151,24 @@ package object text {
 
     bIncludeTermsLookup.unpersist()
 
+    result
+  }
+
+  /**
+   * Pipeline op to filter a string column down to terms which match a certain pattern
+   *
+   * @param arrayCol The name of an ArrayType(StringType) column in the input DataFrame
+   * @param includePattern A Regex pattern describing words to include
+   * @param input Input pipeline data to filter.
+   * @return Transformed pipeline data, with non-matching words removed from the specified column
+   */
+  def includeTermFilter(arrayCol: String, includePattern: Regex)(input: DataFrame): DataFrame = {
+    val result = ops.core.dataframe.replaceColumn(arrayCol, (s: IndexedSeq[String]) => {
+      s.filter(w => w match {
+        case includePattern(_*) => true
+        case _ =>  false
+      })
+    })(input)
     result
   }
 
