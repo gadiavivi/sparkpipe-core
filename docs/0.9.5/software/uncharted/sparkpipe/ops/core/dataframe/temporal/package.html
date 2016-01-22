@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>temporal - sparkpipe-core 0.9.5 API - software.uncharted.sparkpipe.ops.core.dataframe.temporal</title>
+          <meta name="description" content="temporal - sparkpipe - core 0.9.5 API - software.uncharted.sparkpipe.ops.core.dataframe.temporal" />
+          <meta name="keywords" content="temporal sparkpipe core 0.9.5 API software.uncharted.sparkpipe.ops.core.dataframe.temporal" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../../index.html';
+            var hash = 'software.uncharted.sparkpipe.ops.core.dataframe.temporal.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../../package.html" class="extype" name="software">software</a>.<a href="../../../../../package.html" class="extype" name="software.uncharted">uncharted</a>.<a href="../../../../package.html" class="extype" name="software.uncharted.sparkpipe">sparkpipe</a>.<a href="../../../package.html" class="extype" name="software.uncharted.sparkpipe.ops">ops</a>.<a href="../../package.html" class="extype" name="software.uncharted.sparkpipe.ops.core">core</a>.<a href="../package.html" class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe">dataframe</a></p>
+        <h1>temporal</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">temporal</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Common pipeline operations for dealing with temporal data
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="software.uncharted.sparkpipe.ops.core.dataframe.temporal"><span>temporal</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.package#dateField" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dateField(timeCol:String,fieldCol:String,timeField:Int)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="dateField(String,String,Int)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dateField</span><span class="params">(<span name="timeCol">timeCol: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="fieldCol">fieldCol: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="timeField">timeField: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pipeline op to get a single field out of a date, and create a new column with that field</p><div class="fullcomment"><div class="comment cmt"><p>Pipeline op to get a single field out of a date, and create a new column with that field</p><p>For instance, this can take a date, and transform it to a week of the year, or a day of the month.
+</p></div><dl class="paramcmts block"><dt class="param">timeCol</dt><dd class="cmt"><p>Column spec denoting the name of a time column in the input DataFrame.  In this case,
+               the column is expected to store a Date.</p></dd><dt class="param">fieldCol</dt><dd class="cmt"><p>The name of the column to create with the time field value</p></dd><dt class="param">timeField</dt><dd class="cmt"><p>The field of the date to retrieve</p></dd><dt class="param">input</dt><dd class="cmt"><p>Input pipeline data to transform</p></dd><dt>returns</dt><dd class="cmt"><p>Transformed pipeline data with the new time field column.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.package#dateFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dateFilter(minDate:java.util.Date,maxDate:java.util.Date,timeCol:String)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="dateFilter(Date,Date,String)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dateFilter</span><span class="params">(<span name="minDate">minDate: <span class="extype" name="java.util.Date">Date</span></span>, <span name="maxDate">maxDate: <span class="extype" name="java.util.Date">Date</span></span>, <span name="timeCol">timeCol: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pipeline op to filter records to a specific date range.</p><div class="fullcomment"><div class="comment cmt"><p>Pipeline op to filter records to a specific date range.
+</p></div><dl class="paramcmts block"><dt class="param">minDate</dt><dd class="cmt"><p>Start date for the range.</p></dd><dt class="param">maxDate</dt><dd class="cmt"><p>End date for the range.</p></dd><dt class="param">timeCol</dt><dd class="cmt"><p>Column spec denoting name of time column in input DataFrame.  In this case time column
+               is expected to store a Date.</p></dd><dt class="param">input</dt><dd class="cmt"><p>Input pipeline data to filter.</p></dd><dt>returns</dt><dd class="cmt"><p>Transformed pipeline data, where records outside the specified time range have been removed.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.package#dateFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dateFilter(minDate:String,maxDate:String,format:String,timeCol:String)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="dateFilter(String,String,String,String)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dateFilter</span><span class="params">(<span name="minDate">minDate: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="maxDate">maxDate: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="format">format: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="timeCol">timeCol: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pipeline op to filter records to a specific date range.</p><div class="fullcomment"><div class="comment cmt"><p>Pipeline op to filter records to a specific date range.
+</p></div><dl class="paramcmts block"><dt class="param">minDate</dt><dd class="cmt"><p>Start date for the range, expressed in a format parsable by java.text.SimpleDateFormat.</p></dd><dt class="param">maxDate</dt><dd class="cmt"><p>End date for the range, expressed in a format parsable by java.text.SimpleDateFormat.</p></dd><dt class="param">format</dt><dd class="cmt"><p>Date parsing string, expressed according to java.text.SimpleDateFormat.</p></dd><dt class="param">timeCol</dt><dd class="cmt"><p>Column spec denoting name of time column in input DataFrame.</p></dd><dt class="param">input</dt><dd class="cmt"><p>Input pipeline data to filter.</p></dd><dt>returns</dt><dd class="cmt"><p>Transformed pipeline data, where records outside the specified time range have been removed.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.package#dateFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dateFilter(minDate:java.util.Date,maxDate:java.util.Date,format:String,timeCol:String)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="dateFilter(Date,Date,String,String)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dateFilter</span><span class="params">(<span name="minDate">minDate: <span class="extype" name="java.util.Date">Date</span></span>, <span name="maxDate">maxDate: <span class="extype" name="java.util.Date">Date</span></span>, <span name="format">format: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="timeCol">timeCol: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pipeline op to filter records to a specific date range.</p><div class="fullcomment"><div class="comment cmt"><p>Pipeline op to filter records to a specific date range.
+</p></div><dl class="paramcmts block"><dt class="param">minDate</dt><dd class="cmt"><p>Start date for the range.</p></dd><dt class="param">maxDate</dt><dd class="cmt"><p>End date for the range.</p></dd><dt class="param">format</dt><dd class="cmt"><p>Date parsing string, expressed according to java.text.SimpleDateFormat.</p></dd><dt class="param">timeCol</dt><dd class="cmt"><p>Column spec denoting name of time column in input DataFrame.  Column is expected
+               to be a string.</p></dd><dt class="param">input</dt><dd class="cmt"><p>Input pipeline data to filter.</p></dd><dt>returns</dt><dd class="cmt"><p>Transformed pipeline data, where records outside the specified time range have been removed.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.docs" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="docs"></a>
+      <a id="docs:docs"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="docs$.html"><span class="name">docs</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Stub object necessary due to <a href="https://issues.scala-lang.org/browse/SI-8124" target="_blank">https://issues.scala-lang.org/browse/SI-8124</a></p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal.package#parseDate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="parseDate(stringDateCol:String,dateCol:String,format:String)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="parseDate(String,String,String)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">parseDate</span><span class="params">(<span name="stringDateCol">stringDateCol: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dateCol">dateCol: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="format">format: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pipeline op to parse a string date column into a timestamp column</p><div class="fullcomment"><div class="comment cmt"><p>Pipeline op to parse a string date column into a timestamp column</p></div><dl class="paramcmts block"><dt class="param">stringDateCol</dt><dd class="cmt"><p>The column from which to get the date (as a string)</p></dd><dt class="param">dateCol</dt><dd class="cmt"><p>The column into which to put the date (as a timestamp)</p></dd><dt class="param">format</dt><dd class="cmt"><p>The expected format of the date</p></dd><dt class="param">input</dt><dd class="cmt"><p>Input pipeline data to transform</p></dd><dt>returns</dt><dd class="cmt"><p>Transformed pipeline data with the new time field column.
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../../../lib/template.js"></script>
+    </body>
+      </html>
