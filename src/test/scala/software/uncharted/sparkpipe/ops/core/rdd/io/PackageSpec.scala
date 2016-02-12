@@ -16,7 +16,9 @@
 
 package software.uncharted.sparkpipe.ops.core.rdd.io
 
+import org.apache.hadoop.io.compress.{GzipCodec, BZip2Codec}
 import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SQLContext
 import org.mockito.Mockito._
 import org.scalatest.FunSpec
@@ -50,6 +52,73 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
         // verify
         verify(mockSparkContext).textFile(path)
+      }
+
+      it("should write a set number of partitions") {
+        val mockContext = mock[SparkContext]
+        val path = Math.random().toString
+
+        // test
+        read(path, options = Map("minPartitions" -> "4"))(mockContext)
+
+        // verify
+        verify(mockContext).textFile(path, 4)
+        verify(mockContext, never()).textFile(path)
+      }
+
+      it("shouldn't support arbitrary formats") {
+        val mockContext = mock[SparkContext]
+        val path = Math.random().toString
+
+        // test
+        intercept[AssertionError] {
+          read(path, format = "arbitrary")(mockContext)
+        }
+      }
+    }
+
+    describe("#write()") {
+      it("should write a file") {
+        val mockRDD = mock[RDD[String]]
+        val path = Math.random().toString
+
+        // test
+        write(path)(mockRDD)
+
+        // verify
+        verify(mockRDD).saveAsTextFile(path)
+      }
+
+      it("should write a file with BZip compression") {
+        val mockRDD = mock[RDD[String]]
+        val path = Math.random().toString
+
+        // test
+        write(path, options = Map("codec" -> "\t\nBzIp2  "))(mockRDD)
+
+        // verify
+        verify(mockRDD).saveAsTextFile(path, classOf[BZip2Codec])
+      }
+
+      it("should write a file with GZip compression") {
+        val mockRDD = mock[RDD[String]]
+        val path = Math.random().toString
+
+        // test
+        write(path, options = Map("codec" -> "gzip"))(mockRDD)
+
+        // verify
+        verify(mockRDD).saveAsTextFile(path, classOf[GzipCodec])
+      }
+
+      it("shouldn't support arbitrary formats") {
+        val mockRDD = mock[RDD[String]]
+        val path = Math.random().toString
+
+        // test
+        intercept[AssertionError] {
+          write(path, format = "arbitrary")(mockRDD)
+        }
       }
     }
   }

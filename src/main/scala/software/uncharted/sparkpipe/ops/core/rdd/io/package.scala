@@ -15,6 +15,7 @@
  */
 package software.uncharted.sparkpipe.ops.core.rdd
 
+import org.apache.hadoop.io.compress.{GzipCodec, BZip2Codec}
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SQLContext
@@ -35,9 +36,49 @@ package object io {
     * Reads a file into an RDD
     *
     * @param path The location of the source data
+    * @param format The format in which to read the data.  Currently, only "text" is supported.
+    * @param options A Map[String, String] of options.  Currently, the only supported option is "minPartitions", which
+    *                will set the minimum number of partitions into which the data is read.
     * @param sc The spark context in which to read the data
     * @return An RDD of the text of the source data, line by line
     */
-  def read(path: String)(sc: SparkContext): RDD[String] =
-    sc.textFile(path)
+  def read(
+    path: String,
+    format: String = "text",
+    options: Map[String, String] = Map[String, String]()
+  )(sc: SparkContext): RDD[String] = {
+    assert("text" == format, "Only text format currently supported")
+    if (options.contains("minPartitions")) {
+      sc.textFile(path, options("minPartitions").trim.toInt)
+    } else {
+      sc.textFile(path)
+    }
+  }
+
+  /**
+    * Write an RDD
+    * @param path The location to which to write the data
+    * @param format The format in which to write the data.  Currently, only "text" is supported.
+    * @param options A Map[String, String] of options.  Currently, only the "codec" option is supported, for which
+    *                valid values are "bzip2", and "gzip"; any other value will result in the default codec.
+    * @param input The RDD to write
+    * @tparam T The type of data contained in the RDD
+    * @return The input RDD
+    */
+  def write[T] (
+    path: String,
+    format: String = "text",
+    options: Map[String, String] = Map[String, String]()
+  )(input: RDD[T]): RDD[T] = {
+    assert("text" == format, "Only text format currently supported")
+    options.get("codec").map(_.trim.toLowerCase) match {
+      case Some("bzip2") =>
+        input.saveAsTextFile(path, classOf[BZip2Codec])
+      case Some("gzip") =>
+        input.saveAsTextFile(path, classOf[GzipCodec])
+      case _ =>
+        input.saveAsTextFile(path)
+    }
+    input
+  }
 }
