@@ -24,6 +24,17 @@ import org.apache.spark.sql.SQLContext
   * Input/output operations for RDDs, based on the `SparkContext.textFile` API
   */
 package object io {
+  /** Simple text format, one line per record. */
+  val TEXT_FORMAT = "text"
+  /** An option key with which to specify the minimum number of partitions into which to read an input file */
+  val MIN_PARTITIONS = "minPartitions"
+  /** An option key with which to specify the compression codec with which to write text data */
+  val CODEC = "codec"
+  /** Codec value indicating that a text file should be written using the BZip2 codec */
+  val BZIP2_CODEC = "bzip2"
+  /** Codec value indicating that a text file should be written using the GZip codec */
+  val GZIP_CODEC = "gzip"
+
   /**
     * Translates a SQLContext into a SparkContext, so that RDD operations can be called with either
     *
@@ -44,12 +55,12 @@ package object io {
     */
   def read(
     path: String,
-    format: String = "text",
+    format: String = TEXT_FORMAT,
     options: Map[String, String] = Map[String, String]()
   )(sc: SparkContext): RDD[String] = {
-    assert("text" == format, "Only text format currently supported")
-    if (options.contains("minPartitions")) {
-      sc.textFile(path, options("minPartitions").trim.toInt)
+    assert(TEXT_FORMAT == format, "Only text format currently supported")
+    if (options.contains(MIN_PARTITIONS)) {
+      sc.textFile(path, options(MIN_PARTITIONS).trim.toInt)
     } else {
       sc.textFile(path)
     }
@@ -67,14 +78,14 @@ package object io {
     */
   def write[T] (
     path: String,
-    format: String = "text",
+    format: String = TEXT_FORMAT,
     options: Map[String, String] = Map[String, String]()
   )(input: RDD[T]): RDD[T] = {
-    assert("text" == format, "Only text format currently supported")
-    options.get("codec").map(_.trim.toLowerCase) match {
-      case Some("bzip2") =>
+    assert(TEXT_FORMAT == format, "Only text format currently supported")
+    options.get(CODEC).map(_.trim.toLowerCase) match {
+      case Some(BZIP2_CODEC) =>
         input.saveAsTextFile(path, classOf[BZip2Codec])
-      case Some("gzip") =>
+      case Some(GZIP_CODEC) =>
         input.saveAsTextFile(path, classOf[GzipCodec])
       case _ =>
         input.saveAsTextFile(path)
