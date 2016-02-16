@@ -44,6 +44,17 @@ package object io {
   implicit def mutateContext (sqlc: SQLContext): SparkContext = sqlc.sparkContext
 
   /**
+    * Traslate a function from a SparkContext into a function from a SQLContext, so that RDD operations
+    * can be run off a Pipe[SQLContext]
+    *
+    * @param fcn The SparkContext-based function
+    * @tparam T The return type of the function
+    * @return The same function, but working on a SQLContext.
+    */
+  implicit def mutateContextFcn[T](fcn: SparkContext => T): SQLContext => T =
+    input => fcn(input.sparkContext)
+
+  /**
     * Reads a file into an RDD
     *
     * @param path The location of the source data

@@ -23,6 +23,7 @@ import org.apache.spark.sql.SQLContext
 import org.mockito.Mockito._
 import org.scalatest.FunSpec
 import org.scalatest.mock.MockitoSugar
+import software.uncharted.sparkpipe.Pipe
 
 class PackageSpec extends FunSpec with MockitoSugar {
 
@@ -52,6 +53,23 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
         // verify
         verify(mockSparkContext).textFile(path)
+      }
+
+      it("should work just as well with a Pipe[SQLContext] as with a Pipe[SparkContext]") {
+        val mockSparkContext = mock[SparkContext]
+        val mockSQLContext = mock[SQLContext]
+        val path = Math.random().toString
+
+        // Mock the link between them
+        when(mockSQLContext.sparkContext).thenReturn(mockSparkContext)
+
+        // Simple function to run
+        val fcn: SparkContext => SparkContext = sc => sc
+        val result = Pipe(mockSQLContext).to(fcn).run()
+
+        // verify
+        verify(mockSQLContext).sparkContext
+        assert(result === mockSparkContext)
       }
 
       it("should write a set number of partitions") {
