@@ -36,6 +36,76 @@ Pipe(sqlContext)
 .run
 ```
 
+## Advanced Usage
+
+### Optional Stages
+
+```scala
+scala> import software.uncharted.sparkpipe.Pipe
+scala> Pipe("hello").maybeTo(None).run // == "hello"
+scala> Pipe("hello").maybeTo(Some(a => a+" world")).run // == "hello world"
+```
+
+### Branching
+
+```scala
+import software.uncharted.sparkpipe.Pipe
+
+val oneInjest = Pipe("some complex data injest pipeline")
+
+val transform = oneInjest.to(_.toUpperCase())
+
+val toHdfs = oneInjest.to(in => {
+  // convert to parquet and send to HDFS
+})
+
+transform.run
+toHdfs.run
+// or
+Pipe(transform, toHdfs).run
+```
+
+### Merging
+
+```scala
+import software.uncharted.sparkpipe.Pipe
+
+val oneInjest = Pipe("some complex data injest pipeline")
+val anotherInjest = Pipe("another complex data injest pipeline")
+
+// You can merge up to 5 pipes this way
+val transform = Pipe(oneInjest, anotherInjest).to(in => {
+  val oneOutput = in._1
+  val twoOutput = in._2
+  oneOutput + " and " + twoOutput
+})
+.run
+```
+
+### Caching
+
+```scala
+import software.uncharted.sparkpipe.Pipe
+
+val oneInjest = Pipe("some complex data injest pipeline")
+val anotherInjest = Pipe("another complex data injest pipeline")
+
+// merge and run
+val transform = Pipe(oneInjest, anotherInjest).to(in => {
+  val oneOutput = in._1
+  val twoOutput = in._2
+  oneOutput + " and " + twoOutput
+})
+.run
+
+// at this point, the output of every stage of every Pipe is cached
+oneInjest.run // <- this will return a reference to the same String as the one used inside transform!
+              // this is useful, so that you can cache and reuse the same RDDs/DataFrames in multiple Pipes
+
+// want to clear the cache?
+oneInjest.reset
+oneInjest.run // <- this is a new copy of the string "some complex data injest pipeline"
+```
 
 ## Included Operations
 
