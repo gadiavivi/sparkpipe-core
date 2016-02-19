@@ -95,6 +95,22 @@ class PipeSpec extends FunSpec {
       }
     }
 
+    describe("#maybeTo()") {
+      it("should form a nenw pipe by connecting the given anonymous function to the tail of the existing pipe, if said function is defined") {
+        val pipe = Pipe("hello")
+        val toPipe = pipe.maybeTo(Some((a: String) => a + " world"))
+        assert(pipe != toPipe)
+        assert(toPipe.run() == "hello world")
+      }
+
+      it("should leave a Pipe unchanged if the optional anonymous function is not defined") {
+        val pipe = Pipe("hello")
+        val toPipe = pipe.maybeTo(None)
+        assert(pipe == toPipe)
+        assert(toPipe.run() == "hello")
+      }
+    }
+
     describe("#run()") {
       it("should run the given pipe, producing a value") {
         val pipe = Pipe("hello")

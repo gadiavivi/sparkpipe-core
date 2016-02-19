@@ -45,6 +45,16 @@ class Pipe[O] private[sparkpipe] (
   }
 
   /**
+   * Potentially create a new {@link software.uncharted.sparkpipe.Pipe} by linking this {@link software.uncharted.sparkpipe.Pipe} to an optional operation
+   * @param opFunc an optional parameter to chain onto the end of this {@link software.uncharted.sparkpipe.Pipe}, forming a new {@link software.uncharted.sparkpipe.Pipe}
+   * @return a new {@link software.uncharted.sparkpipe.Pipe}[I,A], which is the composition of this {@link software.uncharted.sparkpipe.Pipe}[I,O]
+   *         and the new operation O=>A iff opFunc is defined. Pipe is unchanged otherwise.
+   */
+  def maybeTo(opFunc: Option[O => O]): Pipe[O] = {
+    opFunc.map(this.to(_)).getOrElse(this)
+  }
+
+  /**
    * Run this pipe, producing a value which is cached until reset()
    * @return the output of the tail of this {@link software.uncharted.sparkpipe.Pipe}, cached until reset() is called.
    */
