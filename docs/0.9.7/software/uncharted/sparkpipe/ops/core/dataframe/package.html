@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>dataframe - sparkpipe-core 0.9.7 API - software.uncharted.sparkpipe.ops.core.dataframe</title>
+          <meta name="description" content="dataframe - sparkpipe - core 0.9.7 API - software.uncharted.sparkpipe.ops.core.dataframe" />
+          <meta name="keywords" content="dataframe sparkpipe core 0.9.7 API software.uncharted.sparkpipe.ops.core.dataframe" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../index.html';
+            var hash = 'software.uncharted.sparkpipe.ops.core.dataframe.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../package.html" class="extype" name="software">software</a>.<a href="../../../../package.html" class="extype" name="software.uncharted">uncharted</a>.<a href="../../../package.html" class="extype" name="software.uncharted.sparkpipe">sparkpipe</a>.<a href="../../package.html" class="extype" name="software.uncharted.sparkpipe.ops">ops</a>.<a href="../package.html" class="extype" name="software.uncharted.sparkpipe.ops.core">core</a></p>
+        <h1>dataframe</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dataframe</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Common operations for manipulating dataframes
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="software.uncharted.sparkpipe.ops.core.dataframe"><span>dataframe</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[I1,I2,I3,I4,I5,O](columnName:String,columnFcn:(I1,I2,I3,I4,I5)=&gt;O,in1:String,in2:String,in3:String,in4:String,in5:String)(input:org.apache.spark.sql.DataFrame)(implicittagO:reflect.runtime.universe.TypeTag[O],implicittagI1:reflect.runtime.universe.TypeTag[I1],implicittagI2:reflect.runtime.universe.TypeTag[I2],implicittagI3:reflect.runtime.universe.TypeTag[I3],implicittagI4:reflect.runtime.universe.TypeTag[I4],implicittagI5:reflect.runtime.universe.TypeTag[I5]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[I1,I2,I3,I4,I5,O](String,(I1,I2,I3,I4,I5)⇒O,String,String,String,String,String)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O],scala.reflect.api.JavaUniverse.TypeTag[I1],scala.reflect.api.JavaUniverse.TypeTag[I2],scala.reflect.api.JavaUniverse.TypeTag[I3],scala.reflect.api.JavaUniverse.TypeTag[I4],scala.reflect.api.JavaUniverse.TypeTag[I5]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="I1">I1</span>, <span name="I2">I2</span>, <span name="I3">I3</span>, <span name="I4">I4</span>, <span name="I5">I5</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I4">I4</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I5">I5</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>, <span name="in1">in1: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in2">in2: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in3">in3: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in4">in4: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in5">in5: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>, <span name="tagI1">tagI1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>]</span>, <span name="tagI2">tagI2: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>]</span>, <span name="tagI3">tagI3: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>]</span>, <span name="tagI4">tagI4: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I4">I4</span>]</span>, <span name="tagI5">tagI5: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I5">I5</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">in1</dt><dd class="cmt"><p>the first input column</p></dd><dt class="param">in2</dt><dd class="cmt"><p>the second input column</p></dd><dt class="param">in3</dt><dd class="cmt"><p>the third input column</p></dd><dt class="param">in4</dt><dd class="cmt"><p>the fourth input column</p></dd><dt class="param">in5</dt><dd class="cmt"><p>the fifth input column</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[I1,I2,I3,I4,O](columnName:String,columnFcn:(I1,I2,I3,I4)=&gt;O,in1:String,in2:String,in3:String,in4:String)(input:org.apache.spark.sql.DataFrame)(implicittagO:reflect.runtime.universe.TypeTag[O],implicittagI1:reflect.runtime.universe.TypeTag[I1],implicittagI2:reflect.runtime.universe.TypeTag[I2],implicittagI3:reflect.runtime.universe.TypeTag[I3],implicittagI4:reflect.runtime.universe.TypeTag[I4]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[I1,I2,I3,I4,O](String,(I1,I2,I3,I4)⇒O,String,String,String,String)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O],scala.reflect.api.JavaUniverse.TypeTag[I1],scala.reflect.api.JavaUniverse.TypeTag[I2],scala.reflect.api.JavaUniverse.TypeTag[I3],scala.reflect.api.JavaUniverse.TypeTag[I4]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="I1">I1</span>, <span name="I2">I2</span>, <span name="I3">I3</span>, <span name="I4">I4</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I4">I4</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>, <span name="in1">in1: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in2">in2: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in3">in3: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in4">in4: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>, <span name="tagI1">tagI1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>]</span>, <span name="tagI2">tagI2: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>]</span>, <span name="tagI3">tagI3: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>]</span>, <span name="tagI4">tagI4: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I4">I4</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">in1</dt><dd class="cmt"><p>the first input column</p></dd><dt class="param">in2</dt><dd class="cmt"><p>the second input column</p></dd><dt class="param">in3</dt><dd class="cmt"><p>the third input column</p></dd><dt class="param">in4</dt><dd class="cmt"><p>the fourth input column</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[I1,I2,I3,O](columnName:String,columnFcn:(I1,I2,I3)=&gt;O,in1:String,in2:String,in3:String)(input:org.apache.spark.sql.DataFrame)(implicittagO:reflect.runtime.universe.TypeTag[O],implicittagI1:reflect.runtime.universe.TypeTag[I1],implicittagI2:reflect.runtime.universe.TypeTag[I2],implicittagI3:reflect.runtime.universe.TypeTag[I3]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[I1,I2,I3,O](String,(I1,I2,I3)⇒O,String,String,String)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O],scala.reflect.api.JavaUniverse.TypeTag[I1],scala.reflect.api.JavaUniverse.TypeTag[I2],scala.reflect.api.JavaUniverse.TypeTag[I3]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="I1">I1</span>, <span name="I2">I2</span>, <span name="I3">I3</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>, <span name="in1">in1: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in2">in2: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in3">in3: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>, <span name="tagI1">tagI1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>]</span>, <span name="tagI2">tagI2: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>]</span>, <span name="tagI3">tagI3: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I3">I3</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">in1</dt><dd class="cmt"><p>the first input column</p></dd><dt class="param">in2</dt><dd class="cmt"><p>the second input column</p></dd><dt class="param">in3</dt><dd class="cmt"><p>the third input column</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[I1,I2,O](columnName:String,columnFcn:(I1,I2)=&gt;O,in1:String,in2:String)(input:org.apache.spark.sql.DataFrame)(implicittagO:reflect.runtime.universe.TypeTag[O],implicittagI1:reflect.runtime.universe.TypeTag[I1],implicittagI2:reflect.runtime.universe.TypeTag[I2]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[I1,I2,O](String,(I1,I2)⇒O,String,String)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O],scala.reflect.api.JavaUniverse.TypeTag[I1],scala.reflect.api.JavaUniverse.TypeTag[I2]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="I1">I1</span>, <span name="I2">I2</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>, <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>, <span name="in1">in1: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="in2">in2: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>, <span name="tagI1">tagI1: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I1">I1</span>]</span>, <span name="tagI2">tagI2: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I2">I2</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">in1</dt><dd class="cmt"><p>the first input column</p></dd><dt class="param">in2</dt><dd class="cmt"><p>the second input column</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[I,O](columnName:String,columnFcn:I=&gt;O,in:String)(input:org.apache.spark.sql.DataFrame)(implicittagO:reflect.runtime.universe.TypeTag[O],implicittagI:reflect.runtime.universe.TypeTag[I]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[I,O](String,(I)⇒O,String)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O],scala.reflect.api.JavaUniverse.TypeTag[I]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I">I</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>, <span name="in">in: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>, <span name="tagI">tagI: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.I">I</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">in</dt><dd class="cmt"><p>the input column</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#addColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addColumn[O](columnName:String,columnFcn:()=&gt;O)(input:org.apache.spark.sql.DataFrame)(implicittag:reflect.runtime.universe.TypeTag[O]):org.apache.spark.sql.DataFrame"></a>
+      <a id="addColumn[O](String,()⇒O)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[O]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addColumn</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: () ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tag">tag: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.addColumn.O">O</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Take an existing DataFrame, and add a new column to it.</p><div class="fullcomment"><div class="comment cmt"><p>Take an existing DataFrame, and add a new column to it.</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>The name of the column to add</p></dd><dt class="param">columnFcn</dt><dd class="cmt"><p>A function which generates the new column's values based on input columns</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the named added value.
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#cache" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cache(frame:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="cache(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cache</span><span class="params">(<span name="frame">frame: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">cache() the specified DataFrame</p><div class="fullcomment"><div class="comment cmt"><p>cache() the specified DataFrame</p></div><dl class="paramcmts block"><dt class="param">frame</dt><dd class="cmt"><p>the DataFrame to cache()</p></dd><dt>returns</dt><dd class="cmt"><p>the input DataFrame, after calling cache()
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#castColumns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="castColumns(castMap:Map[String,String])(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="castColumns(Map[String,String])(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">castColumns</span><span class="params">(<span name="castMap">castMap: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cast a set of columns to new types, replacing the original columns</p><div class="fullcomment"><div class="comment cmt"><p>Cast a set of columns to new types, replacing the original columns</p></div><dl class="paramcmts block"><dt class="param">castMap</dt><dd class="cmt"><p>a Map[String, String] of columnName =&gt; datatype</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the casted columns
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.docs" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="docs"></a>
+      <a id="docs:docs"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="docs$.html"><span class="name">docs</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Stub object necessary due to <a href="https://issues.scala-lang.org/browse/SI-8124" target="_blank">https://issues.scala-lang.org/browse/SI-8124</a></p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#dropColumns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dropColumns(colNames:String*)(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="dropColumns(String*)(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dropColumns</span><span class="params">(<span name="colNames">colNames: <span class="extype" name="scala.Predef.String">String</span>*</span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Remove columns from a DataFrame</p><div class="fullcomment"><div class="comment cmt"><p>Remove columns from a DataFrame</p></div><dl class="paramcmts block"><dt class="param">colNames</dt><dd class="cmt"><p>the named columns to remove</p></dd><dt class="param">input</dt><dd class="cmt"><p>the input DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>the resultant DataFrame, without the specified column
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.io" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="io"></a>
+      <a id="io:io"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="io/package.html"><span class="name">io</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Input/output operations for DataFrames, based on the <code>sqlContext.read</code> and <code>DataFrame.write</code> APIs
+</p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.numeric" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="numeric"></a>
+      <a id="numeric:numeric"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="numeric/package.html"><span class="name">numeric</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Numeric pipeline operations which operate on DataFrames which have columns of the following types:</p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#renameColumns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="renameColumns(nameMap:Map[String,String])(input:org.apache.spark.sql.DataFrame):org.apache.spark.sql.DataFrame"></a>
+      <a id="renameColumns(Map[String,String])(DataFrame):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">renameColumns</span><span class="params">(<span name="nameMap">nameMap: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Rename columns in a DataFrame</p><div class="fullcomment"><div class="comment cmt"><p>Rename columns in a DataFrame</p></div><dl class="paramcmts block"><dt class="param">nameMap</dt><dd class="cmt"><p>a Map[String, String] from columns in the DataFrame to new names</p></dd><dt class="param">input</dt><dd class="cmt"><p>the input DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>a new DataFrame with the renamed column
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#replaceColumn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="replaceColumn[I,O](columnName:String,columnFcn:I=&gt;O)(input:org.apache.spark.sql.DataFrame)(implicittagI:reflect.runtime.universe.TypeTag[I],implicittagO:reflect.runtime.universe.TypeTag[O]):org.apache.spark.sql.DataFrame"></a>
+      <a id="replaceColumn[I,O](String,(I)⇒O)(DataFrame)(scala.reflect.api.JavaUniverse.TypeTag[I],scala.reflect.api.JavaUniverse.TypeTag[O]):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">replaceColumn</span><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="params">(<span name="columnName">columnName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="columnFcn">columnFcn: (<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.replaceColumn.I">I</span>) ⇒ <span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.replaceColumn.O">O</span></span>)</span><span class="params">(<span name="input">input: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tagI">tagI: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.replaceColumn.I">I</span>]</span>, <span name="tagO">tagO: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="software.uncharted.sparkpipe.ops.core.dataframe.replaceColumn.O">O</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Takes a DataFrame and replaces a column in it using a transformation function
+</p><div class="fullcomment"><div class="comment cmt"><p>Takes a DataFrame and replaces a column in it using a transformation function
+</p></div><dl class="paramcmts block"><dt class="param">columnName</dt><dd class="cmt"><p>the column to replace</p></dd><dt class="param">input</dt><dd class="cmt"><p>The existing DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>A new DataFrame with the replaced column
+</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.temporal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="temporal"></a>
+      <a id="temporal:temporal"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="temporal/package.html"><span class="name">temporal</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Common pipeline operations for dealing with temporal data
+</p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.text" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="text"></a>
+      <a id="text:text"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="text/package.html"><span class="name">text</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Common pipeline operations for dealing with textual data
+</p>
+    </li><li name="software.uncharted.sparkpipe.ops.core.dataframe.package#toRDD" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toRDD(frame:org.apache.spark.sql.DataFrame):org.apache.spark.rdd.RDD[org.apache.spark.sql.Row]"></a>
+      <a id="toRDD(DataFrame):RDD[Row]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toRDD</span><span class="params">(<span name="frame">frame: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<span class="extype" name="org.apache.spark.sql.Row">Row</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Convert a DataFrame to an RDD[Row]</p><div class="fullcomment"><div class="comment cmt"><p>Convert a DataFrame to an RDD[Row]</p></div><dl class="paramcmts block"><dt class="param">frame</dt><dd class="cmt"><p>the DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>the underlying RDD[Row] from frame
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../../lib/template.js"></script>
+    </body>
+      </html>
