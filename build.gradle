@@ -49,7 +49,7 @@ configurations {
 }
 
 group = 'software.uncharted.sparkpipe'
-version = '0.9.6'
+version = '0.9.7'
 
 project.ext {
   scalaBinaryVersion = '2.10'
