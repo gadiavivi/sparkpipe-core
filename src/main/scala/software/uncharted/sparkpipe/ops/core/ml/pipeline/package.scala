@@ -32,9 +32,11 @@ package object pipeline {
    * @param path the path to the persisted Pipeline
    * @return a spark.ml Pipeline constructed from the given file
    */
+  // $COVERAGE-OFF$
   def load(path: String): MLPipeline = {
     MLPipeline.load(path)
   }
+  // $COVERAGE-ON$
 
   /**
    * Persist a spark.ml Pipeline to a file
