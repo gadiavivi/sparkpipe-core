@@ -34,7 +34,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
   describe("ops.core.ml.pipeline") {
 
     val version = Spark.sc.version
-    if (version = "1.4.1" || version = "1.5.2") {
+    if (version == "1.4.1" || version == "1.5.2") {
       throw new UnsupportedOperationException("Unsupported Spark version: " + version + "Must be 1.6.0 or higher")
     }
 
