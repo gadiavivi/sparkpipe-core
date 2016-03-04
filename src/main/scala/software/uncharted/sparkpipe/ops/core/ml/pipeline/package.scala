@@ -50,7 +50,7 @@ package object pipeline {
    * @throws UnsupportedOperationException on spark version < 1.6.x
    */
   // $COVERAGE-OFF$
-  // Due to problems supporting multiple spark versions we cannot yet get full coverage 
+  // Due to problems supporting multiple spark versions we cannot yet get full coverage
   def save(sc: SparkContext, path: String)(mlpipe: MLPipeline): MLPipeline = {
     if (sc.version < "1.6.0") throw new UnsupportedOperationException("Unsupported Spark version: ${sc.version} must be 1.6.0 or higher")
     mlpipe.save(path)
