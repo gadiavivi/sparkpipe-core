@@ -66,30 +66,8 @@ class PackageSpec extends FunSpec with MockitoSugar {
     // TODO figure out how to deal with static load method
     // describe("#load()") {
     //   it("should use Pipeline.load() to load a spark.ml Pipeline") {
-    //     try {
-    //       throw new Exception // Test not implemented
-    //     } catch {
-    //       case e: UnsupportedOperationException => {
-    //         if (Spark.sc.version == "1.4.1" || Spark.sc.version == "1.5.2") { // Expecting this error
-    //           Pass
-    //         } else { // Not expecting this error, pass it along
-    //           throw e
-    //         }
-    //       }
-    //     }
+    //     throw new Exception // Test not implemented
     //   }
-    //
-    //   it("should throw an UnsupportedOperationException for spark versions < 1.6.0") {
-    //     val mockPipeline = mock[Pipeline]
-    //     val mockSc = mock[SparkContext]
-    //
-    //     when(mockSc.version).thenReturn("1.4.1")
-    //
-    //     intercept[UnsupportedOperationException] {
-    //       load(mockSc, path)(mockPipeline)
-    //     }
-    //   }
-    // }
 
     describe("#save()") {
       it("should use pipeline.save() to persist a spark.ml Pipeline") {

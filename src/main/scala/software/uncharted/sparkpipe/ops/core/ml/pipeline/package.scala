@@ -37,11 +37,8 @@ package object pipeline {
    */
   // $COVERAGE-OFF$
   def load(sc: SparkContext, path: String): MLPipeline = {
-    if (sc.version >= "1.6.0") {
-      MLPipeline.load(path)
-    } else {
-      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
-    }
+    if (sc.version < "1.6.0") throw new UnsupportedOperationException("Unsupported Spark version: ${sc.version} must be 1.6.0 or higher")
+    MLPipeline.load(path)
   }
   // $COVERAGE-ON$
 
@@ -52,14 +49,14 @@ package object pipeline {
    * @return the input spark.ml Pipeline, unchanged
    * @throws UnsupportedOperationException on spark version < 1.6.x
    */
+  // $COVERAGE-OFF$
+  // Due to problems supporting multiple spark versions we cannot yet get full coverage 
   def save(sc: SparkContext, path: String)(mlpipe: MLPipeline): MLPipeline = {
-    if (sc.version >= "1.6.0") {
-      mlpipe.save(path)
-      mlpipe
-    } else {
-      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
-    }
+    if (sc.version < "1.6.0") throw new UnsupportedOperationException("Unsupported Spark version: ${sc.version} must be 1.6.0 or higher")
+    mlpipe.save(path)
+    mlpipe
   }
+  // $COVERAGE-ON$
 
   /**
    * Add a stage (an Estimator or a Transformer) to an existing spark.ml Pipeline
