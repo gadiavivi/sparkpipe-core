@@ -35,7 +35,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
     val version = Spark.sc.version
     if (version = "1.4.1" || version = "1.5.2") {
-      throw new Exception("Unsupported Spark version: " + version + "Must be 1.6.0 or higher")
+      throw new UnsupportedOperationException("Unsupported Spark version: " + version + "Must be 1.6.0 or higher")
     }
 
     val sqlContext = new org.apache.spark.sql.SQLContext(Spark.sc)
