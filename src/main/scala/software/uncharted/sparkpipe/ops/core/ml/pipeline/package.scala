@@ -16,6 +16,7 @@
 
 package software.uncharted.sparkpipe.ops.core.ml
 
+import org.apache.spark.SparkContext
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineStage, PipelineModel => MLPipelineModel}
 
@@ -29,23 +30,35 @@ package object pipeline {
 
   /**
    * Load a spark.ml Pipeline from a file
+   * @param sc the SparkContext
    * @param path the path to the persisted Pipeline
    * @return a spark.ml Pipeline constructed from the given file
+   * @throws UnsupportedOperationException on spark version < 1.6.0
    */
   // $COVERAGE-OFF$
-  def load(path: String): MLPipeline = {
-    MLPipeline.load(path)
+  def load(sc: SparkContext, path: String): MLPipeline = {
+    if (sc.version == "1.4.1" || sc.version == "1.5.2") {
+      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
+    } else {
+      MLPipeline.load(path)
+    }
   }
   // $COVERAGE-ON$
 
   /**
    * Persist a spark.ml Pipeline to a file
+   * @param sc the SparkContext
    * @param path the path for the persisted Pipeline file
    * @return the input spark.ml Pipeline, unchanged
+   * @throws UnsupportedOperationException on spark version < 1.6.x
    */
-  def save(path: String)(mlpipe: MLPipeline): MLPipeline = {
-    mlpipe.save(path)
-    mlpipe
+  def save(sc: SparkContext, path: String)(mlpipe: MLPipeline): MLPipeline = {
+    if (sc.version == "1.4.1" || sc.version == "1.5.2") {
+      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
+    } else {
+      mlpipe.save(path)
+      mlpipe
+    }
   }
 
   /**

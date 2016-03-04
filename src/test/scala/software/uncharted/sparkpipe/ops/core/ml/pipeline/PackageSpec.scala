@@ -17,6 +17,7 @@
 package software.uncharted.sparkpipe.ops.core.ml.pipeline
 
 import org.scalatest._
+import org.apache.spark.SparkContext
 import software.uncharted.sparkpipe.Spark
 import org.apache.spark.sql.DataFrame
 import org.scalatest.mock.MockitoSugar
@@ -32,11 +33,6 @@ import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineS
 
 class PackageSpec extends FunSpec with MockitoSugar {
   describe("ops.core.ml.pipeline") {
-
-    val version = Spark.sc.version
-    if (version == "1.4.1" || version == "1.5.2") {
-      throw new UnsupportedOperationException("Unsupported Spark version: " + version + "Must be 1.6.0 or higher")
-    }
 
     val sqlContext = new org.apache.spark.sql.SQLContext(Spark.sc)
     val training = sqlContext.createDataFrame(Seq(
@@ -64,26 +60,68 @@ class PackageSpec extends FunSpec with MockitoSugar {
     val lr = new LogisticRegression()
       .setMaxIter(10)
       .setRegParam(0.01)
+    val path = "/tmp/unfit-lr-model";
+    val sc = Spark.sc
 
     // TODO figure out how to deal with static load method
     // describe("#load()") {
     //   it("should use Pipeline.load() to load a spark.ml Pipeline") {
-    //     throw new Exception();
+    //     try {
+    //       throw new Exception // Test not implemented
+    //     } catch {
+    //       case e: UnsupportedOperationException => {
+    //         if (Spark.sc.version == "1.4.1" || Spark.sc.version == "1.5.2") { // Expecting this error
+    //           Pass
+    //         } else { // Not expecting this error, pass it along
+    //           throw e
+    //         }
+    //       }
+    //     }
+    //   }
+    //
+    //   it("should throw an UnsupportedOperationException for spark versions < 1.6.0") {
+    //     val mockPipeline = mock[Pipeline]
+    //     val mockSc = mock[SparkContext]
+    //
+    //     when(mockSc.version).thenReturn("1.4.1")
+    //
+    //     intercept[UnsupportedOperationException] {
+    //       load(mockSc, path)(mockPipeline)
+    //     }
     //   }
     // }
 
     describe("#save()") {
       it("should use pipeline.save() to persist a spark.ml Pipeline") {
+        try {
+          val mockPipeline = mock[Pipeline]
+
+          save(sc, path)(mockPipeline)
+
+          verify(mockPipeline).save(path)
+        } catch {
+          case e: UnsupportedOperationException => {
+            if (Spark.sc.version == "1.4.1" || Spark.sc.version == "1.5.2") { // Expecting this error
+              assert(true) // Expecting this error
+            } else { // Not expecting this error, pass it along
+              throw e
+            }
+          }
+        }
+      }
+
+      it("should throw an UnsupportedOperationException for spark versions < 1.6.0") {
         val mockPipeline = mock[Pipeline]
-        val path = "/tmp/unfit-lr-model";
+        val mockSc = mock[SparkContext]
 
-        // Test
-        save(path)(mockPipeline)
+        when(mockSc.version).thenReturn("1.4.1")
 
-        // verify
-        verify(mockPipeline).save(path)
+        intercept[UnsupportedOperationException] {
+          save(mockSc, path)(mockPipeline)
+        }
       }
     }
+
 
     describe("#addStage()") {
       it("should add a PipelineStage to an existing spark.ml Pipeline") {
