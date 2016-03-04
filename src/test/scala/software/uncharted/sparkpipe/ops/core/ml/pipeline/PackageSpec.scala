@@ -93,31 +93,15 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
     describe("#save()") {
       it("should use pipeline.save() to persist a spark.ml Pipeline") {
-        try {
-          val mockPipeline = mock[Pipeline]
-
+        if (Spark.sc.version >= "1.6.0") {
+          val mockPipeline = mock[MLPipeline]
           save(sc, path)(mockPipeline)
-
           verify(mockPipeline).save(path)
-        } catch {
-          case e: UnsupportedOperationException => {
-            if (Spark.sc.version == "1.4.1" || Spark.sc.version == "1.5.2") { // Expecting this error
-              assert(true) // Expecting this error
-            } else { // Not expecting this error, pass it along
-              throw e
-            }
+        } else {
+          intercept[UnsupportedOperationException] {
+            val mockPipeline = mock[MLPipeline]
+            save(sc, path)(mockPipeline)
           }
-        }
-      }
-
-      it("should throw an UnsupportedOperationException for spark versions < 1.6.0") {
-        val mockPipeline = mock[Pipeline]
-        val mockSc = mock[SparkContext]
-
-        when(mockSc.version).thenReturn("1.4.1")
-
-        intercept[UnsupportedOperationException] {
-          save(mockSc, path)(mockPipeline)
         }
       }
     }

@@ -37,10 +37,10 @@ package object pipeline {
    */
   // $COVERAGE-OFF$
   def load(sc: SparkContext, path: String): MLPipeline = {
-    if (sc.version == "1.4.1" || sc.version == "1.5.2") {
-      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
-    } else {
+    if (sc.version >= "1.6.0") {
       MLPipeline.load(path)
+    } else {
+      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
     }
   }
   // $COVERAGE-ON$
@@ -53,11 +53,11 @@ package object pipeline {
    * @throws UnsupportedOperationException on spark version < 1.6.x
    */
   def save(sc: SparkContext, path: String)(mlpipe: MLPipeline): MLPipeline = {
-    if (sc.version == "1.4.1" || sc.version == "1.5.2") {
-      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
-    } else {
+    if (sc.version >= "1.6.0") {
       mlpipe.save(path)
       mlpipe
+    } else {
+      throw new UnsupportedOperationException("Unsupported Spark version: " + sc.version + "Must be 1.6.0 or higher")
     }
   }
 
