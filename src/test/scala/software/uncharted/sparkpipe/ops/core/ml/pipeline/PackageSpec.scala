@@ -33,6 +33,11 @@ import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineS
 class PackageSpec extends FunSpec with MockitoSugar {
   describe("ops.core.ml.pipeline") {
 
+    val version = Spark.sc.version
+    if (version = "1.4.1" || version = "1.5.2") {
+      throw new Exception("Unsupported Spark version: " + version + "Must be 1.6.0 or higher")
+    }
+
     val sqlContext = new org.apache.spark.sql.SQLContext(Spark.sc)
     val training = sqlContext.createDataFrame(Seq(
       (1.0, Vectors.dense(0.0, 1.1, 0.1)),
