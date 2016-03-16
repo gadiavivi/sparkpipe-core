@@ -63,7 +63,7 @@ package object text {
    * Splits a String column into an Array[String] column using a delimiter
    * (whitespace, by default)
    *
-   * @param stringcol the name of a String column in the input DataFrame
+   * @param stringCol the name of a String column in the input DataFrame
    * @param delimiter a delimiter to split the String column on
    * @param input Input pipeline data to transform
    * @return Transformed pipeline data, with the given string column split on the delimiter
