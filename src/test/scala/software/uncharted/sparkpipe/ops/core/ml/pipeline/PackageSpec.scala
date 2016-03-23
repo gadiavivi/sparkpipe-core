@@ -100,7 +100,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
     describe("#fit()") {
       it("should call fit() on an existing  spark.ml Pipeline, with the given DataFrame") {
-        val mockPipeline = mock[Pipeline]
+        val mockPipeline = mock[MLPipeline]
 
         // Test
         fit((mockPipeline, training))
