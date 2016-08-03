@@ -17,7 +17,7 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SQLContext, DataFrame, Row, Column}
+import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
 import org.apache.spark.sql.functions.{udf, callUDF}
 import org.apache.spark.sql.types.{DataType, TimestampType, IntegerType}
 import java.sql.Timestamp

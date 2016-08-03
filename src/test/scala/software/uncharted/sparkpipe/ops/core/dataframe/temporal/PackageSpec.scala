@@ -34,7 +34,7 @@ class PackageSpec extends FunSpec {
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-20").getTime), "2015-11-20", 3),
       (new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-21").getTime), "2015-11-21", 4)
     ))
-    val df = toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sparkSession)(rdd)
 
     describe("#dateFilter()") {
       it("should support filtering rows in an input DataFrame with a String timetamp column, based on a date range") {

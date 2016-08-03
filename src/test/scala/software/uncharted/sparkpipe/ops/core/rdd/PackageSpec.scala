@@ -30,7 +30,7 @@ class PackageSpec extends FunSpec {
           ("three", 3),
           ("four", 4)
         ))
-        val df = toDF(Spark.sqlContext)(rdd)
+        val df = toDF(Spark.sparkSession)(rdd)
         assert(df.schema(0).dataType.equals(org.apache.spark.sql.types.StringType))
         assert(df.schema(1).dataType.equals(org.apache.spark.sql.types.IntegerType))
         assert(df.first.getString(0).equals("one"))

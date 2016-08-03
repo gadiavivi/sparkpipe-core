@@ -18,7 +18,7 @@ package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SQLContext, DataFrame, Row, Column}
+import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
 import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 

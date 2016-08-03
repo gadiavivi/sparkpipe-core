@@ -101,7 +101,7 @@ package object text {
    * @return Transformed pipeline data, with stop words removed from the specified column
    */
   def stopTermFilter(arrayCol: String, stopTerms: Set[String])(input: DataFrame): DataFrame = {
-    val bStopTermsLookup = input.sqlContext.sparkContext.broadcast(
+    val bStopTermsLookup = input.sparkSession.sparkContext.broadcast(
       collection.mutable.LinkedHashSet[String]() ++ stopTerms
     )
 
@@ -141,7 +141,7 @@ package object text {
    * @return Transformed pipeline data, with the specified column filterd down to terms of interest
    */
   def includeTermFilter(arrayCol: String, includeTerms: Set[String])(input: DataFrame): DataFrame = {
-    val bIncludeTermsLookup = input.sqlContext.sparkContext.broadcast(
+    val bIncludeTermsLookup = input.sparkSession.sparkContext.broadcast(
       collection.mutable.LinkedHashSet[String]() ++ includeTerms
     )
 
@@ -181,7 +181,7 @@ package object text {
    * @return the Map[String, Int] of unique terms and their counts
    */
   def uniqueTerms(arrayCol: String)(input: DataFrame): collection.mutable.Map[String, Int] = {
-    val accumulator = input.sqlContext.sparkContext.accumulable(new HashMap[String, Int]())(new UniqueTermAccumulableParam())
+    val accumulator = input.sparkSession.sparkContext.accumulable(new HashMap[String, Int]())(new UniqueTermAccumulableParam())
 
     input.select(arrayCol).foreach(row => {
       accumulator.add(row(0).asInstanceOf[Seq[String]])

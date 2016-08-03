@@ -15,7 +15,7 @@ The Uncharted Spark Pipeline facilitates expressing individual components of Spa
 Try the pipeline yourself using spark-shell:
 
 ```bash
-$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.7
+$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.8
 ```
 
 ```scala
@@ -29,7 +29,7 @@ scala> :paste
 import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.ops
 
-Pipe(sqlContext)
+Pipe(sparkSession)
 .to(ops.core.dataframe.io.read("people.json", "json"))
 .to(ops.core.dataframe.renameColumns(Map("age" -> "personAge")))
 .to(_.filter("personAge > 21").count)

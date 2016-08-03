@@ -25,7 +25,7 @@ import org.apache.spark.SparkConf
 object Spark {
   val conf = new SparkConf().setAppName("sparkpipe-core")
   val sc = new SparkContext(conf)
-  val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+  val sparkSession = new org.apache.spark.sql.SparkSession(sc)
 }
 
 object Main {

@@ -19,7 +19,7 @@ package software.uncharted.sparkpipe.ops.core.rdd.io
 import org.apache.hadoop.io.compress.{GzipCodec, BZip2Codec}
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.SparkSession
 import org.mockito.Mockito._
 import org.scalatest.FunSpec
 import org.scalatest.mock.MockitoSugar
@@ -40,35 +40,35 @@ class PackageSpec extends FunSpec with MockitoSugar {
         verify(mockContext).textFile(path)
       }
 
-      it("should work just as well with a SQLContext as with a SparkContext") {
+      it("should work just as well with a SparkSession as with a SparkContext") {
         val mockSparkContext = mock[SparkContext]
-        val mockSQLContext = mock[SQLContext]
+        val mockSparkSession = mock[SparkSession]
         val path = Math.random().toString
 
         // Mock the link between them
-        when(mockSQLContext.sparkContext).thenReturn(mockSparkContext)
+        when(mockSparkSession.sparkContext).thenReturn(mockSparkContext)
 
         // test
-        read(path)(mockSQLContext)
+        read(path)(mockSparkSession)
 
         // verify
         verify(mockSparkContext).textFile(path)
       }
 
-      it("should work just as well with a Pipe[SQLContext] as with a Pipe[SparkContext]") {
+      it("should work just as well with a Pipe[SparkSession] as with a Pipe[SparkContext]") {
         val mockSparkContext = mock[SparkContext]
-        val mockSQLContext = mock[SQLContext]
+        val mockSparkSession = mock[SparkSession]
         val path = Math.random().toString
 
         // Mock the link between them
-        when(mockSQLContext.sparkContext).thenReturn(mockSparkContext)
+        when(mockSparkSession.sparkContext).thenReturn(mockSparkContext)
 
         // Simple function to run
         val fcn: SparkContext => SparkContext = sc => sc
-        val result = Pipe(mockSQLContext).to(fcn).run()
+        val result = Pipe(mockSparkSession).to(fcn).run()
 
         // verify
-        verify(mockSQLContext).sparkContext
+        verify(mockSparkSession).sparkContext
         assert(result === mockSparkContext)
       }
 
