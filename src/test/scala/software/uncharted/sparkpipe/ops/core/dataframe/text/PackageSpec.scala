@@ -165,7 +165,7 @@ class PackageSpec extends FunSpec {
     describe("#uniqueTerms()") {
       it("should produce a list of unique terms from an Array[String] column in an input DataFrame") {
         val result = Pipe(df)
-                    //  .to(_.unionAll(dfNull)) //add some nulls so we can test handling them
+                     .to(_.union(dfNull)) //add some nulls so we can test handling them
                      .to(split("_2"))
                      .to(uniqueTerms("_2"))
                      .run

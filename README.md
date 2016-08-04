@@ -10,6 +10,8 @@ The Uncharted Spark Pipeline facilitates expressing individual components of Spa
   - unit tested effectively with mock inputs
   - reused and shared
 
+**Note:** Sparkpipe is only compatible with Spark 2+ as of Release 0.9.8. If you're looking for Spark 1.x compatibility, please see Release 0.9.7 and lower.
+
 ## Quick Start
 
 Try the pipeline yourself using spark-shell:

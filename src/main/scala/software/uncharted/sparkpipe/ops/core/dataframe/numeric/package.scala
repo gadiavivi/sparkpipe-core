@@ -20,7 +20,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
-import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{OnlineStatSummarizerAccumulator, SummaryStats}
+import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{MultivariateOnlineSummarizerAccumulator, SummaryStats}
 
 /**
  * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
@@ -86,7 +86,7 @@ package object numeric {
     val cols = df.schema
 
     // and an accumulator for the summarizers, so that the process can be parallelized
-    val accumulator = new OnlineStatSummarizerAccumulator(cols)
+    val accumulator = new MultivariateOnlineSummarizerAccumulator(cols)
     sc.register(accumulator)
     // accumulate each row
     df.foreach(row => {

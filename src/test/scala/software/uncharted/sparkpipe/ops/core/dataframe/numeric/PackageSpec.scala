@@ -60,7 +60,7 @@ class PackageSpec extends FunSpec {
           StructField("_7", StringType, true) :: Nil
         )
         val dfNull = Spark.sparkSession.createDataFrame(rddNull, struct)
-        val dfWithNulls = df.unionAll(dfNull)
+        val dfWithNulls = df.union(dfNull)
         val result = summaryStats(Spark.sc)(dfWithNulls)
         // counts (verify ignoring nulls )
         assert(result(0).count == 4)

@@ -19,7 +19,7 @@ package software.uncharted.sparkpipe.ops.core.dataframe
 import org.apache.spark.sql.DataFrame
 import scala.collection.mutable.{HashMap, IndexedSeq}
 import software.uncharted.sparkpipe.{ops => ops}
-import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulableParam
+import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulator
 import scala.util.matching.Regex
 import scala.reflect.runtime.universe.TypeTag
 
@@ -181,7 +181,8 @@ package object text {
    * @return the Map[String, Int] of unique terms and their counts
    */
   def uniqueTerms(arrayCol: String)(input: DataFrame): collection.mutable.Map[String, Int] = {
-    val accumulator = input.sparkSession.sparkContext.accumulable(new HashMap[String, Int]())(new UniqueTermAccumulableParam())
+    val accumulator = new UniqueTermAccumulator
+    input.sparkSession.sparkContext.register(accumulator)
 
     input.select(arrayCol).foreach(row => {
       accumulator.add(row(0).asInstanceOf[Seq[String]])

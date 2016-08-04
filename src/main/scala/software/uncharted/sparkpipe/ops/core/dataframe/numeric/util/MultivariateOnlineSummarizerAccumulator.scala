@@ -20,26 +20,27 @@ import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.sql.Row
 import org.apache.spark.util.AccumulatorV2
 import org.apache.spark.sql.types.StructType
+import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
 
-private object OnlineStatSummarizerAccumulator {
-  def init(cols: Seq[_]): Seq[OnlineStatSummarizer] = {
+private object MultivariateOnlineSummarizerAccumulator {
+  def init(cols: Seq[_]): Seq[MultivariateOnlineSummarizer] = {
     cols.map(col => {
-      new OnlineStatSummarizer
+      new MultivariateOnlineSummarizer
     }).toSeq
   }
 }
 
 /**
- * An accumulator for OnlineStatSummarizers (one per column in a DataFrame)
+ * An accumulator for MultivariateOnlineSummarizers (one per column in a DataFrame)
  */
-private[numeric] class OnlineStatSummarizerAccumulator(var result: Seq[OnlineStatSummarizer])
-  extends AccumulatorV2[Row, Seq[OnlineStatSummarizer]] {
+private[numeric] class MultivariateOnlineSummarizerAccumulator(
+  private var result: Seq[MultivariateOnlineSummarizer],
+  private var touched: Boolean = false
+) extends AccumulatorV2[Row, Seq[MultivariateOnlineSummarizer]] {
 
   def this(cols: StructType) {
-    this(OnlineStatSummarizerAccumulator.init(cols))
+    this(MultivariateOnlineSummarizerAccumulator.init(cols))
   }
-
-  private var touched = false
 
   override def add(r: Row): Unit = {
     for (i <- 0 to r.length-1) {
@@ -52,25 +53,31 @@ private[numeric] class OnlineStatSummarizerAccumulator(var result: Seq[OnlineSta
     }
   }
 
-  override def copy(): AccumulatorV2[Row, Seq[OnlineStatSummarizer]] = {
-    new OnlineStatSummarizerAccumulator(result.map(s => s.copy))
+  override def copy(): AccumulatorV2[Row, Seq[MultivariateOnlineSummarizer]] = {
+    new MultivariateOnlineSummarizerAccumulator(result.map(s => {
+      // clone by making a new, empty summarizer and merging our data into it
+      val newSummarizer = new MultivariateOnlineSummarizer()
+      newSummarizer.merge(s)
+      newSummarizer
+    }), false)
   }
 
   override def isZero(): Boolean = {
-    touched
+    !touched
   }
 
-  override def merge(other: AccumulatorV2[Row, Seq[OnlineStatSummarizer]]): Unit = {
+  override def merge(other: AccumulatorV2[Row, Seq[MultivariateOnlineSummarizer]]): Unit = {
     for (i <- 0 to other.value.length-1) {
       result(i).merge(other.value(i))
     }
   }
 
   override def reset(): Unit = {
-    result = OnlineStatSummarizerAccumulator.init(result)
+    result = MultivariateOnlineSummarizerAccumulator.init(result)
+    touched = false
   }
 
-  override def value: Seq[OnlineStatSummarizer] = {
+  override def value: Seq[MultivariateOnlineSummarizer] = {
     result
   }
 }
