@@ -41,7 +41,7 @@ private[text] class UniqueTermAccumulator(
   override def copy(): AccumulatorV2[Seq[String], HashMap[String, Int]] = {
     val clone = new HashMap[String, Int]()
     result.foreach(kv => clone.put(kv._1, kv._2))
-    new UniqueTermAccumulator(result.clone, false)
+    new UniqueTermAccumulator(clone, false)
   }
 
   override def isZero(): Boolean = {
