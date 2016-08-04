@@ -20,9 +20,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
-import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
-
-import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{MultivariateOnlineSummarizerAccumulableParam, SummaryStats}
+import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{OnlineStatSummarizerAccumulator, SummaryStats}
 
 /**
  * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
@@ -80,19 +78,16 @@ package object numeric {
    * - numNonzeros
    *
    * @param input Input DataFrame to analyze
-   * @return a Seq[(String, MultivariateOnlineSummarizer)], with one MultivariateOnlineSummarizer per column (paired with the column name)
+   * @return a Seq[(String, OnlineStatSummarizer)], with one OnlineStatSummarizer per column (paired with the column name)
    */
   def summaryStats(sc: SparkContext)(input: DataFrame): Seq[SummaryStats] = {
     // extract compatible columns
     val df = enumerate(input)
     val cols = df.schema
 
-    // build a Seq of MultivariateOnlineSummarizers to collect stats on each column
-    val summarizers = cols.map(col => {
-      new MultivariateOnlineSummarizer
-    }).toSeq
     // and an accumulator for the summarizers, so that the process can be parallelized
-    val accumulator = sc.accumulable(summarizers)(new MultivariateOnlineSummarizerAccumulableParam())
+    val accumulator = new OnlineStatSummarizerAccumulator(cols)
+    sc.register(accumulator)
     // accumulate each row
     df.foreach(row => {
       accumulator.add(row)

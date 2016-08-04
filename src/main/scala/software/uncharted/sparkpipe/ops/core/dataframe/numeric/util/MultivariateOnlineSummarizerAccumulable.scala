@@ -18,39 +18,59 @@ package software.uncharted.sparkpipe.ops.core.dataframe.numeric.util
 
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.sql.Row
-import org.apache.spark.{AccumulableParam, Accumulable}
-import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer
+import org.apache.spark.util.AccumulatorV2
+import org.apache.spark.sql.types.StructType
+
+private object OnlineStatSummarizerAccumulator {
+  def init(cols: Seq[_]): Seq[OnlineStatSummarizer] = {
+    cols.map(col => {
+      new OnlineStatSummarizer
+    }).toSeq
+  }
+}
 
 /**
- * An accumulable for MultivariateOnlineSummarizers (one per column in a DataFrame)
+ * An accumulator for OnlineStatSummarizers (one per column in a DataFrame)
  */
-private[numeric] class MultivariateOnlineSummarizerAccumulable(val initialValue: Seq[MultivariateOnlineSummarizer])
-extends Accumulable[Seq[MultivariateOnlineSummarizer], Row](initialValue, new MultivariateOnlineSummarizerAccumulableParam)
+private[numeric] class OnlineStatSummarizerAccumulator(var result: Seq[OnlineStatSummarizer])
+  extends AccumulatorV2[Row, Seq[OnlineStatSummarizer]] {
 
-/**
- * An AccumulableParam for MultivariateOnlineSummarizers (one per column in a DataFrame)
- */
-private[numeric] class MultivariateOnlineSummarizerAccumulableParam extends AccumulableParam[Seq[MultivariateOnlineSummarizer], Row]() {
+  def this(cols: StructType) {
+    this(OnlineStatSummarizerAccumulator.init(cols))
+  }
 
-  override def addAccumulator(r: Seq[MultivariateOnlineSummarizer], t: Row): Seq[MultivariateOnlineSummarizer] = {
-    for (i <- 0 to t.length-1) {
-      if (!t.isNullAt(i)) {
-        r(i).add(Vectors.dense(Array[Double](t.getDouble(i))))
+  private var touched = false
+
+  override def add(r: Row): Unit = {
+    for (i <- 0 to r.length-1) {
+      if (!r.isNullAt(i)) {
+        result(i).add(Vectors.dense(Array[Double](r.getDouble(i))))
+        touched = true
       } else {
         // don't add a sample to the summarizer for this column
       }
     }
-    r
   }
 
-  override def addInPlace(r1: Seq[MultivariateOnlineSummarizer], r2: Seq[MultivariateOnlineSummarizer]): Seq[MultivariateOnlineSummarizer] = {
-    for (i <- 0 to r1.length-1) {
-      r1(i).merge(r2(i))
+  override def copy(): AccumulatorV2[Row, Seq[OnlineStatSummarizer]] = {
+    new OnlineStatSummarizerAccumulator(result.map(s => s.copy))
+  }
+
+  override def isZero(): Boolean = {
+    touched
+  }
+
+  override def merge(other: AccumulatorV2[Row, Seq[OnlineStatSummarizer]]): Unit = {
+    for (i <- 0 to other.value.length-1) {
+      result(i).merge(other.value(i))
     }
-    r1
   }
 
-  override def zero(initialValue: Seq[MultivariateOnlineSummarizer]): Seq[MultivariateOnlineSummarizer] = {
-    initialValue
+  override def reset(): Unit = {
+    result = OnlineStatSummarizerAccumulator.init(result)
+  }
+
+  override def value: Seq[OnlineStatSummarizer] = {
+    result
   }
 }
