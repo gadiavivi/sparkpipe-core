@@ -19,7 +19,6 @@
    scalaBinaryVersion = '2.11'
    scalaVersion = '2.11.8'
    sparkVersion = System.getenv("SPARK_VERSION") ?: '2.0.0'
-   sparkpipeVersion = '0.9.7'
    scoverageVersion = '1.1.1'
    scalatestVersion = '2.2.6'
    pegdownVersion = '1.6.0'
