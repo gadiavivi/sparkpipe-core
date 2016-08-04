@@ -34,15 +34,14 @@ import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineS
 class PackageSpec extends FunSpec with MockitoSugar {
   describe("ops.core.ml.pipeline") {
 
-    val sqlContext = new org.apache.spark.sql.SQLContext(Spark.sc)
-    val training = sqlContext.createDataFrame(Seq(
+    val training = Spark.sparkSession.createDataFrame(Seq(
       (1.0, Vectors.dense(0.0, 1.1, 0.1)),
       (0.0, Vectors.dense(2.0, 1.0, -1.0)),
       (0.0, Vectors.dense(2.0, 1.3, 1.0)),
       (1.0, Vectors.dense(0.0, 1.2, -0.5))
     )).toDF("label", "features")
 
-    val test = sqlContext.createDataFrame(Seq(
+    val test = Spark.sparkSession.createDataFrame(Seq(
       (4L, "spark i j k"),
       (5L, "l m n"),
       (6L, "mapreduce spark"),

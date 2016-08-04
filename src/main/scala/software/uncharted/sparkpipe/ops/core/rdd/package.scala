@@ -17,7 +17,7 @@
 package software.uncharted.sparkpipe.ops.core
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SQLContext, DataFrame, Row}
+import org.apache.spark.sql.{SparkSession, DataFrame, Row}
 import scala.reflect.runtime.universe.TypeTag
 
 /**
@@ -27,13 +27,13 @@ package object rdd {
 
    /**
     * Convert a suitable RDD to a DataFrame
-    * @param sqlContext a SQLContext
+    * @param sparkSession a SparkSession
     * @param rdd the input RDD
     * @tparam A The record type of the RDD. Must be <: Product
     * @return a DataFrame constructed from rdd
     */
-   def toDF[A <: Product : TypeTag](sqlContext: SQLContext)(rdd: RDD[A]): DataFrame = {
-     sqlContext.createDataFrame(rdd)
+   def toDF[A <: Product : TypeTag](sparkSession: SparkSession)(rdd: RDD[A]): DataFrame = {
+     sparkSession.createDataFrame(rdd)
    }
 
    /**

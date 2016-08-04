@@ -18,7 +18,7 @@ package software.uncharted.sparkpipe.ops.core.dataframe.io
 
 import org.scalatest._
 import software.uncharted.sparkpipe.Spark
-import org.apache.spark.sql.{SQLContext, DataFrame, DataFrameReader, DataFrameWriter}
+import org.apache.spark.sql.{SparkSession, DataFrame, DataFrameReader, DataFrameWriter}
 import org.apache.spark.sql.types.{StructType, StructField, IntegerType}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Matchers._
@@ -28,8 +28,8 @@ class PackageSpec extends FunSpec with MockitoSugar {
 
   describe("ops.core.dataframe.io") {
     describe("#read()") {
-      it("should pass arguments to the underlying SQLContext.read() API") {
-        val mockSQLContext = mock[SQLContext]
+      it("should pass arguments to the underlying SparkSession.read() API") {
+        val mockSparkSession = mock[SparkSession]
         val mockReader = mock[DataFrameReader]
         val path = Math.random().toString
         val format = Math.random().toString
@@ -40,13 +40,13 @@ class PackageSpec extends FunSpec with MockitoSugar {
         ))
 
         // mock methods
-        when(mockSQLContext.read).thenReturn(mockReader)
+        when(mockSparkSession.read).thenReturn(mockReader)
         when(mockReader.format(anyString())).thenReturn(mockReader)
         when(mockReader.options(options)).thenReturn(mockReader)
         when(mockReader.schema(schema)).thenReturn(mockReader)
 
         // test
-        read(path, format, options, schema)(mockSQLContext)
+        read(path, format, options, schema)(mockSparkSession)
 
         // verify
         verify(mockReader).format(format)
@@ -56,7 +56,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
       }
 
       it("should call load() instead of load(String) when an empty path is specified") {
-        val mockSQLContext = mock[SQLContext]
+        val mockSparkSession = mock[SparkSession]
         val mockReader = mock[DataFrameReader]
         val path = ""
         val format = Math.random().toString
@@ -67,13 +67,13 @@ class PackageSpec extends FunSpec with MockitoSugar {
         ))
 
         // mock methods
-        when(mockSQLContext.read).thenReturn(mockReader)
+        when(mockSparkSession.read).thenReturn(mockReader)
         when(mockReader.format(anyString())).thenReturn(mockReader)
         when(mockReader.options(options)).thenReturn(mockReader)
         when(mockReader.schema(schema)).thenReturn(mockReader)
 
         // test
-        read(path, format, options, schema)(mockSQLContext)
+        read(path, format, options, schema)(mockSparkSession)
 
         // verify
         verify(mockReader).format(format)
@@ -83,7 +83,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
       }
 
       it("should not call schema() when an empty schema is specified") {
-        val mockSQLContext = mock[SQLContext]
+        val mockSparkSession = mock[SparkSession]
         val mockReader = mock[DataFrameReader]
         val path = ""
         val format = Math.random().toString
@@ -91,12 +91,12 @@ class PackageSpec extends FunSpec with MockitoSugar {
         val schema = new StructType(Array[StructField]())
 
         // mock methods
-        when(mockSQLContext.read).thenReturn(mockReader)
+        when(mockSparkSession.read).thenReturn(mockReader)
         when(mockReader.format(anyString())).thenReturn(mockReader)
         when(mockReader.options(options)).thenReturn(mockReader)
 
         // test
-        read(path, format, options, schema)(mockSQLContext)
+        read(path, format, options, schema)(mockSparkSession)
 
         // verify
         verify(mockReader).format(format)

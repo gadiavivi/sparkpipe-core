@@ -59,7 +59,7 @@ class Pipe[O] private[sparkpipe] (
    * @return the output of the tail of this {@link software.uncharted.sparkpipe.Pipe}, cached until reset() is called.
    */
   def run(): O = {
-    tail.run()
+    tail.run(())
   }
 
   /**

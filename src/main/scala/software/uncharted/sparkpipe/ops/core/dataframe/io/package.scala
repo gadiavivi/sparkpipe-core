@@ -16,11 +16,11 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe
 
-import org.apache.spark.sql.{SQLContext, DataFrame}
+import org.apache.spark.sql.{SparkSession, DataFrame}
 import org.apache.spark.sql.types.{StructType, StructField}
 
 /**
- * Input/output operations for DataFrames, based on the `sqlContext.read` and `DataFrame.write` APIs
+ * Input/output operations for DataFrames, based on the `sparkSession.read` and `DataFrame.write` APIs
  */
 package object io {
 
@@ -38,8 +38,8 @@ package object io {
     format: String = "parquet",
     options: Map[String, String] = Map[String, String](),
     schema: StructType = new StructType(Array[StructField]())
-  )(sqlContext: SQLContext): DataFrame = {
-    var reader = sqlContext.read.format(format).options(options)
+  )(sparkSession: SparkSession): DataFrame = {
+    var reader = sparkSession.read.format(format).options(options)
 
     if (schema.length > 0) {
       reader = reader.schema(schema)

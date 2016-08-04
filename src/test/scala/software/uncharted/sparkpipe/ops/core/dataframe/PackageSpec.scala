@@ -35,7 +35,7 @@ class PackageSpec extends FunSpec with MockitoSugar {
       (2, 3, 4, 5, 6),
       (3, 4, 5, 6, 7)
     ))
-    val df = toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sparkSession)(rdd)
 
     describe("#toRDD()") {
       it("should convert an input DataFrame to an RDD[Row]") {

@@ -18,7 +18,7 @@ package software.uncharted.sparkpipe.ops.core.rdd
 import org.apache.hadoop.io.compress.{GzipCodec, BZip2Codec}
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.SparkSession
 
 /**
   * Input/output operations for RDDs, based on the `SparkContext.textFile` API
@@ -36,22 +36,22 @@ package object io {
   val GZIP_CODEC = "gzip"
 
   /**
-    * Translates a SQLContext into a SparkContext, so that RDD operations can be called with either
+    * Translates a SparkSession into a SparkContext, so that RDD operations can be called with either
     *
-    * @param sqlc A SQLContext in which to run operations
+    * @param sqlc A SparkSession in which to run operations
     * @return The spark context from which the SQL context was created
     */
-  implicit def mutateContext (sqlc: SQLContext): SparkContext = sqlc.sparkContext
+  implicit def mutateContext (sqlc: SparkSession): SparkContext = sqlc.sparkContext
 
   /**
-    * Traslate a function from a SparkContext into a function from a SQLContext, so that RDD operations
-    * can be run off a Pipe[SQLContext]
+    * Traslate a function from a SparkContext into a function from a SparkSession, so that RDD operations
+    * can be run off a Pipe[SparkSession]
     *
     * @param fcn The SparkContext-based function
     * @tparam T The return type of the function
-    * @return The same function, but working on a SQLContext.
+    * @return The same function, but working on a SparkSession.
     */
-  implicit def mutateContextFcn[T](fcn: SparkContext => T): SQLContext => T =
+  implicit def mutateContextFcn[T](fcn: SparkContext => T): SparkSession => T =
     input => fcn(input.sparkContext)
 
   /**

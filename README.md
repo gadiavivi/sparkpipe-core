@@ -10,12 +10,14 @@ The Uncharted Spark Pipeline facilitates expressing individual components of Spa
   - unit tested effectively with mock inputs
   - reused and shared
 
+**Note:** Sparkpipe is only compatible with Spark 2+ as of Release 0.9.8. If you're looking for Spark 1.x compatibility, please see Release 0.9.7 and lower.
+
 ## Quick Start
 
 Try the pipeline yourself using spark-shell:
 
 ```bash
-$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.7
+$ spark-shell --packages software.uncharted.sparkpipe:sparkpipe-core:0.9.8
 ```
 
 ```scala
@@ -29,7 +31,7 @@ scala> :paste
 import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.ops
 
-Pipe(sqlContext)
+Pipe(sparkSession)
 .to(ops.core.dataframe.io.read("people.json", "json"))
 .to(ops.core.dataframe.renameColumns(Map("age" -> "personAge")))
 .to(_.filter("personAge > 21").count)

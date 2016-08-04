@@ -35,7 +35,7 @@ class PackageSpec extends FunSpec {
       (4, "lorem ipsum dolor sit amet lorem"),
       (5, null)
     ))
-    val df = toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sparkSession)(rdd)
 
     describe("#replaceAll()") {
       it("should replace all instances of the given pattern within a string column with a substitution string") {
@@ -165,7 +165,7 @@ class PackageSpec extends FunSpec {
     describe("#uniqueTerms()") {
       it("should produce a list of unique terms from an Array[String] column in an input DataFrame") {
         val result = Pipe(df)
-                    //  .to(_.unionAll(dfNull)) //add some nulls so we can test handling them
+                     .to(_.repartition(4))
                      .to(split("_2"))
                      .to(uniqueTerms("_2"))
                      .run

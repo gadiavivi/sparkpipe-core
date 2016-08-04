@@ -32,7 +32,7 @@ class PackageSpec extends FunSpec {
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 3, 3D, 3F, 3L, "3"),
       (new Timestamp(new java.util.Date().getTime), new Date(new java.util.Date().getTime), 4, 4D, 4F, 4L, "4")
     ))
-    val df = toDF(Spark.sqlContext)(rdd)
+    val df = toDF(Spark.sparkSession)(rdd)
 
     describe("#enumerate()") {
       it("should convert all supported columns into doubles, and drop any unsupported ones") {
@@ -59,8 +59,8 @@ class PackageSpec extends FunSpec {
           StructField("_6", LongType, true) ::
           StructField("_7", StringType, true) :: Nil
         )
-        val dfNull = Spark.sqlContext.createDataFrame(rddNull, struct)
-        val dfWithNulls = df.unionAll(dfNull)
+        val dfNull = Spark.sparkSession.createDataFrame(rddNull, struct)
+        val dfWithNulls = df.union(dfNull)
         val result = summaryStats(Spark.sc)(dfWithNulls)
         // counts (verify ignoring nulls )
         assert(result(0).count == 4)
