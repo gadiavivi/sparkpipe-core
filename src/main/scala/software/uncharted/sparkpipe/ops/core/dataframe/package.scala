@@ -205,6 +205,18 @@ package object dataframe {
   // scalastyle:on parameter.number
 
   /**
+   * Takes a DataFrame and copies a column in i
+   *
+   * @param columnName the column to copy
+   * @param newColumnName the column to place the copy in
+   * @param input The existing DataFrame
+   * @return A new DataFrame with the copied column
+   */
+  def copyColumn(columnName: String, newColumnName: String)(input: DataFrame): DataFrame = {
+    input.withColumn(newColumnName, input(columnName))
+  }
+
+  /**
    * Takes a DataFrame and replaces a column in it using a transformation function
    *
    * @param columnName the column to replace

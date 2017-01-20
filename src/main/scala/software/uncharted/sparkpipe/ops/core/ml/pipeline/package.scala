@@ -19,6 +19,7 @@ package software.uncharted.sparkpipe.ops.core.ml
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineStage, PipelineModel => MLPipelineModel}
+import java.lang.UnsupportedOperationException
 
 /**
  * Lightweight helpers for using spark.ml Pipelines with sparkpipe.
@@ -33,7 +34,7 @@ package object pipeline {
    * @param sc the SparkContext
    * @param path the path to the persisted Pipeline
    * @return a spark.ml Pipeline constructed from the given file
-   * @throws UnsupportedOperationException on spark version < 1.6.0
+   * @throws java.lang.UnsupportedOperationException on spark version < 1.6.0
    */
   // $COVERAGE-OFF$
   def load(sc: SparkContext, path: String): MLPipeline = {
@@ -47,7 +48,7 @@ package object pipeline {
    * @param sc the SparkContext
    * @param path the path for the persisted Pipeline file
    * @return the input spark.ml Pipeline, unchanged
-   * @throws UnsupportedOperationException on spark version < 1.6.x
+   * @throws java.lang.UnsupportedOperationException on spark version < 1.6.x
    */
   // $COVERAGE-OFF$
   // Due to problems supporting multiple spark versions we cannot yet get full coverage
