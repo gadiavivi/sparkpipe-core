@@ -21,6 +21,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
 import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
 import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{MultivariateOnlineSummarizerAccumulator, SummaryStats}
+import java.lang.IllegalArgumentException
 
 /**
  * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
@@ -39,7 +40,7 @@ package object numeric {
    * Convert all compatible columns within a DataFrame into Doubles
    *
    * @param input Input DataFrame to convert
-   * @throws IllegalArgumentException if the input DataFrame does not contain any compatible columns
+   * @throws java.lang.IllegalArgumentException if the input DataFrame does not contain any compatible columns
    * @return Transformed DataFrame, where all suitable columns have been converted to Doubles,
    *         and incompatible columns have been dropped.
    */

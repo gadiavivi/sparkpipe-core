@@ -12,3 +12,7 @@ gradle.properties
 .DS_Store
 _site
 /core
+.classpath
+.settings
+.project
+bin/

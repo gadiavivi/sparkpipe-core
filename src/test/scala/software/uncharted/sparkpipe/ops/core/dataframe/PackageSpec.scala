@@ -164,6 +164,18 @@ class PackageSpec extends FunSpec with MockitoSugar {
       }
     }
 
+    describe("copyColumn()") {
+      it("should support copying a column in a DataFrame") {
+        val df2 = copyColumn(
+          "_1",
+          "_6"
+        )(df)
+        assert(df2.schema.size == df.schema.size + 1)
+        assert(df2.schema("_6").dataType.equals(org.apache.spark.sql.types.IntegerType))
+        assert(df2.where("_1 != _6").count == 0)
+      }
+    }
+
     describe("replaceColumn()") {
       it("should support replacing a column in a DataFrame based on a transformation function") {
         val df2 = replaceColumn(

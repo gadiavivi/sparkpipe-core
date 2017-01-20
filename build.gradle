@@ -13,12 +13,12 @@
  */
 
  group = 'software.uncharted.sparkpipe'
- version = '0.9.8'
+ version = '1.0.0'
 
  project.ext {
    scalaBinaryVersion = '2.11'
    scalaVersion = '2.11.8'
-   sparkVersion = System.getenv("SPARK_VERSION") ?: '2.0.0'
+   sparkVersion = System.getenv("SPARK_VERSION") ?: '2.0.1'
    scoverageVersion = '1.1.1'
    scalatestVersion = '2.2.6'
    pegdownVersion = '1.6.0'
