@@ -14,3 +14,7 @@ metastore_db/
 gradle.properties
 .DS_Store
 bower_components
+.classpath
+.project
+.settings/
+bin/

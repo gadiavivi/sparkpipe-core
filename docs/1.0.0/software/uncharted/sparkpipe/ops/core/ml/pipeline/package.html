@@ -1,0 +1,239 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>pipeline - sparkpipe-core 1.0.0 API - software.uncharted.sparkpipe.ops.core.ml.pipeline</title>
+          <meta name="description" content="pipeline - sparkpipe - core 1.0.0 API - software.uncharted.sparkpipe.ops.core.ml.pipeline" />
+          <meta name="keywords" content="pipeline sparkpipe core 1.0.0 API software.uncharted.sparkpipe.ops.core.ml.pipeline" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../../index.html';
+            var hash = 'software.uncharted.sparkpipe.ops.core.ml.pipeline.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../../package.html" class="extype" name="software">software</a>.<a href="../../../../../package.html" class="extype" name="software.uncharted">uncharted</a>.<a href="../../../../package.html" class="extype" name="software.uncharted.sparkpipe">sparkpipe</a>.<a href="../../../package.html" class="extype" name="software.uncharted.sparkpipe.ops">ops</a>.<a href="../../package.html" class="extype" name="software.uncharted.sparkpipe.ops.core">core</a>.<a href="../package.html" class="extype" name="software.uncharted.sparkpipe.ops.core.ml">ml</a></p>
+        <h1>pipeline</h1><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pipeline</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Lightweight helpers for using spark.ml Pipelines with sparkpipe.
+The goal is not to replace the spark.ml pipeline, but rather to
+smooth its integration with other logic and libraries supporting
+the sparkpipe ops format.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="software.uncharted.sparkpipe.ops.core.ml.pipeline"><span>pipeline</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline#addStage" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addStage(stage:org.apache.spark.ml.PipelineStage)(mlpipe:org.apache.spark.ml.Pipeline):org.apache.spark.ml.Pipeline"></a>
+      <a id="addStage(PipelineStage)(Pipeline):Pipeline"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addStage</span><span class="params">(<span name="stage">stage: <span class="extype" name="org.apache.spark.ml.PipelineStage">PipelineStage</span></span>)</span><span class="params">(<span name="mlpipe">mlpipe: <span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@addStage(stage:org.apache.spark.ml.PipelineStage)(mlpipe:org.apache.spark.ml.Pipeline):org.apache.spark.ml.Pipeline" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Add a stage (an Estimator or a Transformer) to an existing spark.ml Pipeline</p><div class="fullcomment"><div class="comment cmt"><p>Add a stage (an Estimator or a Transformer) to an existing spark.ml Pipeline</p></div><dl class="paramcmts block"><dt class="param">stage</dt><dd class="cmt"><p>a spark.ml PipelineStage (an Estimator or Transformer)</p></dd><dt>returns</dt><dd class="cmt"><p>the input Pipeline, with the added stage</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline#applyModel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="applyModel(args:(org.apache.spark.ml.PipelineModel,org.apache.spark.sql.DataFrame)):org.apache.spark.sql.DataFrame"></a>
+      <a id="applyModel((PipelineModel,DataFrame)):DataFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">applyModel</span><span class="params">(<span name="args">args: (<span class="extype" name="org.apache.spark.ml.PipelineModel">PipelineModel</span>, <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span>)</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@applyModel(args:(org.apache.spark.ml.PipelineModel,org.apache.spark.sql.DataFrame)):org.apache.spark.sql.DataFrame" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Apply a spark.ml PipelineModel to a DataFrame to make a prediction.</p><div class="fullcomment"><div class="comment cmt"><p>Apply a spark.ml PipelineModel to a DataFrame to make a prediction.
+This op is intended to be used after merging two Pipes, one providng
+the spark.ml PipelineModel, and the other providing the DataFrame.
+For example, Pipe(mlModelPipe, dataPipe).to(ops.core.ml.applyModel)</p></div><dl class="paramcmts block"><dt class="param">args</dt><dd class="cmt"><p>a Tuple2 including a spark.ml PipelineModel and a DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>the resultant DataFrame</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline.docs" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="docs"></a>
+      <a id="docs:docs"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="docs$.html"><span class="name">docs</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@docs" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Stub object necessary due to <a href="https://issues.scala-lang.org/browse/SI-8124" target="_blank">https://issues.scala-lang.org/browse/SI-8124</a></p><div class="fullcomment"><div class="comment cmt"><p>Stub object necessary due to <a href="https://issues.scala-lang.org/browse/SI-8124" target="_blank">https://issues.scala-lang.org/browse/SI-8124</a></p><p>Documentation for <code>ops.core.ml.pipeline</code> can be found at <a href="" class="extype" name="software.uncharted.sparkpipe.ops.core.ml.pipeline">software.uncharted.sparkpipe.ops.core.ml.pipeline</a></p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected[this] </dd><dt>See also</dt><dd><span class="cmt"><p><a href="" class="extype" name="software.uncharted.sparkpipe.ops.core.ml.pipeline">software.uncharted.sparkpipe.ops.core.ml.pipeline</a></p></span></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline#fit" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fit(args:(org.apache.spark.ml.Pipeline,org.apache.spark.sql.DataFrame)):org.apache.spark.ml.PipelineModel"></a>
+      <a id="fit((Pipeline,DataFrame)):PipelineModel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fit</span><span class="params">(<span name="args">args: (<span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span>, <span class="extype" name="org.apache.spark.sql.DataFrame">DataFrame</span>)</span>)</span><span class="result">: <span class="extype" name="org.apache.spark.ml.PipelineModel">PipelineModel</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@fit(args:(org.apache.spark.ml.Pipeline,org.apache.spark.sql.DataFrame)):org.apache.spark.ml.PipelineModel" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Fit a spark.ml pipeline to a DataFrame to produce a PipelineModel.</p><div class="fullcomment"><div class="comment cmt"><p>Fit a spark.ml pipeline to a DataFrame to produce a PipelineModel.
+This op is intended to be used after merging two Pipes, one providng
+the spark.ml Pipeline, and the other providing the DataFrame.
+For example, Pipe(mlPipelinePipe, dataPipe).to(ops.core.ml.fit)</p></div><dl class="paramcmts block"><dt class="param">args</dt><dd class="cmt"><p>a Tuple2 including a spark.ml Pipeline and a DataFrame</p></dd><dt>returns</dt><dd class="cmt"><p>the fitted spark.ml PipelineModel</p></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline#load" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="load(sc:org.apache.spark.SparkContext,path:String):org.apache.spark.ml.Pipeline"></a>
+      <a id="load(SparkContext,String):Pipeline"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>, <span name="path">path: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@load(sc:org.apache.spark.SparkContext,path:String):org.apache.spark.ml.Pipeline" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Load a spark.ml Pipeline from a file</p><div class="fullcomment"><div class="comment cmt"><p>Load a spark.ml Pipeline from a file</p></div><dl class="paramcmts block"><dt class="param">sc</dt><dd class="cmt"><p>the SparkContext</p></dd><dt class="param">path</dt><dd class="cmt"><p>the path to the persisted Pipeline</p></dd><dt>returns</dt><dd class="cmt"><p>a spark.ml Pipeline constructed from the given file</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt"><p><span class="extype" name="java.lang.UnsupportedOperationException"><code>java.lang.UnsupportedOperationException</code></span> on spark version &lt; 1.6.0</p></span></dd></dl></div>
+    </li><li name="software.uncharted.sparkpipe.ops.core.ml.pipeline#save" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="save(sc:org.apache.spark.SparkContext,path:String)(mlpipe:org.apache.spark.ml.Pipeline):org.apache.spark.ml.Pipeline"></a>
+      <a id="save(SparkContext,String)(Pipeline):Pipeline"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">save</span><span class="params">(<span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>, <span name="path">path: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="mlpipe">mlpipe: <span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span></span>)</span><span class="result">: <span class="extype" name="org.apache.spark.ml.Pipeline">Pipeline</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../../index.html#software.uncharted.sparkpipe.ops.core.ml.pipeline.package@save(sc:org.apache.spark.SparkContext,path:String)(mlpipe:org.apache.spark.ml.Pipeline):org.apache.spark.ml.Pipeline" title="Permalink" target="_top">
+        <img src="../../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Persist a spark.ml Pipeline to a file</p><div class="fullcomment"><div class="comment cmt"><p>Persist a spark.ml Pipeline to a file</p></div><dl class="paramcmts block"><dt class="param">sc</dt><dd class="cmt"><p>the SparkContext</p></dd><dt class="param">path</dt><dd class="cmt"><p>the path for the persisted Pipeline file</p></dd><dt>returns</dt><dd class="cmt"><p>the input spark.ml Pipeline, unchanged</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt"><p><span class="extype" name="java.lang.UnsupportedOperationException"><code>java.lang.UnsupportedOperationException</code></span> on spark version &lt; 1.6.x</p></span></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
