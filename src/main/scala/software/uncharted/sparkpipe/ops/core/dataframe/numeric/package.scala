@@ -17,33 +17,31 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.apache.spark.SparkContext
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
-import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType}
+import org.apache.spark.sql.{Column, DataFrame}
 import software.uncharted.sparkpipe.ops.core.dataframe.numeric.util.{MultivariateOnlineSummarizerAccumulator, SummaryStats}
-import java.lang.IllegalArgumentException
 
 /**
- * Numeric pipeline operations which operate on DataFrames which have columns of the following types:
- *
- * - FloatType
- * - DoubleType
- * - IntegerType
- * - LongType
- * - DateType
- * - TimestampType
+ * Numeric pipeline operations that operate on DataFrames.
  */
 package object numeric {
   private val supportedColumnTypes = List("FloatType", "DoubleType", "IntegerType", "LongType", "DateType", "TimestampType")
 
   /**
-   * Convert all compatible columns within a DataFrame into Doubles
-   *
-   * @param input Input DataFrame to convert
-   * @throws java.lang.IllegalArgumentException if the input DataFrame does not contain any compatible columns
-   * @return Transformed DataFrame, where all suitable columns have been converted to Doubles,
-   *         and incompatible columns have been dropped.
-   */
+    * Convert all compatible columns within a DataFrame into Doubles.  Supports source columns of the following
+    * types:
+    *
+    * - FloatType
+    * - DoubleType
+    * - IntegerType
+    * - LongType
+    * - DateType
+    * - TimestampType
+    *
+    * @param input Input DataFrame to convert
+    * @throws java.lang.IllegalArgumentException if the input DataFrame does not contain any compatible columns
+    * @return Transformed DataFrame, where all suitable columns have been converted to Doubles,
+    *         and incompatible columns have been dropped.
+    */
   def enumerate(input: DataFrame): DataFrame = {
     val typeKey = "type"
     val fields = input.schema.fields
@@ -108,5 +106,26 @@ package object numeric {
         accumulator.value(i).numNonzeros(0)
       )
     )
+  }
+
+  /**
+    * A generalized n-dimensional range filter operation.  Works on any value compatible
+    * with Numeric.
+    *
+    * @param filters Sequence of column (name, min, max) tuples, 1 for each dimension of the data
+    * @param exclude Boolean indicating whether values in the range are excluded or included.
+    * @param df Dataframe to apply filter to
+    * @return Transformed dataframe, where records inside/outside the specified time range have been removed.
+    */
+  def numericRangeFilter[T](filters: Seq[(String, T, T)], exclude: Boolean = false)
+                           (df: DataFrame)
+                           (implicit n: Numeric[T]) : DataFrame = {
+    require(filters.forall(p => n.compare(p._2, p._3) <= 0))
+    val test: Column = filters.map { f =>
+      val col = new Column(f._1)
+      val result: Column = col >= f._2 && col <= f._3
+      if (exclude) result.unary_! else result
+    }.reduce(_ && _)
+    df.filter(test)
   }
 }

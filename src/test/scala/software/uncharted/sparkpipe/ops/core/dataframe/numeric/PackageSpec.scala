@@ -16,13 +16,15 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe.numeric
 
-import org.scalatest._
 import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.types.{FloatType, DoubleType, IntegerType, LongType, TimestampType, DateType, StringType, StructType, StructField}
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.types.{DateType, DoubleType, FloatType, IntegerType, LongType,
+  StringType, StructField, StructType, TimestampType}
 import java.sql.{Date, Timestamp}
+
+import org.scalatest.FunSpec
 
 class PackageSpec extends FunSpec {
   describe("ops.core.dataframe.numeric") {
@@ -84,6 +86,38 @@ class PackageSpec extends FunSpec {
         assert(result(3).mean == 3)
         assert(result(4).mean == 3)
         assert(result(5).mean == 2.5)
+      }
+    }
+
+    describe("#rangeFilter()") {
+      val schema = StructType(Seq(StructField("x", IntegerType), StructField("y", IntegerType)))
+      val data: RDD[Row] = Spark.sc.parallelize(Seq(Row(1, 1), Row(2, 2), Row(3, 3)))
+      val testDf = Spark.sparkSession.createDataFrame(data, schema)
+
+      it("should filter rows less than min on exclude") {
+        val filtered = numericRangeFilter[Int](Seq(("x", 2, 4), ("y", 2, 4)))(testDf).collect()
+        assert(filtered.length == 2)
+        assert(filtered(0) == Row(2, 2))
+        assert(filtered(1) == Row(3, 3))
+      }
+
+      it("should filter rows greater than max exclude") {
+        val filtered = numericRangeFilter[Int](Seq(("x", 0, 2), ("y", 0, 2)))(testDf).collect()
+        assert(filtered.length == 2)
+        assert(filtered(0) == Row(1, 1))
+        assert(filtered(1) == Row(2, 2))
+      }
+
+      it("should keep rows less than min on include") {
+        val filtered = numericRangeFilter[Int](Seq(("x", 2, 4), ("y", 2, 4)), true)(testDf).collect()
+        assert(filtered.length == 1)
+        assert(filtered(0) == Row(1, 1))
+      }
+
+      it("should keep rows greater than max on include") {
+        val filtered = numericRangeFilter[Int](Seq(("x", 0, 2), ("y", 0, 2)), true)(testDf).collect()
+        assert(filtered.length == 1)
+        assert(filtered(0) == Row(3, 3))
       }
     }
   }

@@ -22,7 +22,8 @@ import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.functions.{sum}
+import org.apache.spark.sql.functions.sum
+import org.apache.spark.sql.types._
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -197,6 +198,39 @@ class PackageSpec extends FunSpec with MockitoSugar {
         assert(df2.schema("_1").dataType.equals(org.apache.spark.sql.types.DoubleType))
         assert(df2.schema("_2").dataType.equals(org.apache.spark.sql.types.FloatType))
         assert(df2.schema("_3").dataType.equals(org.apache.spark.sql.types.StringType))
+      }
+    }
+
+    describe("joinDataFrames()") {
+      it("should inner join two dataframes based on input column names") {
+        val leftRDD = Spark.sc.parallelize(Seq(
+          (1, 0.5, "a"),
+          (2, 1.5, "b"),
+          (3, 2.5, "c")))
+
+        val rightRDD = Spark.sc.parallelize(Seq(
+          (1, 1.0, "e"),
+          (2, 2.0, "d"),
+          (3, 3.0, "c"),
+          (4, 4.0, "b")))
+
+        val leftDf = toDF(Spark.sparkSession)(leftRDD)
+        val rightDf = toDF(Spark.sparkSession)(rightRDD)
+
+        val rawJoined = joinDataFrames("_1", "_1")(leftDf, rightDf).rdd.collect
+        val joined = joinDataFrames("_1", "_1")(leftDf, rightDf).rdd.collect.map { row =>
+          assert(row(0) === row(3))
+          (
+            row(0).asInstanceOf[Int],
+            row(1).asInstanceOf[Double], row(2).asInstanceOf[String],
+            row(4).asInstanceOf[Double], row(5).asInstanceOf[String]
+            )
+        }.sortBy(_._1)
+
+        assert(3 === joined.length)
+        assert((1, 0.5, "a", 1.0, "e") === joined(0))
+        assert((2, 1.5, "b", 2.0, "d") === joined(1))
+        assert((3, 2.5, "c", 3.0, "c") === joined(2))
       }
     }
   }

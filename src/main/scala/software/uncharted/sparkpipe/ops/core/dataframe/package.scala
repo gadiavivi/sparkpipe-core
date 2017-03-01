@@ -255,4 +255,16 @@ package object dataframe {
     }).toSeq
     input.selectExpr(exprs:_*)
   }
+
+  /**
+    * Inner join two data frames on the specified columns.
+    * @param leftColumn The join ID column of the first data frame
+    * @param rightColumn The join ID column of the second data frame
+    * @param leftInput The first data frame
+    * @param rightInput The second data frame
+    * @return The joined data frames
+    */
+  def joinDataFrames(leftColumn: String, rightColumn: String)(leftInput: DataFrame, rightInput: DataFrame): DataFrame = {
+    leftInput.join(rightInput, leftInput(leftColumn) === rightInput(rightColumn))
+  }
 }
