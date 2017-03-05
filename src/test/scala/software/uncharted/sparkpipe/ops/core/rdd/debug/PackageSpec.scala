@@ -16,6 +16,8 @@
 
 package software.uncharted.sparkpipe.ops.core.rdd.debug
 
+import java.io.ByteArrayOutputStream
+
 import org.scalatest._
 import software.uncharted.sparkpipe.Spark
 
@@ -28,6 +30,14 @@ class PackageSpec extends FunSpec {
         var output = ""
         countRDDRows("test", (s: String) => output += s)(rdd)
         assertResult("[test] Number of rows: 3")(output)
+      }
+
+      it("should output a formatted count message to std out when no output function is supplied") {
+        val bos = new ByteArrayOutputStream()
+        Console.withOut(bos) {
+          countRDDRows("test")(rdd)
+        }
+        assertResult("[test] Number of rows: 3\n")(bos.toString)
       }
     }
 

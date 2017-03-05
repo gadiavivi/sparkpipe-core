@@ -21,9 +21,8 @@ import org.apache.spark.rdd.RDD
  * Common operations to aid in debugging RDD processing in pipelines
  */
 package object debug {
-  // $COVERAGE-OFF$
+
   val defaultOutput = (s: String) => println(s) // scalastyle:off regex
-  // $COVERAGE-ON$
 
   /**
     * Prints the number of rows in an RDD.

@@ -23,9 +23,7 @@ import org.apache.spark.sql.{DataFrame, Row}
  */
 package object debug {
 
-  // $COVERAGE-OFF$
   val defaultOutput = (s: String) => println(s)  // scalastyle:off regex
-  // $COVERAGE-ON$
 
   /**
     * Prints the number of rows in a dataframe.

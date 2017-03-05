@@ -16,24 +16,31 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe.debug
 
-import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{ArrayType, StringType}
-import org.scalatest._
-import software.uncharted.sparkpipe.{Pipe, Spark}
-import software.uncharted.sparkpipe.ops.core.rdd.toDF
+import java.io.ByteArrayOutputStream
 
-import scala.collection.mutable.IndexedSeq
+import org.apache.spark.sql.Row
+import org.scalatest._
+import software.uncharted.sparkpipe.Spark
+import software.uncharted.sparkpipe.ops.core.rdd.toDF
 
 class PackageSpec extends FunSpec {
   describe("ops.core.dataframe.debug") {
     val rdd = Spark.sc.parallelize(Seq((1, "alpha"), (2, "bravo"), (3, "charlie")))
     val df = toDF(Spark.sparkSession)(rdd)
 
-    describe("#countDFRows()") {
+   describe("#countDFRows()") {
       it("should output a formatted count message using the supplied output function") {
         var output = ""
         countDFRows("test", (s: String) => output += s)(df)
         assertResult("[test] Number of rows: 3")(output)
+      }
+
+      it("should output a formatted count message to std out when no output function is supplied") {
+        val bos = new ByteArrayOutputStream()
+        Console.withOut(bos) {
+          countDFRows("test")(df)
+        }
+        assertResult("[test] Number of rows: 3\n")(bos.toString)
       }
     }
 
