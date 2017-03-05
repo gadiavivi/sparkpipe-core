@@ -20,9 +20,7 @@ import org.scalatest._
 import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.types.{IntegerType, StringType, ArrayType}
+import org.apache.spark.sql.types.{StringType, ArrayType}
 
 import scala.collection.mutable.IndexedSeq
 

@@ -17,11 +17,8 @@
 package software.uncharted.sparkpipe.ops.core.dataframe.temporal
 
 import org.scalatest._
-import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row}
 
 import java.text.SimpleDateFormat
 import java.sql.Timestamp

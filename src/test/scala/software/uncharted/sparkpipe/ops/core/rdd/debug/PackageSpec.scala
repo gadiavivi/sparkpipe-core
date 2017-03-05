@@ -16,7 +16,6 @@
 
 package software.uncharted.sparkpipe.ops.core.rdd.debug
 
-import org.apache.spark.sql.Row
 import org.scalatest._
 import software.uncharted.sparkpipe.Spark
 

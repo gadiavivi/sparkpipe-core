@@ -16,13 +16,11 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe
 
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SparkSession, DataFrame, Row, Column}
-import org.apache.spark.sql.functions.{udf, callUDF}
-import org.apache.spark.sql.types.{DataType, TimestampType, IntegerType}
+import org.apache.spark.sql.{DataFrame, Column}
+import org.apache.spark.sql.functions.udf
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.util.{Calendar, Date, GregorianCalendar}
+import java.util.{Date, GregorianCalendar}
 
 /**
  * Common pipeline operations for dealing with temporal data
@@ -96,7 +94,7 @@ package object temporal {
    * @return Transformed pipeline data with the new time field column.
    */
   def parseDate(stringDateCol: String, dateCol: String, format: String)(input: DataFrame): DataFrame = {
-    val formatter = new SimpleDateFormat(format);
+    val formatter = new SimpleDateFormat(format)
     val fieldExtractor: String => Timestamp = i => {
       val date = formatter.parse(i)
       new Timestamp(date.getTime)

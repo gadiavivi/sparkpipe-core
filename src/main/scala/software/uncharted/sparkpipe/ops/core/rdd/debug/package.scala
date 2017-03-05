@@ -16,8 +16,6 @@
 package software.uncharted.sparkpipe.ops.core.rdd
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.Row
-
 
 /*
  * Common operations to aid in debugging RDD processing in pipelines

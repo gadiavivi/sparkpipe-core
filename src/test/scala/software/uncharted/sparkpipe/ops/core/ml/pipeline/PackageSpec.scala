@@ -17,18 +17,14 @@
 package software.uncharted.sparkpipe.ops.core.ml.pipeline
 
 import org.scalatest._
-import org.apache.spark.SparkContext
 import software.uncharted.sparkpipe.Spark
-import org.apache.spark.sql.DataFrame
 import org.scalatest.mock.MockitoSugar
-import org.apache.spark.mllib.linalg.{Vector, Vectors}
-import org.mockito.Matchers._
+import org.apache.spark.mllib.linalg.Vectors
 import org.mockito.Mockito._
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.util.MLReader
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
-import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineStage => MLPipelineStage, PipelineModel => MLPipelineModel}
+import org.apache.spark.ml.{Pipeline => MLPipeline, PipelineModel => MLPipelineModel}
 
 
 class PackageSpec extends FunSpec with MockitoSugar {

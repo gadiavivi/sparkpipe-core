@@ -17,15 +17,12 @@
 package software.uncharted.sparkpipe.ops.core.dataframe
 
 import org.scalatest._
-import org.apache.spark.storage.StorageLevel
 import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.functions.sum
-import org.apache.spark.sql.types._
 import org.scalatest.mock.MockitoSugar
-import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 class PackageSpec extends FunSpec with MockitoSugar {

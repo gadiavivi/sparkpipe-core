@@ -17,8 +17,7 @@
 package software.uncharted.sparkpipe.ops.core.dataframe.io
 
 import org.scalatest._
-import software.uncharted.sparkpipe.Spark
-import org.apache.spark.sql.{SparkSession, DataFrame, DataFrameReader, DataFrameWriter}
+import org.apache.spark.sql.{SparkSession, DataFrameReader}
 import org.apache.spark.sql.types.{StructType, StructField, IntegerType}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Matchers._
