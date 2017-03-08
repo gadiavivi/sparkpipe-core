@@ -19,11 +19,10 @@ package software.uncharted.sparkpipe.ops.core
 import software.uncharted.sparkpipe.Pipe
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SparkSession, DataFrame, Row}
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.udf
-import org.apache.spark.sql.types.DataType
-import scala.reflect.runtime.universe.{TypeTag, typeTag}
+import scala.reflect.runtime.universe.{TypeTag}
 
 /**
  * Common operations for manipulating dataframes
