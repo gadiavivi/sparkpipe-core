@@ -17,7 +17,6 @@
 package software.uncharted.sparkpipe.ops.core.dataframe.text.util
 
 import org.scalatest._
-import software.uncharted.sparkpipe.Spark
 
 class UniqueTermAccumulatorSpec extends FunSpec {
   describe("ops.core.dataframe.text.util.UniqueTermAccumulator") {

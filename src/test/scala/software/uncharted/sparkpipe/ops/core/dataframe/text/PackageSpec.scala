@@ -20,9 +20,7 @@ import org.scalatest._
 import software.uncharted.sparkpipe.Spark
 import software.uncharted.sparkpipe.Pipe
 import software.uncharted.sparkpipe.ops.core.rdd.toDF
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row}
-import org.apache.spark.sql.types.{IntegerType, StringType, ArrayType}
+import org.apache.spark.sql.types.{StringType, ArrayType}
 
 import scala.collection.mutable.IndexedSeq
 
@@ -175,6 +173,54 @@ class PackageSpec extends FunSpec {
         assert(result.getOrElse("dolor", 0) == 3)
         assert(result.getOrElse("sit", 0) == 2)
         assert(result.getOrElse("amet", 0) == 1)
+      }
+    }
+
+    describe("includeRowTermFilter()") {
+      it("should produce a DataFrame that contains only rows that had at least one word in the term list") {
+        val result = Pipe(df)
+          .to(includeRowTermFilter("_2", Seq("sit", "amet", "Lorem"), caseSensitive = true))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum dolor sit", "lorem ipsum dolor sit amet lorem"))(result)
+      }
+      it("should produce a DataFrame that contains only rows that had at least one word in the term list ignoring case") {
+        val result = Pipe(df)
+          .to(includeRowTermFilter("_2", Seq("SIT", "aMet")))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum dolor sit", "lorem ipsum dolor sit amet lorem"))(result)
+      }
+      it("should produce a DataFrame that contains only rows that match the supplied regex") {
+        val result = Pipe(df)
+          .to(includeRowTermFilter("_2", "dolor sit".r))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum dolor sit", "lorem ipsum dolor sit amet lorem"))(result)
+      }
+    }
+
+   describe("stopRowTermFilter()") {
+      it("should produce a DataFrame that contains only rows that had at least one word in the term list") {
+        val result = Pipe(df)
+          .to(stopRowTermFilter("_2", Seq("sit", "amet", "Lorem"), caseSensitive = true))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum", "lorem ipsum dolor", null))(result)
+      }
+      it("should produce a DataFrame that contains only rows that had at least one word in the term list ignoring case") {
+        val result = Pipe(df)
+          .to(stopRowTermFilter("_2", Seq("SIT", "aMet")))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum", "lorem ipsum dolor", null))(result)
+      }
+      it("should produce a DataFrame that contains only rows that match the supplied regex") {
+        val result = Pipe(df)
+          .to(stopRowTermFilter("_2", "dolor sit".r))
+          .to(_.collect().map(s => s(1)).toSet)
+          .run()
+        assertResult(Set("lorem ipsum", "lorem ipsum dolor", null))(result)
       }
     }
   }

@@ -19,11 +19,10 @@ package software.uncharted.sparkpipe.ops.core
 import software.uncharted.sparkpipe.Pipe
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SparkSession, DataFrame, Row}
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.udf
-import org.apache.spark.sql.types.DataType
-import scala.reflect.runtime.universe.{TypeTag, typeTag}
+import scala.reflect.runtime.universe.{TypeTag}
 
 /**
  * Common operations for manipulating dataframes
@@ -254,5 +253,17 @@ package object dataframe {
       s"cast(${c._1} as ${c._2}) as ${c._1}"
     }).toSeq
     input.selectExpr(exprs:_*)
+  }
+
+  /**
+    * Inner join two data frames on the specified columns.
+    * @param leftColumn The join ID column of the first data frame
+    * @param rightColumn The join ID column of the second data frame
+    * @param leftInput The first data frame
+    * @param rightInput The second data frame
+    * @return The joined data frames
+    */
+  def joinDataFrames(leftColumn: String, rightColumn: String)(leftInput: DataFrame, rightInput: DataFrame): DataFrame = {
+    leftInput.join(rightInput, leftInput(leftColumn) === rightInput(rightColumn))
   }
 }
