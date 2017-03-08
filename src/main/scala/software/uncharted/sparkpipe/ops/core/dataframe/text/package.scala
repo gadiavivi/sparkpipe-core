@@ -16,10 +16,13 @@
 
 package software.uncharted.sparkpipe.ops.core.dataframe
 
-import org.apache.spark.sql.DataFrame
-import scala.collection.mutable.{HashMap, IndexedSeq}
-import software.uncharted.sparkpipe.{ops => ops}
+import org.apache.spark.sql.{Column, DataFrame}
+import org.apache.spark.sql.functions.udf
+
+import scala.collection.mutable.IndexedSeq
+import software.uncharted.sparkpipe.ops
 import software.uncharted.sparkpipe.ops.core.dataframe.text.util.UniqueTermAccumulator
+
 import scala.util.matching.Regex
 import scala.reflect.runtime.universe.TypeTag
 
@@ -31,7 +34,7 @@ package object text {
   /**
    * Replaces all occurrences of pattern in a String column with sub
    *
-   * @param stringcol the name of a String column in the input DataFrame
+   * @param stringCol the name of a String column in the input DataFrame
    * @param pattern a regular expression
    * @param sub the string to substitute for the pattern
    * @param input Input pipeline data to transform
@@ -50,7 +53,7 @@ package object text {
   /**
    * Removes all occurrences of pattern in a String column
    *
-   * @param stringcol the name of a String column in the input DataFrame
+   * @param stringCol the name of a String column in the input DataFrame
    * @param pattern a regular expression
    * @param input Input pipeline data to transform
    * @return Transformed pipeline data, with instances of the given pattern in input removed
@@ -189,5 +192,77 @@ package object text {
     })
 
     accumulator.value
+  }
+
+  /**
+    * Checks for keyword matches in a text field and keeps rows with hits.
+    *
+    * @param stringCol Column containing text to match against.
+    * @param terms Keywords to match.
+    * @param input DataFrame from previous stage
+    * @param caseSensitive True if matching should be case sensitive, False otherwise.
+    * @return Filtered DataFrame
+    */
+  def includeRowTermFilter(stringCol: String, terms: Seq[String], caseSensitive: Boolean = false)(input: DataFrame): DataFrame = {
+    val regexPattern = genTermRegex(terms, caseSensitive)
+    rowTermFilter(regexPattern, stringCol, true)(input)
+  }
+
+  /**
+    * Checks for keyword matches in a text field and removes rows with hits.
+    *
+    * @param stringCol Column containing text to match against.
+    * @param terms Keywords to match.
+    * @param input DataFrame from previous stage
+    * @param caseSensitive True if matching should be case sensitive, False otherwise.
+    * @return Filtered DataFrame
+    */
+  def stopRowTermFilter(stringCol: String, terms: Seq[String], caseSensitive: Boolean = false)(input: DataFrame): DataFrame = {
+    val regexPattern = genTermRegex(terms, caseSensitive)
+    rowTermFilter(regexPattern, stringCol, false)(input)
+  }
+
+  private def genTermRegex(terms: Seq[String], caseSensitive: Boolean = true) : Regex = {
+    // creates a single regex of type (\bdog\b|\bcat\b) for a list of [dog, cat]
+    val adjustedKeys = terms.map(k => s"\\b$k\\b")
+    adjustedKeys.mkString(if (caseSensitive) "(" else "(?i)(", "|", ")").r
+  }
+
+  /**
+    * Applies regex matching to text in a field, and includes rows with hits.
+    *
+    * @param stringCol Column containing text to match against.
+    * @param pattern Regex pattern describing text matches.
+    * @param input DataFrame from previous stage
+    * @return Filtered DataFrame
+    */
+  def includeRowTermFilter(stringCol: String, pattern: Regex)(input: DataFrame): DataFrame = {
+    rowTermFilter(pattern, stringCol, include = true)(input)
+  }
+
+  /**
+    * Applies regex matching to text in a field, and excludes rows with hits.
+    *
+    * @param stringCol Column containing text to match against.
+    * @param pattern Regex pattern describing text matches.
+    * @param input DataFrame from previous stage
+    * @return Filtered DataFrame
+    */
+  def stopRowTermFilter(stringCol: String, pattern: Regex)(input: DataFrame): DataFrame = {
+    rowTermFilter(pattern, stringCol, include = false)(input)
+  }
+
+  private def rowTermFilter(pattern: Regex, stringCol: String, include: Boolean)(input: DataFrame): DataFrame = {
+    val broadcastPattern = input.sqlContext.sparkContext.broadcast(pattern)
+    val filterFunc = udf((text: String) => {
+      Option(text).flatMap { t =>
+        broadcastPattern.value.findFirstIn(text)
+      }.isDefined
+    })
+    if (include) {
+      input.filter(filterFunc(new Column(stringCol)))
+    } else {
+      input.filter(!filterFunc(new Column(stringCol)))
+    }
   }
 }
